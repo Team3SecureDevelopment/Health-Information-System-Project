@@ -23,31 +23,128 @@ struct user
 
 /* gets the user input, checks it against
  * the data file, and if user exists,
- * returns 1, else fails and returns 0
+ * returns new session, else fails and returns NULL
  */
-int authenticate()
+Session authenticate()
 {
-	return 0;
+	char *username = malloc(sizeof(char*) * MAX_CHAR);
+	char *password = malloc(sizeof(char*) * MAX_CHAR);
+
+	unsigned long int logintime = 0;
+
+	printf("Welcome!\n\n");
+	printf("Please type in your username: ");
+	scanf("%s", username);
+
+	printf("Please type in your password: ");
+	scanf("%s", password);
+
+	int hashValue = hash(password);
+	free(password);
+
+	if(username != NULL)
+	{
+		User newUser = getUser(username, hashValue);
+		
+		if(newUser != NULL)
+		{
+			Session newSession = createNewSession(newUser, logintime);
+
+			return newSession;
+		}
+
+		return NULL;
+	}
+	else return NULL;
 }
 
 /* returns type User if exists in a data file */
-User getUser(char *username, int pass)
+User getUser(char *username, int password)
+{
+	FILE *fp = fopen("./userdata.bin", "r");
+
+	if(fp == NULL)
+	{
+		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		return NULL;
+	}
+	else
+	{
+		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char buffer[MAX_CHAR];
+
+		int length = getUserCount(fp);
+		int i;
+
+		for(i = 0; i < length; i++)
+		{
+			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+
+			/* tokenize the line */
+			temp = strtok(buffer, ",");
+
+			/* check if the username matches */
+			if(strncmp(temp, username, MAX_CHAR) == 0)
+			{
+				printf("Found username in the file!\n");
+				
+				temp = strtok(NULL, ",");
+			
+				/* password match? */
+				if(password == atoi(temp))
+				{
+					printf("Password match!\n");
+					temp = strtok(NULL, ",");
+					int type = atoi(temp);
+
+					printf("User type is %d\n", type);
+
+					User newUser = createNewUser(username, type);
+
+					return newUser;
+				}
+				else
+				{
+					printf("Invalid password!\n");
+					return NULL;
+				}
+			}
+			else
+			{
+				printf("Still looking for %s\n", username);
+			}
+		}
+		
+		printf("Could not find user in the data file.\n");
+		return NULL;
+	}
+}
+
+/* returns a new login session for the specified user */
+Session createNewSession(User currentUser, unsigned long int logintime)
 {
 	return NULL;
 }
 
-/* returns a new login session for the specified user */
-Session createNewSession(User currentUser)
+/* returns a new user in memory */
+User createNewUser(char *name, int type)
 {
-	return NULL;
+	User newu = malloc(sizeof(*newu));
+
+	newu->name = malloc(sizeof(char*) * MAX_CHAR);
+	newu->name = name;
+
+	newu->type = type;
+
+	return newu;
 }
 
 /* takes in a string and returns it encrypted */
 char *encrypt(char *string)
 {
-	char encryptBuff[MAX_CHAR];
-	char c;
-	char new;
+	unsigned char *encryptBuff = malloc(sizeof(char*) * MAX_CHAR);
+	unsigned char c;
+	unsigned char new;
 	int length = strnlen(string, MAX_CHAR);
 	int i;
 
@@ -59,7 +156,10 @@ char *encrypt(char *string)
 
 		if(c > 99)
 		{
-			new = ((c / 100) * 100) + ((c % 10) * 10) + (c / 10) + 16;
+			new = c;
+			new -= (c / 100) * 100;
+			new = ((new % 10) * 10) + (new / 10) + 16;
+			new += (c / 100) * 100;
 		}
 		else
 		{
@@ -70,15 +170,15 @@ char *encrypt(char *string)
 		encryptBuff[i] = new;
 	}
 	printf("Encrypted: %s\n", encryptBuff);
-	return *encryptBuff;
+	return (char *)encryptBuff;
 }
 
 /* takes in an encrypted string and returns it decrypted */
 char *decrypt(char *string)
 {
-	char decryptBuff[MAX_CHAR];
-	char c;
-	char new;
+	unsigned char *decryptBuff = malloc(sizeof(char*) * MAX_CHAR);
+	unsigned char c;
+	unsigned char new;
 	int length = strnlen(string, MAX_CHAR);
 	int i;
 
@@ -87,30 +187,24 @@ char *decrypt(char *string)
 	for(i = 0; i < length; ++i)
 	{
 		c = string[i];
-
-		printf("C: \'%c\' %d ||", c, c);
-
-		/* ASCII is a signed 8bit, so we'll need to add 256 if negative */
-		if(c < 0)
-		{
-			c += 256;
-		}
-
 		c -= 16;
 
 		if(c > 99)
 		{
-			new = ((c / 100) * 100) + ((c % 10) * 10) + (c / 10);
+			new = c;
+			new -= (c / 100) * 100;
+			new = ((new % 10) * 10) + (new / 10);
+			new += (c / 100) * 100;
 		}
 		else
 		{
 			new = ((c % 10) * 10) + (c / 10);
 		}
-		printf(" N: \'%c\' %d\n\n", new, new);		
+		
 		decryptBuff[i] = new;
 	}
 	printf("Decrypted: %s\n", decryptBuff);
-	return *decryptBuff;
+	return (char *)decryptBuff;
 }
 
 /* returns the number of users saved in the data file */
@@ -118,7 +212,7 @@ int getUserCount(FILE *fp)
 {
 	int i = 0;
 	char c;
-	
+
 	/* make sure we are at the beginning of the file */
 	rewind(fp);
 
@@ -133,6 +227,40 @@ int getUserCount(FILE *fp)
 	}
 
 	return i;
+}
+
+/* returns the full line as a string */
+char *getLine(FILE *fp, int line)
+{
+	char buffer[MAX_CHAR];
+	int i;
+
+	char *string = malloc(sizeof(char*) * MAX_CHAR);
+
+	while(i <= line)
+	{
+		/* get the line */
+		fgets(buffer, MAX_CHAR, fp);
+		
+		if(i == line)
+		{
+			/* double check not the end */
+			if(*buffer == EOF)
+			{
+				break;
+			}
+
+			buffer[strnlen(buffer, MAX_CHAR)] = '\0';
+			strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
+
+			return (char *)string;
+			
+		}
+
+		i++;
+	}
+
+	return NULL;
 }
 
 /* returns an int hash value of a passed in string */
@@ -152,7 +280,17 @@ int hash(char *string)
 /* debug driver */
 int main()
 {
-	char *string = "The quick brown fox jumped over the lazy dog!";
-	decrypt(encrypt(string));
+	Session newSession = authenticate();
+
+	if(newSession == NULL)
+	{
+		printf("Could not authenticate your session.\n");
+		exit(1);
+	}
+	else
+	{
+		printf("You have been successfully authenticated!\n");
+	}
+
 	return 0;
 }

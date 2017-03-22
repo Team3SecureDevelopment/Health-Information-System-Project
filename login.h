@@ -11,12 +11,16 @@ char *decrypt(char *);
 
 User getUser(char *, int);
 
-Session createNewSession(User);
+Session createNewSession(User, unsigned long int);
 
-int authenticate();
+Session  authenticate();
 
 int hash(char *);
 
 int getUserCount(FILE *fp);
+
+char *getLine(FILE *fp, int);
+
+User createNewUser(char *, int);
 
 #endif
