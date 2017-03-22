@@ -42,20 +42,18 @@ Session authenticate()
 	int hashValue = hash(password);
 	free(password);
 
-	if(username != NULL)
-	{
-		User newUser = getUser(username, hashValue);
+	User newUser = getUser(username, hashValue);
 		
-		if(newUser != NULL)
-		{
-			Session newSession = createNewSession(newUser, logintime);
-
-			return newSession;
-		}
-
+	if(newUser != NULL)
+	{
+		Session newSession = createNewSession(newUser, logintime);
+		return newSession;
+	}
+	else
+	{
+		free(newUser);
 		return NULL;
 	}
-	else return NULL;
 }
 
 /* returns type User if exists in a data file */
@@ -75,7 +73,7 @@ User getUser(char *username, int password)
 
 		int length = getUserCount(fp);
 		int i;
-
+		
 		for(i = 0; i < length; i++)
 		{
 			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
@@ -86,18 +84,13 @@ User getUser(char *username, int password)
 			/* check if the username matches */
 			if(strncmp(temp, username, MAX_CHAR) == 0)
 			{
-				printf("Found username in the file!\n");
-				
 				temp = strtok(NULL, ",");
 			
 				/* password match? */
 				if(password == atoi(temp))
 				{
-					printf("Password match!\n");
 					temp = strtok(NULL, ",");
 					int type = atoi(temp);
-
-					printf("User type is %d\n", type);
 
 					User newUser = createNewUser(username, type);
 
@@ -109,10 +102,6 @@ User getUser(char *username, int password)
 					return NULL;
 				}
 			}
-			else
-			{
-				printf("Still looking for %s\n", username);
-			}
 		}
 		
 		printf("Could not find user in the data file.\n");
@@ -123,7 +112,12 @@ User getUser(char *username, int password)
 /* returns a new login session for the specified user */
 Session createNewSession(User currentUser, unsigned long int logintime)
 {
-	return NULL;
+	Session new = malloc(sizeof(*new));
+
+	new->currentUser = currentUser;
+	new->loginTime = logintime;
+
+	return new;
 }
 
 /* returns a new user in memory */
@@ -148,8 +142,6 @@ char *encrypt(char *string)
 	int length = strnlen(string, MAX_CHAR);
 	int i;
 
-	printf("String length is %d\n", length);
-	printf("String: %s\n", string);
 	for(i = 0; i < length; ++i)
 	{
 		c = string[i];
@@ -166,10 +158,9 @@ char *encrypt(char *string)
 			new = ((c % 10) * 10) + (c / 10) + 16;
 		}
 
-		printf("C: \'%c\' %d || N: \'%c\' %d\n\n", c, c, new, new);
 		encryptBuff[i] = new;
 	}
-	printf("Encrypted: %s\n", encryptBuff);
+	
 	return (char *)encryptBuff;
 }
 
@@ -182,8 +173,6 @@ char *decrypt(char *string)
 	int length = strnlen(string, MAX_CHAR);
 	int i;
 
-	printf("Beginning decryption\n");
-	printf("Encrypted Text: %s\n", string); 
 	for(i = 0; i < length; ++i)
 	{
 		c = string[i];
@@ -203,7 +192,7 @@ char *decrypt(char *string)
 		
 		decryptBuff[i] = new;
 	}
-	printf("Decrypted: %s\n", decryptBuff);
+
 	return (char *)decryptBuff;
 }
 
@@ -232,16 +221,17 @@ int getUserCount(FILE *fp)
 /* returns the full line as a string */
 char *getLine(FILE *fp, int line)
 {
-	char buffer[MAX_CHAR];
-	int i;
-
+	char *buffer = malloc(sizeof(char*) * MAX_CHAR);
 	char *string = malloc(sizeof(char*) * MAX_CHAR);
+	int i = 0;
+
+	rewind(fp);
 
 	while(i <= line)
 	{
 		/* get the line */
 		fgets(buffer, MAX_CHAR, fp);
-		
+	
 		if(i == line)
 		{
 			/* double check not the end */
@@ -252,9 +242,8 @@ char *getLine(FILE *fp, int line)
 
 			buffer[strnlen(buffer, MAX_CHAR)] = '\0';
 			strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
-
-			return (char *)string;
 			
+			return (char *)string;
 		}
 
 		i++;
@@ -277,9 +266,52 @@ int hash(char *string)
 	return sum;
 }
 
+/* add a new user to the file */
+void addUser(char *username, int pass, int type)
+{
+	/* file set to 'a'ppend */
+	FILE *fp = fopen("./userdata.bin", "a");
+
+	if(fp == NULL)
+	{
+		printf("Error! Could not open \"userdata.bin\" in the directory!\n");
+		exit(1);
+	}
+	else
+	{
+		char *string = malloc(sizeof(char*) * MAX_CHAR * 2);
+		char *buffer = malloc(sizeof(char*) * MAX_CHAR);
+
+		string[0] = '\0';
+
+		strncat(string, username, MAX_CHAR);
+		strcat(string, ",");
+
+		snprintf(buffer, MAX_CHAR, "%d", pass);
+		strncat(string, buffer, MAX_CHAR);
+		strcat(string, ",");
+
+		snprintf(buffer, MAX_CHAR, "%d", type);
+		strncat(string, buffer, MAX_CHAR);
+
+		printf("String: [%s]\n", string);
+
+		strncpy(string, encrypt(string), MAX_CHAR);
+
+		strcat(string, "\n");
+
+		fprintf(fp, string);
+
+		fclose(fp);
+	}
+}
+
 /* debug driver */
 int main()
 {
+	//addUser("Jim", hash("bologna"), 1);
+	//addUser("Billy", hash("cheese"), 2);
+
 	Session newSession = authenticate();
 
 	if(newSession == NULL)
