@@ -35,12 +35,22 @@ Session authenticate()
 
 	drawLogin();
 
-	printf("\n");
 	printf("Please type in your username: ");
 	scanf("%s", username);
-
+	
+	if(strlen(username) > 256)
+	{
+		printf("Invalid username length!\n");
+		return NULL;
+	}
 	printf("Please type in your password: ");
 	scanf("%s", password);
+	
+	if(strlen(password) > 256)
+	{
+		printf("Invalid password length!\n");
+		return NULL;
+	}
 
 	int hashValue = hash(password);
 	free(password);

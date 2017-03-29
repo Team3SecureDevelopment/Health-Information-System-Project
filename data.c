@@ -5,9 +5,24 @@
 #include "login.h"
 #include "data.h"
 
+struct patient
+{
+	char *fname;
+	char *lname;
+	char *dob;
+	char *social;
+	
+	int height;
+	int weight;
+	
+	char allergies;
+	char surgeries;
+	char smoker;
+	char history;
+	char mental;
+};
 
-
-void addPatient()
+void addNewPatient()
 { 
    int MAX_CHAR = 256;
    
@@ -177,3 +192,45 @@ void addPatient()
 	  //free(dob);
    }
 }
+
+char *patientGetFirstName(Patient currentPatient)
+{
+	return currentPatient->fname;
+}
+
+char *patientGetLastName(Patient currentPatient)
+{
+	return currentPatient->lname;
+}
+
+char *patientGetDOB(Patient currentPatient)
+{
+	return currentPatient->dob;
+}
+
+char *patientGetSocial(Patient currentPatient)
+{
+	return currentPatient->social;
+}
+
+int patientGetHeight(Patient currentPatient)
+{
+	return currentPatient->height;
+}
+
+int patientGetWeight(Patient currentPatient)
+{
+	return currentPatient->weight;
+}
+
+int patientIsSmoker(currentPatient)
+{
+	char c = currentPatient->smoker;
+	
+	if(c == 'Y' || c == 'y')
+	{
+		return 0;
+	}
+	else return 1;
+}
+
