@@ -4,6 +4,7 @@
 
 #include "login.h"
 #include "draw.h"
+#include "data.h"
 
 int main()
 {
@@ -16,6 +17,8 @@ int main()
 	}
 	else if(newSession != NULL)
 	{
+		addPatient();
+		
 		User currentUser = sessionGetUser(newSession);
 		int menuchoice;
 		int type = userGetType(currentUser);

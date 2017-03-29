@@ -19,12 +19,11 @@ void drawLogin()
 	system("clear");
 	
 	printf("\n\n");
-	printf("     \x1b[32m╔═════════════════════╗▄\x1b[0m\n");
-	printf("     ║    Health Record    ║█\n");
-	printf("     ║     System 2000     ║█\n");
-	printf("     ║        v 1.4        ║█\n");
-	printf("     ╚═════════════════════╝█\n");
-	printf("        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n");
+	printf("     \x1b[36;1;44m╔═════════════════════╗\x1b[0m\n");
+	printf("     \x1b[36;1;44m║    Health Record    ║\x1b[0m\n");
+	printf("     \x1b[36;1;44m║     System 2000     ║\x1b[0m\n");
+	printf("     \x1b[36;1;44m║        v 1.4        ║\x1b[0m\n");
+	printf("     \x1b[36;1;44m╚═════════════════════╝\x1b[0m\n");
 	printf("\n");
 	printf("             Welcome!\n");
 }
@@ -39,20 +38,29 @@ void drawMenu(User currentUser)
 	int type = userGetType(currentUser);
 
 		printf("\n\n");
-		printf("╔════════════════ MAIN MENU ═════════════════╗\n");
-		printf("║ Hello, %-35s ║\n", name);
-		printf("╟────────────────────────────────────────────╢\n");
+		printf("\x1b[36;1;44m╔═════════════════════════════════\x1b[34;1;46;22m MAIN MENU \x1b[36;1;44m══════════════════════════════════╗\x1b[0m\n");
+		printf("\x1b[36;1;44m║ Hello, \x1b[33;1;44m%-69s\x1b[36;1;44m ║\x1b[0m\n", name);
+		printf("\x1b[36;1;44m╟──────────────────────────────────────────────────────────────────────────────╢\x1b[0m\n");
 	/* if doctor/nurse */
 	if(type == 0 || type == 1)
 	{
-		printf("║         ┌───┬────────────────────┐         ║\n");
-		printf("║         │ 1 │    Search Patients │         ║\n");
-		printf("║         │ 2 │ Create New Patient │         ║\n");
-		printf("║         ├───┼────────────────────┤         ║\n");
-		printf("║         │ 3 │    Change Password │         ║\n");
-		printf("║         │ 4 │            Log Off │         ║\n");
-		printf("║         └───┴────────────────────┘         ║\n");
-		printf("╚════════════════════════════════════════════╝\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                          ┌───┬────────────────────┐                          ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                          │ \x1b[31m1\x1b[36;1;44m │    Search Patients │                          ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                          │ \x1b[31m2\x1b[36;1;44m │ Create New Patient │                          ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                          ├───┼────────────────────┤                          ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                          │ \x1b[31m3\x1b[36;1;44m │    Change Password │                          ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                          │ \x1b[31m4\x1b[36;1;44m │            Log Off │                          ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                          └───┴────────────────────┘                          ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m║                                                                              ║\x1b[0m\n");
+		printf("\x1b[36;1;44m╚══════════════════════════════════════════════════════════════════════════════╝\x1b[0m\n");
 		printf("\n");
 	}
 	/* if help desk */
