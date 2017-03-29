@@ -19,15 +19,15 @@ void addPatient()
    
    if(fp == NULL)
    {
-      printf("File could not be opened\n");
-      exit(1);
+     	printf("File could not be opened\n");
+      	exit(1);
    }
    else
    {
-	  char *social = malloc(sizeof(char) * 9);
-	  char *fname = malloc(sizeof(char) * MAX_CHAR);
-	  char *lname = malloc(sizeof(char) * MAX_CHAR);
-      char *dob = malloc(sizeof(char) * 10);
+	char *social = malloc(sizeof(char) * 9);
+	char *fname = malloc(sizeof(char) * MAX_CHAR);
+	char *lname = malloc(sizeof(char) * MAX_CHAR);
+	char *dob = malloc(sizeof(char) * 10);
    
       char *height;
       char *weight;
@@ -42,7 +42,7 @@ void addPatient()
 	  string[0] = '\0';
 	  
       // read data
-	  printf("Patient First Name:");
+	printf("Patient First Name:");
       scanf("%s", fname);
 	  if(strlen(fname) > MAX_CHAR)
 	  {

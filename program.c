@@ -17,7 +17,7 @@ int main()
 	}
 	else if(newSession != NULL)
 	{
-		addPatient();
+		//addPatient();
 		
 		User currentUser = sessionGetUser(newSession);
 		int menuchoice;
