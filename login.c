@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "login.h"
+#include "draw.h"
 
 /* global variables */
 int MAX_CHAR = 256;
@@ -32,7 +33,9 @@ Session authenticate()
 
 	unsigned long int logintime = 0;
 
-	printf("Welcome!\n\n");
+	drawLogin();
+
+	printf("\n");
 	printf("Please type in your username: ");
 	scanf("%s", username);
 
@@ -93,18 +96,22 @@ User getUser(char *username, int password)
 					int type = atoi(temp);
 
 					User newUser = createNewUser(username, type);
+					
+					fclose(fp);
 
 					return newUser;
 				}
 				else
 				{
 					printf("Invalid password!\n");
+					fclose(fp);
 					return NULL;
 				}
 			}
 		}
 		
 		printf("Could not find user in the data file.\n");
+		fclose(fp);
 		return NULL;
 	}
 }
@@ -118,6 +125,21 @@ Session createNewSession(User currentUser, unsigned long int logintime)
 	new->loginTime = logintime;
 
 	return new;
+}
+
+User sessionGetUser(Session currentSession)
+{
+	return currentSession->currentUser;
+}
+
+int userGetType(User currentUser)
+{
+	return currentUser->type;
+}
+
+char *userGetName(User currentUser)
+{
+	return currentUser->name;
 }
 
 /* returns a new user in memory */
@@ -294,8 +316,6 @@ void addUser(char *username, int pass, int type)
 		snprintf(buffer, MAX_CHAR, "%d", type);
 		strncat(string, buffer, MAX_CHAR);
 
-		printf("String: [%s]\n", string);
-
 		strncpy(string, encrypt(string), MAX_CHAR);
 
 		strcat(string, "\n");
@@ -304,25 +324,4 @@ void addUser(char *username, int pass, int type)
 
 		fclose(fp);
 	}
-}
-
-/* debug driver */
-int main()
-{
-	//addUser("Jim", hash("bologna"), 1);
-	//addUser("Billy", hash("cheese"), 2);
-
-	Session newSession = authenticate();
-
-	if(newSession == NULL)
-	{
-		printf("Could not authenticate your session.\n");
-		exit(1);
-	}
-	else
-	{
-		printf("You have been successfully authenticated!\n");
-	}
-
-	return 0;
 }

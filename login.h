@@ -13,6 +13,12 @@ User getUser(char *, int);
 
 Session createNewSession(User, unsigned long int);
 
+User sessionGetUser(Session);
+
+char *userGetName(User);
+
+int userGetType(User);
+
 Session  authenticate();
 
 int hash(char *);
