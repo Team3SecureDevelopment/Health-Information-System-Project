@@ -5,9 +5,9 @@ typedef struct patient *Patient;
 
 void addNewPatient();
 
-Patient getPatient();
+void findPatient();
 
-Patient createPatient(char*, char*, char*, char*, int, int, char, char, char, char, char);
+Patient createPatient(char*, char*, char*, char*, int, int, char, char, char, char);
 
 char *patientGetFirstName(Patient);
 

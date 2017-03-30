@@ -35,17 +35,22 @@ Session authenticate()
 
 	drawLogin();
 
-	printf("Please type in your username: ");
-	scanf("%s", username);
+	//printf("Please type in your username: ");
+	printf("\x1b[0;0H]");
+	printf("\x1b[31C"); //right 32
+	printf("\x1b[17B"); //down 17
+	scanf("%24s", username);
 	
 	if(strlen(username) > 256)
 	{
 		printf("Invalid username length!\n");
 		return NULL;
 	}
-	printf("Please type in your password: ");
-	scanf("%s", password);
-	
+	//printf("Please type in your password: ");
+	printf("\x1b[0;0H]");
+	printf("\x1b[31C"); //right 32
+	printf("\x1b[19B"); //down 19
+	scanf("%24s", password);
 	if(strlen(password) > 256)
 	{
 		printf("Invalid password length!\n");

@@ -21,7 +21,6 @@ void drawLogin()
 	printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
 	printf("║                                                                              ║\n");
 	printf("║                                                                              ║\n");
-	printf("║                                                                              ║\n");
 	printf("║            ┌─────────────┐        ╒════════════════════╕                     ║\n");
 	printf("║            │    █████    ╞════════╡ Health Information ╞════╕                ║\n");
 	printf("║            │    █████    │        │ Data Record System │    │                ║\n");
@@ -32,10 +31,14 @@ void drawLogin()
 	printf("║            └─────────────┘                                                   ║\n");
 	printf("║                                                                              ║\n");
 	printf("║                                                                              ║\n");
+	printf("║                                .:. Welcome! .:.                              ║\n");
 	printf("║                                                                              ║\n");
-	printf("║                                .:. Welcome .:.                               ║\n");
+	printf("║                      .:' Enter Login Information Below ':.                   ║\n");
 	printf("║                                                                              ║\n");
-	printf("║                ':..:' Please Enter Login Information Below ':..:'            ║\n");
+	printf("║                     Username: ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                       ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                     Password: ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                       ║\n");
+	printf("║                                                                              ║\n");
 	printf("║                                                                              ║\n");
 	printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
 	printf("\n");
@@ -152,6 +155,37 @@ void drawMenu(User currentUser)
 	}
 }
 
+void drawPatientSearch(FILE *fp)
+{
+	int count = getUserCount(fp);
+	
+	system("clear");
+	printf("╔══════════════════════════════ PATIENT SEARCH ════════════════════════════════╗\n");
+	printf("║ Currently, patient records may be searched by social security numbers (SSN.) ║\n");
+	printf("║ To make a search, please enter the patient's SSN below.                      ║\n");
+	printf("╟──────────────────────────────────────────────────────────────────────────────╢\n");
+	printf("║                                                                              ║\n");
+	printf("║                                   FILE                                       ║\n");
+	printf("║                              \"patients.bin\"                                  ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                         NUMBER OF RECORDS IN FILE                            ║\n");
+	printf("║                                     %d                                        ║\n", count);
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                          Social Security Number?                             ║\n");
+	printf("║                          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                             ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("╟──────────────────────────────────────────────────────────────────────────────╢\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
+	printf("\n");	
+}
+
 void drawPatientInfo(Patient currentPatient)
 {
 	system("clear");
@@ -160,18 +194,44 @@ void drawPatientInfo(Patient currentPatient)
 	printf("║ record is presented read-only and may only be modified from the main menu.   ║\n");
 	printf("╟──────────────────────────────────────────────────────────────────────────────╢\n");
 	printf("║                                                                              ║\n");
-	printf("║           First Name:                                                        ║\n");
-	printf("║            Last Name:                                                        ║\n");
-	printf("║        Date of Birth:                                                        ║\n");
-	printf("║      Social Security:                                                        ║\n");
+	printf("║           First Name: %-55s║\n", patientGetFirstName(currentPatient));
+	printf("║            Last Name: %-55s║\n", patientGetLastName(currentPatient));
+	printf("║        Date of Birth: %-55s║\n", patientGetDOB(currentPatient));
 	printf("║                                                                              ║\n");
-	printf("║          Height (cm):                                                        ║\n");
-	printf("║          Weight (lb):                                                        ║\n");
+	printf("║          Height (cm): %-55d║\n", patientGetHeight(currentPatient));
+	printf("║          Weight (lb): %-55d║\n", patientGetWeight(currentPatient));
 	printf("║                                                                              ║\n");
-	printf("║        Has allergies?                                                        ║\n");
-	printf("║      Is/Was a smoker?                                                        ║\n");
-	printf("║        Had surgeries?                                                        ║\n");
-	printf("║   Has mental illness?                                                        ║\n");
+	printf("║        Has allergies? %-55d║\n", patientHasAllergies(currentPatient));
+	printf("║      Is/Was a smoker? %-55d║\n", patientIsSmoker(currentPatient));
+	printf("║        Had surgeries? %-55d║\n", patientHadSurgeries(currentPatient));
+	printf("║   Has mental illness? %-55d║\n", patientMentalIllness(currentPatient));
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
+	printf("\n");
+}
+
+void drawExit()
+{
+	system("clear");
+	printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                       ┌────────────────────────────┐                         ║\n");
+	printf("║                       │ You have been successfully │                         ║\n");
+	printf("║                       │logged out. The program will│▒                        ║\n");
+	printf("║                       │      close momentarily.    │▒                        ║\n");
+	printf("║                       └────────────────────────────┘▒                        ║\n");
+	printf("║                           ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒                        ║\n");
+	printf("║                                                                              ║\n");
+	printf("║                                                                              ║\n");
 	printf("║                                                                              ║\n");
 	printf("║                                                                              ║\n");
 	printf("║                                                                              ║\n");
@@ -180,5 +240,5 @@ void drawPatientInfo(Patient currentPatient)
 	printf("║                                                                              ║\n");
 	printf("║                                                                              ║\n");
 	printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
-	printf("\n");
+	printf("\n");		
 }
