@@ -1,35 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 
+#include "login.h"
+#include "auditLogs.h"
+
+
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
-
-int main(int argc, char *argv[]) {
-	
-	char *username, *purpose;
-	
-	username = "Kaldiron";
-	purpose = "Logging in as patient";
-	
-	writeLogs(username, purpose);
-	
-	readLogs();
-	
-	return 0;
-}
-
-void writeLogs(char *username, char *purpose)
+void writeLogs(User currentUser, char *purpose)
 {
-	
 	FILE *fp;
 	time_t current_time;
 	char* c_time_string;
 	int i = 0;
 	
-	if(access("Logs.txt", F_OK) != -1)
+	char *string = malloc(sizeof(char) * 256);
+	char *userType = malloc(sizeof(char) * 128);
+	
+	strcpy(string, "");
+	
+	if(userGetType(currentUser) == 0)
 	{
-		fp = fopen("Logs.txt", "r+");
+		strcpy(userType, "Doctor");
+	}
+	else if(userGetType(currentUser) == 1)
+	{
+		strcpy(userType, "Nurse");
+	}
+	else if(userGetType(currentUser) == 2)
+	{
+		strcpy(userType, "HelpDesk");
+	}
+	else if(userGetType(currentUser) == 3)
+	{
+		strcpy(userType, "Auditor");
+	}
+	else if(userGetType(currentUser) == 4)
+	{
+		strcpy(userType, "Admin");
+	}
+	else strcpy(userType, "Unknown");
+	
+	if(access("logs.bin", F_OK) != -1)
+	{
+		fp = fopen("logs.bin", "r+");
 		while((i = fgetc(fp)) != EOF)
 		{
 			i--;
@@ -37,30 +53,33 @@ void writeLogs(char *username, char *purpose)
 	}
 	else
 	{
-		fp = fopen("Logs.txt", "w");
+		fp = fopen("logs.bin", "w");
 	}
 	
 	current_time = time(NULL);
 	
 	c_time_string = ctime(&current_time);
 	
-	fprintf(fp, c_time_string);
-	fprintf(fp, username);
-	fprintf(fp, " ");
-	fprintf(fp, purpose);
-	fprintf(fp, "\n");
+	strncat(string, c_time_string, strlen(c_time_string)-1);
+	strcat(string, " | ");
+	strcat(string, userGetName(currentUser));
+	strcat(string, " | ");
+	strcat(string, userType);
+	strcat(string, " | ");
+	strcat(string, purpose);
+	strcat(string, "\n");
 	
+	fprintf(fp, string);
 	fclose(fp);
+	
+	free(string);
 }
 
 void readLogs()
 {
-	FILE *fp;
+	FILE *fp = fopen("logs.bin", "r");
 	
-	int i = 0;
 	char buff[255];
-	
-	fp = fopen("Logs.txt", "r");
 	
 	while(1)
 	{
