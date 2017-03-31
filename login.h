@@ -30,4 +30,6 @@ char *getLine(FILE *fp, int);
 User createNewUser(char *, int);
 
 void addUser();
+
+void viewUsers();
 #endif

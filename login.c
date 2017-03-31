@@ -356,3 +356,32 @@ void addUser()
 		//free(password);
 	}
 }
+
+void viewUsers()
+{
+	FILE *fp = fopen("./userdata.bin", "r");
+	
+	if(fp == NULL)
+	{
+		printf("Could not open file\n");
+		return;
+	}
+	else
+	{
+		fflush(stdin);
+		getchar();
+		drawAppointmentList(fp);
+
+		char buff[255];
+
+		while(1)
+		{
+			fgets(buff, 255, (FILE*)fp);
+			if(feof(fp)) break;
+			printf("%s", decrypt(buff));
+			printf("\n");
+		}
+		
+		fclose(fp);
+	}
+}

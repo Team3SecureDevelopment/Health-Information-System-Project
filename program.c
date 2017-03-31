@@ -131,6 +131,7 @@ int main()
 				{
 					/* view users */
 					writeLogs(currentUser, "Menu -> View Users");
+					viewUsers();
 				}
 				else if(menuchoice == 2)
 				{
