@@ -221,16 +221,10 @@ void addNewPatient()
 	  snprintf(buffer, 4, "%d", mental);
 	  strncat(string, buffer, 4);
 	  
-	  printf("String: %s\n", string);
-	  
 	  strncpy(string, encrypt(string), MAX_CHAR);
-	  
-	  printf("Encrypted: %s\n", string);
-
+	
 	  strcat(string, "\n");
 	  fprintf(fp, string);
-	  
-	  printf("Decrypted: %s\n", decrypt(string));
 	  
       fclose(fp);
    }
@@ -257,19 +251,13 @@ void findPatient()
 		/* draw the tui */
 		drawPatientSearch(fp);
 		
-		/* set the cursor */
-		printf("\x1b[0;0H]");
-		printf("\x1b[26C"); //right 32
-		printf("\x1b[13B"); //down 17
+		printf("SSN to search: ");
 		scanf("%9s", ssn);
 		
 		hashvalue = hash(ssn);
-		printf("Hash value is %d\n", hashvalue);
 		
 		/* we got the hash, so zero out the char */
 		strcpy(ssn, "         ");
-		printf("SSN string is now \"%s\"\n", ssn);
-		//free(ssn);
 		
 		for(i = 0; i < count; ++i)
 		{
@@ -296,6 +284,8 @@ void findPatient()
 				
 				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m);
 				drawPatientInfo(newPatient);
+				
+				break;
 			}
 		}
 		

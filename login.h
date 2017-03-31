@@ -29,5 +29,5 @@ char *getLine(FILE *fp, int);
 
 User createNewUser(char *, int);
 
-void addUser(char *, int, int);
+void addUser();
 #endif

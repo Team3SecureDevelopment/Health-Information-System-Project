@@ -35,10 +35,7 @@ Session authenticate()
 
 	drawLogin();
 
-	//printf("Please type in your username: ");
-	printf("\x1b[0;0H]");
-	printf("\x1b[31C"); //right 32
-	printf("\x1b[17B"); //down 17
+	printf("Username: ");
 	scanf("%24s", username);
 	
 	if(strlen(username) > 256)
@@ -46,11 +43,9 @@ Session authenticate()
 		printf("Invalid username length!\n");
 		return NULL;
 	}
-	//printf("Please type in your password: ");
-	printf("\x1b[0;0H]");
-	printf("\x1b[31C"); //right 32
-	printf("\x1b[19B"); //down 19
+	printf("Password: ");
 	scanf("%24s", password);
+	
 	if(strlen(password) > 256)
 	{
 		printf("Invalid password length!\n");
@@ -304,7 +299,7 @@ int hash(char *string)
 }
 
 /* add a new user to the file */
-void addUser(char *username, int pass, int type)
+void addUser()
 {
 	/* file set to 'a'ppend */
 	FILE *fp = fopen("./userdata.bin", "a");
@@ -316,15 +311,31 @@ void addUser(char *username, int pass, int type)
 	}
 	else
 	{
+		char *username = malloc(sizeof(char) * 64);
+		char *password = malloc(sizeof(char) * 16);
+		int hashvalue;
+		int type;
+		
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 2);
 		char *buffer = malloc(sizeof(char*) * MAX_CHAR);
 
+		printf("Username: ");
+		scanf(" %64s", username);
+		
+		printf("Password: ");
+		scanf(" %s", password);
+		hashvalue = hash(password);
+		strcpy(password, "                                      ");
+		
+		printf("User Type: ");
+		scanf("%d", &type);
+		
 		string[0] = '\0';
 
 		strncat(string, username, MAX_CHAR);
 		strcat(string, ",");
 
-		snprintf(buffer, MAX_CHAR, "%d", pass);
+		snprintf(buffer, MAX_CHAR, "%d", hashvalue);
 		strncat(string, buffer, MAX_CHAR);
 		strcat(string, ",");
 
@@ -338,5 +349,10 @@ void addUser(char *username, int pass, int type)
 		fprintf(fp, string);
 
 		fclose(fp);
+		
+		free(string);
+		free(buffer);
+		free(username);
+		free(password);
 	}
 }
