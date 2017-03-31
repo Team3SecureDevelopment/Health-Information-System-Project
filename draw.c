@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "login.h"
-#include "draw.h"
 #include "data.h"
+#include "draw.h"
  
 /* login banner */
 void drawLogin()
@@ -97,13 +97,30 @@ void drawPatientInfo(Patient currentPatient)
 	printf("@             First Name: %s\n", patientGetFirstName(currentPatient));
 	printf("@              Last Name: %s\n", patientGetLastName(currentPatient));
 	printf("@          Date of Birth: %s\n", patientGetDOB(currentPatient));
-	printf("@ Social Security Number: %s\n", patientGetSocial(currentPatient));
 	printf("@            Height (cm): %d\n", patientGetHeight(currentPatient));
 	printf("@            Weight (lb): %d\n", patientGetWeight(currentPatient));
 	printf("@          Has allergies? %d\n", patientHasAllergies(currentPatient));
 	printf("@        Is/was a smoker? %d\n", patientIsSmoker(currentPatient));
 	printf("@     Previous surgeries? %d\n", patientHadSurgeries(currentPatient));
 	printf("@     Has mental illness? %d\n", patientMentalIllness(currentPatient));
+	printf("\n");
+}
+
+void drawAppointment()
+{
+	printf("\n------------[ NEW APPOINTMENT ]------------\n");
+	printf("\n");
+}
+
+void drawAppointmentList(FILE *fp)
+{
+	printf("\n------------[ APPOINTMENT LIST ]------------\n");
+	printf("\n");
+}
+
+void drawLogs()
+{
+	printf("\n------------[ LOGS ]------------\n");
 	printf("\n");
 }
 

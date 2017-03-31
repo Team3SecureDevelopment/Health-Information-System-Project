@@ -6,10 +6,13 @@
 
 #include "data.h"
 #include "helpdesk.h"
+#include "draw.h"
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 void createAppointment()
 {
+	drawAppointment();
+
 	FILE *fp;
 	int i = 0;
 	int in = 0;
@@ -122,17 +125,20 @@ void viewAppointments()
 	if(fp == NULL)
 	{
 		printf("Could not open file\n");
-		exit(1);
+		return;
 	}
 	else
 	{
+		fflush(stdin);
+		getchar();
+		drawAppointmentList(fp);
+
 		char buff[255];
-		
+
 		while(1)
 		{
 			fgets(buff, 255, (FILE*)fp);
-			if(feof(fp))
-				break;
+			if(feof(fp)) break;
 			printf("%s", buff);
 		}
 		

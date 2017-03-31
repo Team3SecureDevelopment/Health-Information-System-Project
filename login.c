@@ -350,9 +350,9 @@ void addUser()
 
 		fclose(fp);
 		
-		free(string);
-		free(buffer);
-		free(username);
-		free(password);
+		//free(string);
+		//free(buffer);
+		//free(username);
+		//free(password);
 	}
 }

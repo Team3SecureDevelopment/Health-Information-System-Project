@@ -6,6 +6,7 @@
 
 #include "login.h"
 #include "auditLogs.h"
+#include "draw.h"
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 void writeLogs(User currentUser, char *purpose)
@@ -76,10 +77,15 @@ void writeLogs(User currentUser, char *purpose)
 
 void readLogs()
 {
+	
 	FILE *fp = fopen("logs.bin", "r");
 	
 	char buff[255];
 	
+	system("clear");
+
+	drawLogs();
+
 	while(1)
 	{
 		fgets(buff, 255, (FILE*)fp);

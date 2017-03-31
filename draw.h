@@ -9,6 +9,12 @@ void drawPatientSearch(FILE *fp);
 
 void drawPatientInfo(Patient);
 
+void drawAppointment();
+
+void drawAppointmentList(FILE *fp);
+
+void drawLogs();
+
 void drawExit();
 
 #endif

@@ -8,12 +8,12 @@
 #include "draw.h"
 #include "data.h"
 #include "auditLogs.h"
+#include "helpdesk.h"
 
 int main()
 {
-	//addUser("Tom", hash("spunk"), 4);
-	//addUser("Jerry", hash("mouse"), 3);
-	
+	//addUser();
+
 	Session newSession = authenticate();
 
 	if(newSession == NULL)
@@ -26,16 +26,13 @@ int main()
 	{
 		/* should we keep running? */
 		int active = 0;
-		
-		printf("Are we running?\n");
-		
 		User currentUser = sessionGetUser(newSession);
 		writeLogs(currentUser, "Login");
 		
 		int menuchoice;
 		int type = userGetType(currentUser);
 		
-		printf("Type = %d\n", type);
+		system("clear");
 		
 		while(active == 0)
 		{
@@ -81,11 +78,13 @@ int main()
 				{
 					/* view appointments */
 					writeLogs(currentUser, "Menu -> View Appointments");
+					viewAppointments();
 				}
 				else if(menuchoice == 2)
 				{
 					/* create new appointment */
 					writeLogs(currentUser, "Menu -> Create New Appointment");
+					createAppointment();
 				}
 				else if(menuchoice == 3)
 				{
@@ -137,6 +136,7 @@ int main()
 				{
 					/* create user */
 					writeLogs(currentUser, "Menu -> Create New User");
+					addUser();
 				}
 				else if(menuchoice == 3)
 				{
