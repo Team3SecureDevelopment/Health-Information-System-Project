@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "login.h"
 #include "draw.h"
+#include "auditLogs.h"
 
 /* global variables */
 int MAX_CHAR = 256;
@@ -12,8 +14,7 @@ int MAX_CHAR = 256;
 struct session
 {
 	User currentUser;
-	unsigned long int loginTime;
-	unsigned long int departureTime;
+	time_t loginTime;
 };
 
 struct user
@@ -30,13 +31,14 @@ Session authenticate()
 {
 	char *username = malloc(sizeof(char*) * MAX_CHAR);
 	char *password = malloc(sizeof(char*) * MAX_CHAR);
-
-	unsigned long int logintime = 0;
+	time_t logintime = time(NULL);
 
 	drawLogin();
 
+	printf("To access the program, please enter your username and password\n\n");
+	
 	printf("Username: ");
-	scanf("%24s", username);
+	strcpy(username, sread(MAX_CHAR));
 	
 	if(strlen(username) > 256)
 	{
@@ -44,15 +46,18 @@ Session authenticate()
 		return NULL;
 	}
 	printf("Password: ");
-	scanf("%24s", password);
-	
+	strcpy(password, sread(MAX_CHAR));
+
 	if(strlen(password) > 256)
 	{
 		printf("Invalid password length!\n");
 		return NULL;
 	}
 
+	/* get the hash value of password */
 	int hashValue = hash(password);
+	/* before freeing memory, fill the address with whitespace */
+	strcpy(password, wspace(strlen(password)));
 	free(password);
 
 	User newUser = getUser(username, hashValue);
@@ -114,6 +119,7 @@ User getUser(char *username, int password)
 				else
 				{
 					printf("Invalid password!\n");
+					writeLogs(createNewUser(username, -1), "Invalid password login");
 					fclose(fp);
 					return NULL;
 				}
@@ -140,6 +146,11 @@ Session createNewSession(User currentUser, unsigned long int logintime)
 User sessionGetUser(Session currentSession)
 {
 	return currentSession->currentUser;
+}
+
+time_t sessionGetLoginTime(Session currentSession)
+{
+	return currentSession->loginTime;
 }
 
 int userGetType(User currentUser)
@@ -311,21 +322,23 @@ void addUser()
 	}
 	else
 	{
-		char *username = malloc(sizeof(char) * 64);
-		char *password = malloc(sizeof(char) * 16);
 		int hashvalue;
 		int type;
 		
+		char *username = malloc(sizeof(char) * 64);
+		char *password = malloc(sizeof(char) * 16);	
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 2);
 		char *buffer = malloc(sizeof(char*) * MAX_CHAR);
 
 		printf("Username: ");
-		scanf(" %64s", username);
+		strcpy(username, sread(64));
 		
 		printf("Password: ");
-		scanf(" %s", password);
+		strcpy(password, sread(16));
+		
 		hashvalue = hash(password);
-		strcpy(password, "                                      ");
+		strcpy(password, wspace(strlen(password)));
+		free(password);
 		
 		printf("User Type: ");
 		scanf("%d", &type);
@@ -334,27 +347,23 @@ void addUser()
 
 		strncat(string, username, MAX_CHAR);
 		strcat(string, ",");
-
 		snprintf(buffer, MAX_CHAR, "%d", hashvalue);
 		strncat(string, buffer, MAX_CHAR);
 		strcat(string, ",");
-
 		snprintf(buffer, MAX_CHAR, "%d", type);
 		strncat(string, buffer, MAX_CHAR);
-
 		strncpy(string, encrypt(string), MAX_CHAR);
 
 		strcat(string, "\n");
 
 		fprintf(fp, string);
-
-		fclose(fp);
 		
-		//free(string);
-		//free(buffer);
-		//free(username);
-		//free(password);
+		free(string);
+		free(buffer);
+		free(username);
 	}
+	
+	fclose(fp);
 }
 
 void viewUsers()
@@ -384,4 +393,49 @@ void viewUsers()
 		
 		fclose(fp);
 	}
+}
+
+/* reads a string with whitespace until ENTER key */
+char *sread(int size)
+{
+	int i = 0;
+	char ch;
+	char *string = malloc(sizeof(char*) * size);
+	
+	if(string == NULL)
+	{
+		printf("Could not allocate memory\n");
+		return NULL;
+	}
+	
+	while((ch = getchar()) != '\n')
+	{
+		string[i] = ch;
+		i++;
+	}
+	
+	string[i++] = '\0';
+	
+	return string;
+}
+
+char *wspace(int size)
+{
+	int i = 0;
+	char *string = malloc(sizeof(char*) * size);
+
+	if(string == NULL)
+	{
+		printf("Could not allocate memory\n");
+		return NULL;
+	}
+	
+	for(i = 0; i < size; i++)
+	{
+		string[i] = ' ';
+	}
+	
+	string[i] = '\0';
+	
+	return string;
 }

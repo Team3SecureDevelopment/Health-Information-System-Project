@@ -15,6 +15,8 @@ Session createNewSession(User, unsigned long int);
 
 User sessionGetUser(Session);
 
+time_t sessionGetLoginTime(Session);
+
 char *userGetName(User);
 
 int userGetType(User);
@@ -32,4 +34,8 @@ User createNewUser(char *, int);
 void addUser();
 
 void viewUsers();
+
+char *sread(int size);
+
+char *wspace(int size);
 #endif

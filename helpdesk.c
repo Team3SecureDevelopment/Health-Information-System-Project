@@ -7,80 +7,55 @@
 #include "data.h"
 #include "helpdesk.h"
 #include "draw.h"
+#include "login.h"
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 void createAppointment()
 {
-	drawAppointment();
-
 	FILE *fp;
-	int i = 0;
-	int in = 0;
-	int ch = 0;
+	drawAppointment();
 	getchar(); //absorbs the previous '\n' char
 	fflush(stdin);
 
-	char fname[256];
-	char lname[256];
-	char date[11];
-	char purpose[256];
+	int i = 0;
+	char *string = malloc(sizeof(char) * 1025);
+	char *fname = malloc(sizeof(char*) * 256);
+	char *lname = malloc(sizeof(char*) * 256);
+	char *purpose = malloc(sizeof(char*) * 256);
+	char *date = malloc(sizeof(char*) * 10);
+
 	
 	printf("Patient's First Name: ");
-	in = 0;
-	while((ch = getchar()) != '\n')
-	{
-		fname[in] = ch;
-		in++;
-	}
-	fname[in++] = '\0';
-	
-	if(strlen((char*)fname) > 255)
+	strcpy(fname, sread(256));
+	if(strlen(fname) > 255)
 	{
 		printf("Invalid length!\n");
 		return;
 	}
 	
 	printf("Patient's Last Name: ");
-	in = 0;
-	while((ch = getchar()) != '\n')
-	{
-		lname[in] = ch;
-		in++;
-	}
-	lname[in++] = '\0';
-	if(strlen((char*)lname) > 255)
+	strcpy(lname, sread(256));
+	if(strlen(lname) > 255)
 	{
 		printf("Invalid length!\n");
 		return;
 	}
+	
 	printf("Date of Appointment: ");
-	in = 0;
-	while((ch = getchar()) != '\n')
-	{
-		date[in] = ch;
-		in++;
-	}
-	date[in++] = '\0';
-	if(strlen((char*)date) > 10)
-	{
-		printf("Invalid length!\n");
-		return;
-	}	
-	printf("Purpose of Appointment: ");
-	in = 0;
-	while((ch = getchar()) != '\n')
-	{
-		purpose[in] = ch;
-		in++;
-	}
-	purpose[in++] = '\0';
-	if(strlen((char*)purpose) > 255)
+	strcpy(date, sread(10));
+	if(strlen(date) > 10)
 	{
 		printf("Invalid length!\n");
 		return;
 	}	
 	
-	char *string = malloc(sizeof(char) * 1025);
+	printf("Purpose of Appointment: ");
+	strcpy(purpose, sread(256));
+	if(strlen(purpose) > 256)
+	{
+		printf("Invalid length!\n");
+		return;
+	}	
 	
 	strcpy(string, "");
 
@@ -109,13 +84,23 @@ void createAppointment()
 	strcat(string, "\n");
 	
 	fprintf(fp, string);
-	fclose(fp);
 	
-	//free(string);
-	//free(fname);
-	//free(lname);
-	//free(date);
-	//free(purpose);
+	strcpy(string, wspace(strlen(string)));
+	free(string);
+	
+	strcpy(fname, wspace(strlen(fname)));
+	free(fname);
+	
+	strcpy(lname, wspace(strlen(lname)));
+	free(lname);
+	
+	strcpy(date, wspace(strlen(date)));
+	free(date);
+	
+	strcpy(purpose, wspace(strlen(purpose)));
+	free(purpose);
+	
+	fclose(fp);
 }
 
 void viewAppointments()

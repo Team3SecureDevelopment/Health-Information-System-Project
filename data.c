@@ -28,7 +28,7 @@ void addNewPatient()
    
    // open file
    FILE *fp;
-   fp = fopen("patients.bin","a");
+   fp = fopen("./patients.bin","a");
    
    rewind(fp);
    
@@ -39,194 +39,181 @@ void addNewPatient()
    }
    else
    {
-	char *social = malloc(sizeof(char) * 10);
-	char *fname = malloc(sizeof(char) * MAX_CHAR);
-	char *lname = malloc(sizeof(char) * MAX_CHAR);
-	char *dob = malloc(sizeof(char) * 11);
-   
-      int height;
-      int weight;
-      int allergies;
-      int smoker;
-      int surgeries;
-      int mental;
+		int height;
+		int weight;
+		int allergies;
+		int smoker;
+		int surgeries;
+		int mental;
 
 		char c = 0;
 		
-      char *string = malloc(sizeof(char) * (MAX_CHAR*2 + 10) + sizeof(int) * 6);
-      char *buffer = malloc(sizeof(char) * (MAX_CHAR));
+		char *social = malloc(sizeof(char*) * 10);
+		char *dob = malloc(sizeof(char*) * 11);
+		char *fname = malloc(sizeof(char*) * MAX_CHAR);
+		char *lname = malloc(sizeof(char*) * MAX_CHAR);
+		char *buffer = malloc(sizeof(char*) * (MAX_CHAR));
+		char *string = malloc(sizeof(char*) * (MAX_CHAR*2 + 10) + sizeof(int) * 6);
+		string[0] = '\0';
+	  
+		// read data
+		printf("Patient First Name:");
+		strcpy(fname, sread(MAX_CHAR));
+		
+		if(strlen(fname) > MAX_CHAR)
+		{
+			printf("Invalid input length!\n");
+			return;
+		}
    
-	  string[0] = '\0';
+		printf("Patient Last Name:");
+		strcpy(lname, sread(MAX_CHAR));
+		if(strlen(lname) > MAX_CHAR)
+		{
+			printf("Invalid input length!\n");
+			return;
+		}
 	  
-      // read data
-	printf("Patient First Name:");
-      scanf("%s", fname);
-	  if(strlen(fname) > MAX_CHAR)
-	  {
-		  printf("Invalid input length!\n");
-		  exit(2);
-	  }
-   
-      printf("Patient Last Name:");
-      scanf("%s", lname);
-      if(strlen(lname) > MAX_CHAR)
-	  {
-		  printf("Invalid input length!\n");
-		  exit(2);
-	  }
+		printf("Patient DOB: (mm/dd/yyyy):");
+		strcpy(dob, sread(10));
+		
+		if(strlen(dob) > 10)
+		{
+			printf("Invalid input length!\n");
+			return;
+		}
 	  
-      printf("Patient DOB: (mm/dd/yyyy):");
-      scanf("%s", dob);
-	  if(strlen(dob) > 10)
-	  {
-		  printf("Invalid input length!\n");
-		  exit(2);
-	  }
+		printf("Social Security: ");
+		strcpy(social, sread(9));
+		if(strlen(social) > 9)
+		{
+			printf("Invalid input length!\n");
+			return;
+		}
 	  
-      printf("Social Security: ");
-	  scanf("%s", social);
-	  if(strlen(social) > 9)
-	  {
-		  printf("Invalid input length!\n");
-		  exit(2);
-	  }
+		printf("Patient Height(cm):");
+		scanf("%d", &height);
+		if(height > 300)
+		{
+			printf("Invalid input length!\n");
+			return;
+		}
 	  
-      printf("Patient Height(cm):");
-      scanf("%d", &height);
-	  if(height > 300)
-	  {
-		  printf("Invalid input length!\n");
-		  exit(2);
-	  }
+		printf("Patient Weight(lbs): ");
+		scanf("%d", &weight);
+		if(weight > 999)
+		{
+			printf("Invalid input length!\n");
+			return;
+		}
 	  
-      printf("Patient Weight(lbs): ");
-      scanf("%d", &weight);
+		printf("Do you have any known allergies?(y/n) ");
+		scanf(" %c", &c);
+		if(c == 'y' || c == 'Y')
+		{
+			allergies = 0;
+		}
+		else if(c == 'n' || c == 'N')
+		{
+			allergies = 1;
+		}
+		else
+		{
+			printf("Invalid character!\n");
+			return;
+		}
 	  
-   	  if(weight > 999)
-	  {
-		  printf("Invalid input length!\n");
-		  exit(2);
-	  }
+		printf("Do you smoke?(y/n) ");
+		scanf(" %c", &c);
+		if(c == 'y' || c == 'Y')
+		{
+			smoker = 0;
+		}
+		else if(c == 'n' || c == 'N')
+		{
+			smoker = 1;
+		}
+		else
+		{
+			printf("Invalid character!\n");
+			return;
+		}
 	  
-      printf("Do you have any known allergies?(y/n) ");
-      scanf(" %c", &c);
-
-	  if(c == 'y' || c == 'Y')
-	  {
-		  printf("Got a y!\n");
-		  allergies = 0;
-	  }
-	  else if(c == 'n' || c == 'N')
-	  {
-		  printf("Got a n!\n");
-		  allergies = 1;
-	  }
-	  else
-	  {
-		  printf("Invalid character!\n");
-		  exit(3);
-	  }
+		printf("Have you ever had any surgeries?(y/n) ");
+		scanf(" %c", &c);
+		if(c == 'y' || c == 'Y')
+		{
+			surgeries = 0;
+		}
+		else if(c == 'n' || c == 'N')
+		{
+			surgeries = 1;
+		}
+		else
+		{
+			printf("Invalid character!\n");
+			return;
+		}
 	  
-      printf("Do you smoke?(y/n) ");
-      scanf(" %c", &c);
-
-	  if(c == 'y' || c == 'Y')
-	  {
-		  printf("Got a y!\n");
-		  smoker = 0;
-	  }
-	  else if(c == 'n' || c == 'N')
-	  {
-		  printf("Got a n!\n");
-		  smoker = 1;
-	  }
-	  else
-	  {
-		  printf("Invalid character!\n");
-		  exit(3);
-	  }
+		printf("Have you ever been diagnosed for any mental illnesses?(y/n) ");
+		scanf(" %c", &c);
+		if(c == 'y' || c == 'Y')
+		{
+			mental = 0;
+		}
+		else if(c == 'n' || c == 'N')
+		{
+			mental = 1;
+		}
+		else
+		{
+			printf("Invalid character!\n");
+			return;
+		}
 	  
-      printf("Have you ever had any surgeries?(y/n) ");
-      scanf(" %c", &c);
-
-	  if(c == 'y' || c == 'Y')
-	  {
-		  printf("Got a y!\n");
-		  surgeries = 0;
-	  }
-	  else if(c == 'n' || c == 'N')
-	  {
-		  printf("Got a n!\n");
-		  surgeries = 1;
-	  }
-	  else
-	  {
-		  printf("Invalid character!\n");
-		  exit(3);
-	  }
+		/* lets not store the SSN in plain text */
+		snprintf(buffer, 9, "%d", hash(social));
+		strncat(string, buffer, 9);
+		strcat(string, ",");
 	  
-      printf("Have you ever been diagnosed for any mental illnesses?(y/n) ");
-      scanf(" %c", &c);
-
-	  if(c == 'y' || c == 'Y')
-	  {
-		  printf("Got a y!\n");
-		  mental = 0;
-	  }
-	  else if(c == 'n' || c == 'N')
-	  {
-		  printf("Got a n!\n");
-		  mental = 1;
-	  }
-	  else
-	  {
-		  printf("Invalid character!\n");
-		  exit(3);
-	  }
+		strncat(string, lname, MAX_CHAR);
+		strcat(string, ",");
 	  
-	  /* lets not store the SSN in plain text */
-	  snprintf(buffer, 9, "%d", hash(social));
-	  strncat(string, buffer, 9);
-	  strcat(string, ",");
+		strncat(string, fname, MAX_CHAR);
+		strcat(string, ",");
 	  
-	  strncat(string, lname, MAX_CHAR);
-      strcat(string, ",");
+		strncat(string, dob, 10);
+		strcat(string, ",");
 	  
-	  strncat(string, fname, MAX_CHAR);
-      strcat(string, ",");
+		snprintf(buffer, 12, "%d", height);
+		strncat(string, buffer, 12);
+		strcat(string, ",");
 	  
-	  strncat(string, dob, 10);
-      strcat(string, ",");
+		snprintf(buffer, 12, "%d", weight);
+		strncat(string, buffer, 12);
+		strcat(string, ",");
 	  
-	  snprintf(buffer, 12, "%d", height);
-	  strncat(string, buffer, 12);
-      strcat(string, ",");
+		snprintf(buffer, 4, "%d", allergies);
+		strncat(string, buffer, 4);
+		strcat(string, ",");
 	  
-	  snprintf(buffer, 12, "%d", weight);
-	  strncat(string, buffer, 12);
-      strcat(string, ",");
+		snprintf(buffer, 4, "%d", smoker);
+		strncat(string, buffer, 4);
+		strcat(string, ",");
 	  
-	  snprintf(buffer, 4, "%d", allergies);
-	  strncat(string, buffer, 4);
-      strcat(string, ",");
+		snprintf(buffer, 4, "%d", surgeries);
+		strncat(string, buffer, 4);
+		strcat(string, ",");
 	  
-	  snprintf(buffer, 4, "%d", smoker);
-	  strncat(string, buffer, 4);
-      strcat(string, ",");
+		snprintf(buffer, 4, "%d", mental);
+		strncat(string, buffer, 4);
 	  
-	  snprintf(buffer, 4, "%d", surgeries);
-	  strncat(string, buffer, 4);
-      strcat(string, ",");
-	  
-	  snprintf(buffer, 4, "%d", mental);
-	  strncat(string, buffer, 4);
-	  
-	  strncpy(string, encrypt(string), MAX_CHAR);
+		strncpy(string, encrypt(string), MAX_CHAR);
 	
-	  strcat(string, "\n");
-	  fprintf(fp, string);
+		strcat(string, "\n");
+		fprintf(fp, string);
 	  
-      fclose(fp);
+		fclose(fp);
    }
 }
 

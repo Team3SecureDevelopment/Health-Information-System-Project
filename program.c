@@ -1,19 +1,17 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<strings.h>
-#include<unistd.h> //sleep
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
 
 #include "login.h"
-#include "draw.h"
 #include "data.h"
 #include "auditLogs.h"
 #include "helpdesk.h"
+#include "draw.h"
 
 int main()
 {
-	//addUser();
-
 	Session newSession = authenticate();
 
 	if(newSession == NULL)
@@ -41,7 +39,7 @@ int main()
 		
 			/* now we need to get the user input */
 			printf("Please enter a choice and press ENTER -> ");
-			scanf("%d", &menuchoice);
+			menuchoice = atoi(sread(1));
 			
 			/* doctor/nurse */
 			if(type == 0 || type == 1)
@@ -158,17 +156,32 @@ int main()
 			}
 		}
 		
-		/* save departure time and log */
-		/* show exit screen */
+		time_t departure = time(NULL);
 		
+		/* show exit screen */
 		drawExit();
-		sleep(2);
-		writeLogs(currentUser, "Logged Off");
+		
+		/* get departure time and format user's duration */
+		char *string = malloc(sizeof(char*) * 256);
+		char *time = malloc(sizeof(char*) * 128);;
+		
+		snprintf(time, 128, "%.2f", ((double )departure - (double )sessionGetLoginTime(newSession)));
+		strcpy(string, "Log Off -> Time duration of ");
+		strcat(string, time);
+		strcat(string, " seconds");
+		
+		/* write to logs */
+		writeLogs(currentUser, string);
+		
+		/* free */
+		free(time);
+		free(string);
 		free(currentUser);
+		
 	}
 
 	free(newSession);
-	
+	sleep(2);
 	system("clear");
 	return 0;
 }

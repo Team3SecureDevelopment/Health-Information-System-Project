@@ -1,7 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 
-typedef struct patient *Patient;
+typedef struct patient* Patient;
 
 void addNewPatient();
 
