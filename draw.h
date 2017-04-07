@@ -7,7 +7,7 @@ void drawLogin();
 
 void drawPatientSearch(FILE *fp);
 
-void drawPatientInfo(Patient);
+void drawPatientInfo();
 
 void drawAppointment();
 

@@ -6,8 +6,9 @@
 
 #include "data.h"
 #include "helpdesk.h"
-#include "draw.h"
 #include "login.h"
+#include "draw.h"
+
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 void createAppointment()
@@ -80,6 +81,7 @@ void createAppointment()
 	strcat(string, fname);
 	strcat(string, " | Reason: ");
 	strcat(string, purpose);
+	strcpy(string, encrypt(string));
 	strcat(string, "\n");
 	
 	fprintf(fp, string);
@@ -122,7 +124,7 @@ void viewAppointments()
 		{
 			fgets(buff, 255, (FILE*)fp);
 			if(feof(fp)) break;
-			printf("%s", buff);
+			printf("%s\n", decrypt(buff));
 		}
 		
 		fclose(fp);

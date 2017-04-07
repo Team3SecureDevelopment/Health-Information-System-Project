@@ -274,8 +274,18 @@ void findPatient()
 				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m);
 				fflush(stdin);
 				getchar();
+				drawPatientInfo();
 				
-				drawPatientInfo(newPatient);
+				printf("@             First Name: %s\n", patientGetFirstName(newPatient));
+				printf("@              Last Name: %s\n", patientGetLastName(newPatient));
+				printf("@          Date of Birth: %s\n", patientGetDOB(newPatient));
+				printf("@            Height (cm): %d\n", patientGetHeight(newPatient));
+				printf("@            Weight (lb): %d\n", patientGetWeight(newPatient));
+				printf("@          Has allergies? %d\n", patientHasAllergies(newPatient));
+				printf("@        Is/was a smoker? %d\n", patientIsSmoker(newPatient));
+				printf("@     Previous surgeries? %d\n", patientHadSurgeries(newPatient));
+				printf("@     Has mental illness? %d\n", patientMentalIllness(newPatient));
+				printf("\n");
 				
 				break;
 			}

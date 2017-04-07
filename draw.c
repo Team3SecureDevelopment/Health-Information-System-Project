@@ -93,18 +93,9 @@ void drawPatientSearch(FILE *fp)
 	printf("\n");
 }
 
-void drawPatientInfo(Patient currentPatient)
+void drawPatientInfo()
 {
 	printf("\n-------------[ PATIENT INFO ]-------------\n");
-	printf("@             First Name: %s\n", patientGetFirstName(currentPatient));
-	printf("@              Last Name: %s\n", patientGetLastName(currentPatient));
-	printf("@          Date of Birth: %s\n", patientGetDOB(currentPatient));
-	printf("@            Height (cm): %d\n", patientGetHeight(currentPatient));
-	printf("@            Weight (lb): %d\n", patientGetWeight(currentPatient));
-	printf("@          Has allergies? %d\n", patientHasAllergies(currentPatient));
-	printf("@        Is/was a smoker? %d\n", patientIsSmoker(currentPatient));
-	printf("@     Previous surgeries? %d\n", patientHadSurgeries(currentPatient));
-	printf("@     Has mental illness? %d\n", patientMentalIllness(currentPatient));
 	printf("\n");
 }
 

@@ -4,8 +4,9 @@
 #include <time.h>
 
 #include "login.h"
-#include "draw.h"
+#include "data.h"
 #include "auditLogs.h"
+#include "draw.h"
 
 /* global variables */
 int MAX_CHAR = 256;
@@ -544,11 +545,12 @@ void changepass(User currentUser)
 				fprintf(nfp, line);
 			}
 		}
-		
+
 		fclose(fp);
 		remove("./userdata.bin");
 		rename("./temp", "./userdata.bin");
 		fclose(nfp);
+		
 		return;
 	}
 }
