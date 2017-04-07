@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
-#include "login.h"
 #include "data.h"
+#include "login.h"
 #include "draw.h"
  
 /* login banner */
@@ -15,7 +16,7 @@ void drawLogin()
 	printf("|    ###    | ':.:'  Health Information  ':.:'\n");
 	printf("|    ###    |    ':. Data Record System .:'	\n");
 	printf("| ######### |\n");
-	printf("| ######### |           Version 1.0\n");
+	printf("| ######### |           Version 1.2\n");
 	printf("|    ###    |\n");
 	printf("|    ###    |            By TEAM 3\n");
 	printf("'-----------'\n");
@@ -78,6 +79,7 @@ void drawMenu(User currentUser)
 		printf("\n");
 		printf("If you believe this to be in error, please contact the system administrator.\n");
 		printf("\n");
+		sleep(4);
 	}
 }
 
@@ -124,6 +126,23 @@ void drawLogs()
 	printf("\n");
 }
 
+void drawViewUsers()
+{
+	printf("\n------------[ USER LIST ]------------\n");
+	printf("\n");	
+}
+
+void drawAddUser()
+{
+	printf("\n------------[ ADD USER ]------------\n");
+	printf("\n");
+}
+
+void drawPassword()
+{
+	printf("\n------------[ CHANGE PASSWORD ]------------\n");
+	printf("\n");
+}
 void drawExit()
 {
 	system("clear");

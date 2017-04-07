@@ -37,9 +37,13 @@ int main()
 			/* user authenticated, draw the menu */
 			drawMenu(currentUser);
 		
-			/* now we need to get the user input */
-			printf("Please enter a choice and press ENTER -> ");
-			menuchoice = atoi(sread(1));
+			if(type >= 0 && type < 5)
+			{
+				/* now we need to get the user input */
+				printf("Please enter a choice and press ENTER -> ");
+				menuchoice = atoi(sread(0));	
+			}
+			else active = 1;
 			
 			/* doctor/nurse */
 			if(type == 0 || type == 1)
@@ -60,7 +64,7 @@ int main()
 				{
 					/* change password */
 					writeLogs(currentUser, "Menu -> Change Password");
-					//userChangePassword();
+					changepass(currentUser);
 				}
 				else if(menuchoice == 4)
 				{
@@ -93,6 +97,7 @@ int main()
 				{
 					/* change password */
 					writeLogs(currentUser, "Menu -> Change Password");
+					changepass(currentUser);
 				}
 				else if(menuchoice == 5)
 				{
@@ -114,6 +119,7 @@ int main()
 				{
 					/* change password */
 					writeLogs(currentUser, "Menu -> Change Password");
+					changepass(currentUser);
 				}
 				else if(menuchoice == 3)
 				{
@@ -146,6 +152,7 @@ int main()
 				{
 					/* change password */
 					writeLogs(currentUser, "Menu -> Change Password");
+					changepass(currentUser);
 				}
 				else if(menuchoice == 5)
 				{

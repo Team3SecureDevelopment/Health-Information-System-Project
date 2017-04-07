@@ -13,9 +13,8 @@
 void createAppointment()
 {
 	FILE *fp;
-	drawAppointment();
-	getchar(); //absorbs the previous '\n' char
 	fflush(stdin);
+	drawAppointment();
 
 	int i = 0;
 	char *string = malloc(sizeof(char) * 1025);
@@ -115,7 +114,6 @@ void viewAppointments()
 	else
 	{
 		fflush(stdin);
-		getchar();
 		drawAppointmentList(fp);
 
 		char buff[255];

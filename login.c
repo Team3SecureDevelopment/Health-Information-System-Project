@@ -160,7 +160,7 @@ int userGetType(User currentUser)
 
 char *userGetName(User currentUser)
 {
-	return currentUser->name;
+	return (char*)currentUser->name;
 }
 
 /* returns a new user in memory */
@@ -329,7 +329,9 @@ void addUser()
 		char *password = malloc(sizeof(char) * 16);	
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 2);
 		char *buffer = malloc(sizeof(char*) * MAX_CHAR);
-
+		
+		drawAddUser();
+		
 		printf("Username: ");
 		strcpy(username, sread(64));
 		
@@ -341,7 +343,7 @@ void addUser()
 		free(password);
 		
 		printf("User Type: ");
-		scanf("%d", &type);
+		type = atoi(sread(1));
 		
 		string[0] = '\0';
 
@@ -352,6 +354,7 @@ void addUser()
 		strcat(string, ",");
 		snprintf(buffer, MAX_CHAR, "%d", type);
 		strncat(string, buffer, MAX_CHAR);
+
 		strncpy(string, encrypt(string), MAX_CHAR);
 
 		strcat(string, "\n");
@@ -377,12 +380,10 @@ void viewUsers()
 	}
 	else
 	{
-		fflush(stdin);
-		getchar();
-		drawAppointmentList(fp);
-
 		char buff[255];
 
+		drawViewUsers();
+		
 		while(1)
 		{
 			fgets(buff, 255, (FILE*)fp);
@@ -438,4 +439,116 @@ char *wspace(int size)
 	string[i] = '\0';
 	
 	return string;
+}
+
+void changepass(User currentUser)
+{
+	FILE *fp = fopen("./userdata.bin", "r");
+	FILE *nfp = fopen("./temp", "a");
+
+	if(fp == NULL)
+	{
+		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		return;
+	}
+	else
+	{
+		drawPassword();
+		
+		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		char buffer[MAX_CHAR];
+
+		int length = getUserCount(fp);
+		int i;
+		
+		rewind(fp);
+		rewind(nfp);
+		
+		for(i = 0; i < length; i++)
+		{
+			fgets(line, MAX_CHAR, fp);
+			strncpy(buffer, decrypt(line), strlen(line));
+
+			/* tokenize the line */
+			temp = strtok(buffer, ",");
+			
+			/* check if the username matches */
+			if(strncmp(temp, userGetName(currentUser), MAX_CHAR) == 0)
+			{
+				temp = strtok(NULL, ",");
+				
+				char *string = malloc(sizeof(char*) * 256);
+				char *pass = malloc(sizeof(char*) * 16);
+				char *pass2 = malloc(sizeof(char*) * 16);
+				char *buff = malloc(sizeof(char*) * 10);
+				/* type in old password for verification */
+				printf("Old Password: ");
+				strcpy(pass, sread(16));
+
+				/* does it match? */
+				if(hash(pass) == atoi(temp))
+				{
+					printf("New Password: ");
+					strcpy(pass, wspace(16));
+					strcpy(pass, sread(16));
+
+					/* verify it was valid */
+					printf("Reenter New Password: ");
+					strcpy(pass2, sread(16));
+					
+					if(strcmp(pass, pass2) == 0)
+					{
+						/* get the type again */
+						temp = strtok(NULL, ",");
+
+						strcpy(string, userGetName(currentUser));
+						strcat(string, ",");
+					
+						snprintf(buff, 10, "%d", hash(pass));
+						strcat(string, buff);
+					
+						strcat(string, ",");
+						strncat(string, temp, 1);
+					
+						strcpy(string, encrypt(string));
+						strcat(string, "\n");
+				
+						strcpy(pass, wspace(strlen(pass)));
+						strcpy(pass2, wspace(strlen(pass2)));
+						strcpy(buffer, wspace(strlen(buffer)));
+					
+						fprintf(nfp, string);
+					
+						strcpy(string, wspace(strlen(string)));
+						
+						writeLogs(currentUser, "Password change success");
+					}
+					else
+					{
+						printf("\nNew password mismatch! Password was not changed.\n");
+						writeLogs(currentUser, "Password change failure - password mismatch");
+						fprintf(nfp, line);
+					}
+				}
+				else
+				{
+					printf("\nOld password is incorrect!\n");
+					writeLogs(currentUser, "Password change failure - incorrect password");
+					fprintf(nfp, line);
+				}
+			}
+			else
+			{
+				/* not the one we need to change, so add to temp */
+				fprintf(nfp, line);
+			}
+		}
+		
+		fclose(fp);
+		remove("./userdata.bin");
+		rename("./temp", "./userdata.bin");
+		fclose(nfp);
+		return;
+	}
 }

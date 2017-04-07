@@ -38,4 +38,6 @@ void viewUsers();
 char *sread(int size);
 
 char *wspace(int size);
+
+void changepass(User);
 #endif

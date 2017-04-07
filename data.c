@@ -92,7 +92,7 @@ void addNewPatient()
 		}
 	  
 		printf("Patient Height(cm):");
-		scanf("%d", &height);
+		height = atoi(sread(3));
 		if(height > 300)
 		{
 			printf("Invalid input length!\n");
@@ -100,7 +100,7 @@ void addNewPatient()
 		}
 	  
 		printf("Patient Weight(lbs): ");
-		scanf("%d", &weight);
+		weight = atoi(sread(3));
 		if(weight > 999)
 		{
 			printf("Invalid input length!\n");
@@ -108,7 +108,7 @@ void addNewPatient()
 		}
 	  
 		printf("Do you have any known allergies?(y/n) ");
-		scanf(" %c", &c);
+		c = atoi(sread(0));
 		if(c == 'y' || c == 'Y')
 		{
 			allergies = 0;
@@ -124,7 +124,7 @@ void addNewPatient()
 		}
 	  
 		printf("Do you smoke?(y/n) ");
-		scanf(" %c", &c);
+		c = atoi(sread(0));
 		if(c == 'y' || c == 'Y')
 		{
 			smoker = 0;
@@ -140,7 +140,7 @@ void addNewPatient()
 		}
 	  
 		printf("Have you ever had any surgeries?(y/n) ");
-		scanf(" %c", &c);
+		c = atoi(sread(0));
 		if(c == 'y' || c == 'Y')
 		{
 			surgeries = 0;
@@ -156,7 +156,7 @@ void addNewPatient()
 		}
 	  
 		printf("Have you ever been diagnosed for any mental illnesses?(y/n) ");
-		scanf(" %c", &c);
+		c = atoi(sread(0));
 		if(c == 'y' || c == 'Y')
 		{
 			mental = 0;
@@ -171,6 +171,8 @@ void addNewPatient()
 			return;
 		}
 	  
+		fflush(stdin);
+		getchar();
 		/* lets not store the SSN in plain text */
 		snprintf(buffer, 9, "%d", hash(social));
 		strncat(string, buffer, 9);
@@ -270,6 +272,9 @@ void findPatient()
 				int m = atoi(strtok(NULL,","));
 				
 				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m);
+				fflush(stdin);
+				getchar();
+				
 				drawPatientInfo(newPatient);
 				
 				break;

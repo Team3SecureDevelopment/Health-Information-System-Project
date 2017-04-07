@@ -15,6 +15,12 @@ void drawAppointmentList(FILE *fp);
 
 void drawLogs();
 
+void drawViewUsers();
+
+void drawAddUser();
+
+void drawPassword();
+
 void drawExit();
 
 #endif
