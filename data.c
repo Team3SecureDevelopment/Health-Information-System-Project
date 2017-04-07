@@ -39,6 +39,8 @@ void addNewPatient()
    }
    else
    {
+		drawPatientNew();
+		
 		int height;
 		int weight;
 		int allergies;
@@ -46,7 +48,7 @@ void addNewPatient()
 		int surgeries;
 		int mental;
 
-		char c = 0;
+		char *c = malloc(sizeof(char*) * 3);
 		
 		char *social = malloc(sizeof(char*) * 10);
 		char *dob = malloc(sizeof(char*) * 11);
@@ -57,7 +59,7 @@ void addNewPatient()
 		string[0] = '\0';
 	  
 		// read data
-		printf("Patient First Name:");
+		printf("Patient First Name: ");
 		strcpy(fname, sread(MAX_CHAR));
 		
 		if(strlen(fname) > MAX_CHAR)
@@ -66,7 +68,7 @@ void addNewPatient()
 			return;
 		}
    
-		printf("Patient Last Name:");
+		printf("Patient Last Name: ");
 		strcpy(lname, sread(MAX_CHAR));
 		if(strlen(lname) > MAX_CHAR)
 		{
@@ -74,7 +76,7 @@ void addNewPatient()
 			return;
 		}
 	  
-		printf("Patient DOB: (mm/dd/yyyy):");
+		printf("Patient DOB: (mm/dd/yyyy): ");
 		strcpy(dob, sread(10));
 		
 		if(strlen(dob) > 10)
@@ -91,7 +93,7 @@ void addNewPatient()
 			return;
 		}
 	  
-		printf("Patient Height(cm):");
+		printf("Patient Height(cm): ");
 		height = atoi(sread(3));
 		if(height > 300)
 		{
@@ -108,14 +110,14 @@ void addNewPatient()
 		}
 	  
 		printf("Do you have any known allergies?(y/n) ");
-		c = atoi(sread(0));
-		if(c == 'y' || c == 'Y')
-		{
-			allergies = 0;
-		}
-		else if(c == 'n' || c == 'N')
+		strcpy(c, sread(3));
+		if(c[0] == 'y' || c[0] == 'Y')
 		{
 			allergies = 1;
+		}
+		else if(c[0] == 'n' || c[0] == 'N')
+		{
+			allergies = 0;
 		}
 		else
 		{
@@ -124,14 +126,14 @@ void addNewPatient()
 		}
 	  
 		printf("Do you smoke?(y/n) ");
-		c = atoi(sread(0));
-		if(c == 'y' || c == 'Y')
-		{
-			smoker = 0;
-		}
-		else if(c == 'n' || c == 'N')
+		strcpy(c, sread(3));
+		if(c[0] == 'y' || c[0] == 'Y')
 		{
 			smoker = 1;
+		}
+		else if(c[0] == 'n' || c[0] == 'N')
+		{
+			smoker = 0;
 		}
 		else
 		{
@@ -140,14 +142,14 @@ void addNewPatient()
 		}
 	  
 		printf("Have you ever had any surgeries?(y/n) ");
-		c = atoi(sread(0));
-		if(c == 'y' || c == 'Y')
-		{
-			surgeries = 0;
-		}
-		else if(c == 'n' || c == 'N')
+		strcpy(c, sread(3));
+		if(c[0] == 'y' || c[0] == 'Y')
 		{
 			surgeries = 1;
+		}
+		else if(c[0] == 'n' || c[0] == 'N')
+		{
+			surgeries = 0;
 		}
 		else
 		{
@@ -156,14 +158,14 @@ void addNewPatient()
 		}
 	  
 		printf("Have you ever been diagnosed for any mental illnesses?(y/n) ");
-		c = atoi(sread(0));
-		if(c == 'y' || c == 'Y')
-		{
-			mental = 0;
-		}
-		else if(c == 'n' || c == 'N')
+		strcpy(c, sread(3));
+		if(c[0] == 'y' || c[0] == 'Y')
 		{
 			mental = 1;
+		}
+		else if(c[0] == 'n' || c[0] == 'N')
+		{
+			mental = 0;
 		}
 		else
 		{
@@ -172,7 +174,7 @@ void addNewPatient()
 		}
 	  
 		fflush(stdin);
-		getchar();
+		
 		/* lets not store the SSN in plain text */
 		snprintf(buffer, 9, "%d", hash(social));
 		strncat(string, buffer, 9);
@@ -232,22 +234,16 @@ void findPatient()
 	}
 	else
 	{
-		char *ssn = malloc(sizeof(char) * 9);
 		int hashvalue;
 		int count = getUserCount(fp); //number of patients in file
 		int i;
-		
+		int found = 0;
 		/* draw the tui */
 		drawPatientSearch(fp);
 		
 		printf("SSN to search: ");
-		scanf("%9s", ssn);
-		
-		hashvalue = hash(ssn);
-		
-		/* we got the hash, so zero out the char */
-		strcpy(ssn, "         ");
-		
+		hashvalue = hash(sread(9));
+
 		for(i = 0; i < count; ++i)
 		{
 			char *temp = malloc(sizeof(char*) * MAX_CHAR);
@@ -261,6 +257,7 @@ void findPatient()
 			/* hash match? */
 			if(hashvalue == atoi(temp))
 			{
+				found = 1;
 				char *lname = strtok(NULL, ",");
 				char *fname = strtok(NULL, ",");
 				char *dob = strtok(NULL, ",");
@@ -272,8 +269,6 @@ void findPatient()
 				int m = atoi(strtok(NULL,","));
 				
 				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m);
-				fflush(stdin);
-				getchar();
 				drawPatientInfo();
 				
 				printf("@             First Name: %s\n", patientGetFirstName(newPatient));
@@ -287,8 +282,14 @@ void findPatient()
 				printf("@     Has mental illness? %d\n", patientMentalIllness(newPatient));
 				printf("\n");
 				
-				break;
+				fclose(fp);
+				return;
 			}
+		}
+		
+		if(found == 0)
+		{
+			printf("\nCould not find patient under the social security number.\n");
 		}
 		
 		fclose(fp);
@@ -354,44 +355,20 @@ int patientGetWeight(Patient currentPatient)
 
 int patientHasAllergies(Patient currentPatient)
 {
-	char c = currentPatient->allergies;
-	
-	if(c == 'Y' || c == 'y')
-	{
-		return 0;
-	}
-	else return 1;
+	return currentPatient->allergies;
 }
 
 int patientHadSurgeries(Patient currentPatient)
 {
-	char c = currentPatient->surgeries;
-	
-	if(c == 'Y' || c == 'y')
-	{
-		return 0;
-	}
-	else return 1;
+	return currentPatient->surgeries;
 }
 
 int patientIsSmoker(Patient currentPatient)
 {
-	char c = currentPatient->smoker;
-	
-	if(c == 'Y' || c == 'y')
-	{
-		return 0;
-	}
-	else return 1;
+	return currentPatient->smoker;
 }
 
 int patientMentalIllness(Patient currentPatient)
 {
-	char c = currentPatient->mental;
-	
-	if(c == 'Y' || c == 'y')
-	{
-		return 0;
-	}
-	else return 1;
+	return currentPatient->mental;
 }

@@ -99,6 +99,12 @@ void drawPatientInfo()
 	printf("\n");
 }
 
+void drawPatientNew()
+{
+	printf("\n-------------[ CREATE NEW PATIENT ]-------------\n");
+	printf("\n");
+}
+
 void drawAppointment()
 {
 	printf("\n------------[ NEW APPOINTMENT ]------------\n");
