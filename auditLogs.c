@@ -67,11 +67,11 @@ void writeLogs(User currentUser, char *purpose)
 	strcat(string, userType);
 	strcat(string, " | ");
 	strcat(string, purpose);
+	strcpy(string, encrypt(string));
 	strcat(string, "\n");
 	
 	fprintf(fp, string);
 	fclose(fp);
-	
 	free(string);
 }
 
@@ -91,6 +91,8 @@ void readLogs()
 		fgets(buff, 255, (FILE*)fp);
 		if(feof(fp))
 			break;
+		strcpy(buff, decrypt(buff));
+		strcat(buff, "\n");
 		printf("%s", buff);
 	}
 
