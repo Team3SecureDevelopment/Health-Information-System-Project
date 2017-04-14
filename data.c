@@ -20,6 +20,7 @@ struct patient
 	int surgeries;
 	int smoker;
 	int mental;
+	int drugs;
 };
 
 void addNewPatient()
@@ -47,7 +48,8 @@ void addNewPatient()
 		int smoker;
 		int surgeries;
 		int mental;
-
+		int drugs;
+		
 		char *c = malloc(sizeof(char*) * 3);
 		
 		char *social = malloc(sizeof(char*) * 10);
@@ -114,6 +116,7 @@ void addNewPatient()
 		if(c[0] == 'y' || c[0] == 'Y')
 		{
 			allergies = 1;
+			setAllergyInfo(hash(social));
 		}
 		else if(c[0] == 'n' || c[0] == 'N')
 		{
@@ -124,7 +127,24 @@ void addNewPatient()
 			printf("Invalid character!\n");
 			return;
 		}
-	  
+
+		printf("Are you currently on any prescriptions?(y/n) ");
+		strcpy(c, sread(3));
+		if(c[0] == 'y' || c[0] == 'Y')
+		{
+			drugs = 1;
+			setPrescriptionInfo(hash(social));
+		}
+		else if(c[0] == 'n' || c[0] == 'N')
+		{
+			drugs = 0;
+		}
+		else
+		{
+			printf("Invalid character!\n");
+			return;
+		}
+		
 		printf("Do you smoke?(y/n) ");
 		strcpy(c, sread(3));
 		if(c[0] == 'y' || c[0] == 'Y')
@@ -211,7 +231,11 @@ void addNewPatient()
 	  
 		snprintf(buffer, 4, "%d", mental);
 		strncat(string, buffer, 4);
-	  
+		strcat(string, ",");
+		
+		snprintf(buffer, 4, "%d", drugs);
+		strncat(string, buffer, 4);
+		
 		strncpy(string, encrypt(string), MAX_CHAR);
 	
 		strcat(string, "\n");
@@ -219,6 +243,224 @@ void addNewPatient()
 	  
 		fclose(fp);
    }
+}
+
+void setAllergyInfo(int ssnhash)
+{
+	FILE *fp = fopen("./allergy.bin", "a");
+	
+	if(fp == NULL)
+	{
+		printf("Could not find or open \"allergy.bin\" in the directory!\n");
+		fclose(fp);
+		return;
+	}
+	else
+	{
+		int MAX_CHAR = 256;
+		
+		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
+		char *allergies = malloc(sizeof(char*) * MAX_CHAR * 10);
+		
+		printf("Please type in an allergy and then hit ENTER to save. For multiple allergies, please separate each one by a comma:\n");
+		printf("--> ");
+		strcpy(allergies, sread(MAX_CHAR*10));
+		
+		/* format the data */
+		snprintf(string, 9, "%d", ssnhash);
+		strcat(string, "|");
+		strcat(string, allergies);
+		
+		/* debug */
+		printf("String: %s\n", string);
+		
+		/* encrypt */
+		strncpy(string, encrypt(string), MAX_CHAR*11+1);
+		strcat(string, "\n");
+		
+		/* write to file */
+		fprintf(fp, string);
+		fclose(fp);
+	}
+}
+
+void getAllergyInfo(int ssnhash)
+{
+	FILE *fp = fopen("./allergy.bin", "r");
+	
+	if(fp == NULL)
+	{
+		printf("Could not find or open \"allergy.bin\" in the directory!\n");
+		fclose(fp);
+		return;
+	}
+	else
+	{
+		int MAX_CHAR = 256;
+		int count = getUserCount(fp); //number of patients in file
+		int i;
+		int found = 0;
+
+		for(i = 0; i < count; ++i)
+		{
+			char *temp = malloc(sizeof(char*) * MAX_CHAR*11);
+			char buffer[MAX_CHAR*11];
+		
+			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR*11);
+
+			/* tokenize the line */
+			temp = strtok(buffer, "|");
+			
+			/* hash match? */
+			if(ssnhash == atoi(temp))
+			{
+				printf("Patient Allergies\n");
+				printf("-----------------\n");
+				
+				/* get the number of commas for counting purposes */
+				int comma = 0;
+				int j = 0;
+				char c = ' ';
+				
+				while(c != '\n')
+				{
+					c = buffer[j];
+					
+					if(c == ',')
+					{
+						comma++;
+					}
+					
+					j++;
+				}
+
+				for(i = 0; i < comma+1; i++)
+				{
+					temp = strtok(NULL, ",");
+					printf("%d.) %s\n", i+1, temp);
+				}
+				
+				fclose(fp);
+				return;
+			}
+		}
+		
+		if(found == 0)
+		{
+			printf("\nCould not find allergy information for the specified patient.\n");
+		}
+		
+		fclose(fp);
+	}	
+}
+
+void setPrescriptionInfo(int ssnhash)
+{
+	FILE *fp = fopen("./prescriptions.bin", "a");
+	
+	if(fp == NULL)
+	{
+		printf("Could not find or open \"prescriptions.bin\" in the directory!\n");
+		fclose(fp);
+		return;
+	}
+	else
+	{
+		int MAX_CHAR = 256;
+		
+		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
+		char *prescriptions = malloc(sizeof(char*) * MAX_CHAR * 10);
+		
+		printf("Please type in a prescription and then hit ENTER to finish. For multiple prescriptions, please separate each one by a comma:\n");
+		printf("--> ");
+		strcpy(prescriptions, sread(MAX_CHAR*10));
+		
+		/* format the data */
+		snprintf(string, 9, "%d", ssnhash);
+		strcat(string, "|");
+		strcat(string, prescriptions);
+		
+		/* debug */
+		printf("String: %s\n", string);
+		
+		/* encrypt */
+		strncpy(string, encrypt(string), MAX_CHAR*11+1);
+		strcat(string, "\n");
+		
+		/* write to file */
+		fprintf(fp, string);
+		fclose(fp);
+	}
+}
+
+void getPrescriptionInfo(int ssnhash)
+{
+	FILE *fp = fopen("./prescriptions.bin", "r");
+	
+	if(fp == NULL)
+	{
+		printf("Could not find or open \"prescriptions.bin\" in the directory!\n");
+		fclose(fp);
+		return;
+	}
+	else
+	{
+		int MAX_CHAR = 256;
+		int count = getUserCount(fp); //number of patients in file
+		int i;
+		int found = 0;
+
+		for(i = 0; i < count; ++i)
+		{
+			char *temp = malloc(sizeof(char*) * MAX_CHAR*11);
+			char buffer[MAX_CHAR*11];
+		
+			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR*11);
+
+			/* tokenize the line */
+			temp = strtok(buffer, "|");
+			
+			/* hash match? */
+			if(ssnhash == atoi(temp))
+			{
+				printf("Patient Prescriptions\n");
+				printf("-----------------\n");
+				
+				/* get the number of commas for counting purposes */
+				int comma = 0;
+				int j = 0;
+				char c = ' ';
+				
+				while(c != '\n')
+				{
+					c = buffer[j];
+					
+					if(c == ',')
+					{
+						comma++;
+					}
+					
+					j++;
+				}
+
+				for(i = 0; i < comma+1; i++)
+				{
+					temp = strtok(NULL, ",");
+					printf("%d.) %s\n", i+1, temp);
+				}
+				
+				fclose(fp);
+				return;
+			}
+		}
+		
+		if(found == 0)
+		{
+			printf("\nCould not find prescription information for the specified patient.\n");
+		}
+		
+		fclose(fp);
+	}	
 }
 
 void findPatient()
@@ -230,7 +472,7 @@ void findPatient()
 	if(fp == NULL)
 	{
 		printf("Could not find \"patients.bin\" in the directory!\n");
-		exit(1);
+		return;
 	}
 	else
 	{
@@ -267,8 +509,9 @@ void findPatient()
 				int su = atoi(strtok(NULL,","));
 				int sm = atoi(strtok(NULL,","));
 				int m = atoi(strtok(NULL,","));
+				int dr = atoi(strtok(NULL,","));
 				
-				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m);
+				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
 				drawPatientInfo();
 				
 				printf("@             First Name: %s\n", patientGetFirstName(newPatient));
@@ -277,11 +520,29 @@ void findPatient()
 				printf("@            Height (cm): %d\n", patientGetHeight(newPatient));
 				printf("@            Weight (lb): %d\n", patientGetWeight(newPatient));
 				printf("@          Has allergies? %d\n", patientHasAllergies(newPatient));
+				printf("@       On Prescriptions? %d\n", patientOnPrescriptions(newPatient));				
 				printf("@        Is/was a smoker? %d\n", patientIsSmoker(newPatient));
 				printf("@     Previous surgeries? %d\n", patientHadSurgeries(newPatient));
 				printf("@     Has mental illness? %d\n", patientMentalIllness(newPatient));
 				printf("\n");
 				
+				/* if they have allergies, list them */
+				if(a == 1)
+				{
+					printf("\nPress ENTER to view allergy information\n");
+					getchar();
+					getAllergyInfo(hashvalue);
+					printf("\n");
+				}
+				
+				/* if they have allergies, list them */
+				if(dr == 1)
+				{
+					printf("\nPress ENTER to view prescription information\n");
+					getchar();
+					getPrescriptionInfo(hashvalue);
+					printf("\n");
+				}
 				fclose(fp);
 				return;
 			}
@@ -296,7 +557,7 @@ void findPatient()
 	}
 }
 
-Patient createPatient(char *social, char *lastname, char *firstname, char *dob, int height, int weight, char allergies, char surgeries, char smoker, char mental)
+Patient createPatient(char *social, char *lastname, char *firstname, char *dob, int height, int weight, char allergies, char surgeries, char smoker, char mental, char drugs)
 {
 	Patient newPatient = malloc(sizeof(*newPatient));
 	
@@ -319,6 +580,7 @@ Patient createPatient(char *social, char *lastname, char *firstname, char *dob, 
 	newPatient->smoker = smoker;
 	newPatient->surgeries = surgeries;
 	newPatient->mental = mental;
+	newPatient->drugs = drugs;
 	
 	return newPatient;
 }
@@ -371,4 +633,9 @@ int patientIsSmoker(Patient currentPatient)
 int patientMentalIllness(Patient currentPatient)
 {
 	return currentPatient->mental;
+}
+
+int patientOnPrescriptions(Patient currentPatient)
+{
+	return currentPatient->drugs;
 }

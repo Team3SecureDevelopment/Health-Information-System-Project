@@ -7,7 +7,15 @@ void addNewPatient();
 
 void findPatient();
 
-Patient createPatient(char*, char*, char*, char*, int, int, char, char, char, char);
+Patient createPatient(char*, char*, char*, char*, int, int, char, char, char, char, char);
+
+void setAllergyInfo(int);
+
+void getAllergyInfo(int);
+
+void setPrescriptionInfo(int);
+
+void getPrescriptionInfo(int);
 
 char *patientGetFirstName(Patient);
 
@@ -28,5 +36,7 @@ int patientHadSurgeries(Patient);
 int patientMentalIllness(Patient);
 
 int patientHasAllergies(Patient);
+
+int patientOnPrescriptions(Patient);
 
 #endif
