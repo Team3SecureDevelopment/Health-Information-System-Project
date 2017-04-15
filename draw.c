@@ -39,8 +39,9 @@ void drawMenu(User currentUser)
 	{
 		printf(" 1 | Search Patients\n");
 		printf(" 2 | Create New Patient\n");
-		printf(" 3 | Change Password\n");
-		printf(" 4 | Log Off\n");
+		printf(" 3 | Delete Patient\n");	
+		printf(" 4 | Change Password\n");
+		printf(" 5 | Log Off\n");
 		printf("\n");
 	}
 	/* if help desk */
@@ -105,6 +106,13 @@ void drawPatientNew()
 	printf("\n");
 }
 
+void drawDeletePatient()
+{
+	printf("\n-------------[ DELETE PATIENT ]-------------\n");
+	printf("Please enter the social security number of the patient you wish to delete.\n");
+	printf("\n");
+}
+
 void drawAppointment()
 {
 	printf("\n------------[ NEW APPOINTMENT ]------------\n");
@@ -114,6 +122,12 @@ void drawAppointment()
 void drawAppointmentList(FILE *fp)
 {
 	printf("\n------------[ APPOINTMENT LIST ]------------\n");
+	printf("\n");
+}
+
+void drawDeleteAppointment()
+{
+	printf("\n------------[ DELETE APPOINTMENT ]------------\n");
 	printf("\n");
 }
 
@@ -132,6 +146,13 @@ void drawViewUsers()
 void drawAddUser()
 {
 	printf("\n------------[ ADD USER ]------------\n");
+	printf("\n");
+}
+
+void drawDeleteUser()
+{
+	printf("\n------------[ DELETE USER ]------------\n");
+	printf("Please enter the username of the user you wish to delete.\n");
 	printf("\n");
 }
 

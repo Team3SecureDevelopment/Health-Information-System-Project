@@ -36,6 +36,8 @@ void addNewPatient()
    if(fp == NULL)
    {
      	printf("File could not be opened\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
       	exit(1);
    }
    else
@@ -252,6 +254,8 @@ void setAllergyInfo(int ssnhash)
 	if(fp == NULL)
 	{
 		printf("Could not find or open \"allergy.bin\" in the directory!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		fclose(fp);
 		return;
 	}
@@ -291,6 +295,8 @@ void getAllergyInfo(int ssnhash)
 	if(fp == NULL)
 	{
 		printf("Could not find or open \"allergy.bin\" in the directory!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		fclose(fp);
 		return;
 	}
@@ -348,6 +354,8 @@ void getAllergyInfo(int ssnhash)
 		if(found == 0)
 		{
 			printf("\nCould not find allergy information for the specified patient.\n");
+			printf("\nPress any key to continue...\n");
+			getchar();
 		}
 		
 		fclose(fp);
@@ -361,6 +369,8 @@ void setPrescriptionInfo(int ssnhash)
 	if(fp == NULL)
 	{
 		printf("Could not find or open \"prescriptions.bin\" in the directory!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		fclose(fp);
 		return;
 	}
@@ -400,6 +410,8 @@ void getPrescriptionInfo(int ssnhash)
 	if(fp == NULL)
 	{
 		printf("Could not find or open \"prescriptions.bin\" in the directory!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		fclose(fp);
 		return;
 	}
@@ -457,6 +469,8 @@ void getPrescriptionInfo(int ssnhash)
 		if(found == 0)
 		{
 			printf("\nCould not find prescription information for the specified patient.\n");
+			printf("\nPress any key to continue...\n");
+			getchar();
 		}
 		
 		fclose(fp);
@@ -472,6 +486,8 @@ void findPatient()
 	if(fp == NULL)
 	{
 		printf("Could not find \"patients.bin\" in the directory!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return;
 	}
 	else
@@ -543,6 +559,10 @@ void findPatient()
 					getPrescriptionInfo(hashvalue);
 					printf("\n");
 				}
+				
+				printf("\nPress any key to continue...\n");
+				getchar();
+				
 				fclose(fp);
 				return;
 			}
@@ -551,10 +571,19 @@ void findPatient()
 		if(found == 0)
 		{
 			printf("\nCould not find patient under the social security number.\n");
+			printf("\nPress any key to continue...\n");
+			getchar();
 		}
 		
 		fclose(fp);
 	}
+}
+
+void deletePatient()
+{
+	drawDeletePatient();
+	printf("SSN of Patient to Delete: ");
+	getchar();
 }
 
 Patient createPatient(char *social, char *lastname, char *firstname, char *dob, int height, int weight, char allergies, char surgeries, char smoker, char mental, char drugs)

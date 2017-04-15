@@ -35,7 +35,7 @@ Session authenticate()
 	time_t logintime = time(NULL);
 
 	drawLogin();
-
+	
 	printf("To access the program, please enter your username and password\n\n");
 	
 	printf("Username: ");
@@ -83,6 +83,8 @@ User getUser(char *username, int password)
 	if(fp == NULL)
 	{
 		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 	else
@@ -119,7 +121,7 @@ User getUser(char *username, int password)
 				}
 				else
 				{
-					printf("Invalid password!\n");
+					printf("\nInvalid password!\n");
 					writeLogs(createNewUser(username, -1), "Invalid password login");
 					fclose(fp);
 					return NULL;
@@ -319,6 +321,8 @@ void addUser()
 	if(fp == NULL)
 	{
 		printf("Error! Could not open \"userdata.bin\" in the directory!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		exit(1);
 	}
 	else
@@ -370,6 +374,13 @@ void addUser()
 	fclose(fp);
 }
 
+void deleteUser()
+{
+		drawDeleteUser();
+		printf("Username of User to Delete: ");
+		getchar();
+}
+
 void viewUsers()
 {
 	FILE *fp = fopen("./userdata.bin", "r");
@@ -377,6 +388,8 @@ void viewUsers()
 	if(fp == NULL)
 	{
 		printf("Could not open file\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return;
 	}
 	else
@@ -407,6 +420,8 @@ char *sread(int size)
 	if(string == NULL)
 	{
 		printf("Could not allocate memory\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 	
@@ -429,6 +444,8 @@ char *wspace(int size)
 	if(string == NULL)
 	{
 		printf("Could not allocate memory\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 	
@@ -450,6 +467,8 @@ void changepass(User currentUser)
 	if(fp == NULL)
 	{
 		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return;
 	}
 	else

@@ -16,8 +16,10 @@ int main()
 
 	if(newSession == NULL)
 	{
-		printf("You are unable to be authenticated.\n");
+		printf("\nYou are unable to be authenticated.\n");
 		writeLogs(createNewUser("N/A", -1), "Authentication Failure from Unknown User");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		exit(1);
 	}
 	else if(newSession != NULL)
@@ -62,11 +64,17 @@ int main()
 				}
 				else if(menuchoice == 3)
 				{
+					/* deletes patient */
+					writeLogs(currentUser, "Menu -> Delete Patient");
+					deletePatient();
+				}
+				else if(menuchoice == 4)
+				{
 					/* change password */
 					writeLogs(currentUser, "Menu -> Change Password");
 					changepass(currentUser);
 				}
-				else if(menuchoice == 4)
+				else if(menuchoice == 5)
 				{
 					/* log off */
 					active = 1; //set flag
@@ -92,6 +100,7 @@ int main()
 				{
 					/* delete appointment */
 					writeLogs(currentUser, "Menu -> Deleted Appointment");
+					deleteAppointment();
 				}
 				else if(menuchoice == 4)
 				{
@@ -147,6 +156,7 @@ int main()
 				{
 					/* delete user */
 					writeLogs(currentUser, "Menu -> Delete User");
+					deleteUser();
 				}
 				else if(menuchoice == 4)
 				{
