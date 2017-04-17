@@ -359,7 +359,6 @@ void addUser()
 		strncpy(string, encrypt(string), MAX_CHAR);
 
 		strcat(string, "\n");
-
 		fprintf(fp, string);
 		
 		free(string);
@@ -376,7 +375,7 @@ void viewUsers()
 	
 	if(fp == NULL)
 	{
-		printf("Could not open file\n");
+		printf("Could not open \"userdata.bin\" file!\n");
 		return;
 	}
 	else
@@ -552,5 +551,82 @@ void changepass(User currentUser)
 		fclose(nfp);
 		
 		return;
+	}
+}
+
+/* press any key to continue */
+void pressEnterKey()
+{
+	printf("\nPress [ENTER] To Continue...\n");
+	char *null = malloc(sizeof(char*)*3);
+	strcpy(null, sread(2));
+	free(null);
+}
+
+/* before executing some function, verify the user's password for confirmation
+ * @ returns 1 if verification is successful
+ * @ returns 0 on failure
+ */
+int verify(User currentUser)
+{
+	FILE *fp = fopen("./userdata.bin", "r");
+
+	if(fp == NULL)
+	{
+		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		return 0;
+	}
+	else
+	{
+		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char buffer[MAX_CHAR];
+
+		int length = getUserCount(fp);
+		int i;
+		
+		char *username = malloc(sizeof(char*) * MAX_CHAR);
+		char *password = malloc(sizeof(char*) * MAX_CHAR);
+		int hashpass;
+		/* get the username */
+		strcpy(username, userGetName(currentUser));
+		
+		for(i = 0; i < length; i++)
+		{
+			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+
+			/* tokenize the line */
+			temp = strtok(buffer, ",");
+			
+			/* check if the username matches */
+			if(strncmp(temp, username, MAX_CHAR) == 0)
+			{
+				/* prompt for the password */
+				printf("\nPassword Verification: ");
+				strcpy(password, sread(MAX_CHAR));
+				
+				temp = strtok(NULL, ",");
+			
+				hashpass = hash(password);
+				strcpy(password, wspace(MAX_CHAR));
+				
+				/* password match? */
+				if(hashpass == atoi(temp))
+				{
+					fclose(fp);
+					return 1;
+				}
+				else
+				{
+					printf("Invalid password!\n");
+					writeLogs(currentUser, "Password verification failure");
+					fclose(fp);
+					return 0;
+				}
+			}
+		}
+		
+		printf("Could not find user in the data file.\n");
+		fclose(fp);
+		return 0;
 	}
 }

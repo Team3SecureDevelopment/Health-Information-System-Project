@@ -28,7 +28,7 @@ void drawMenu(User currentUser)
 {
 	char *name = userGetName(currentUser);
 	int type = userGetType(currentUser);
-
+	system("clear");
 	printf("\n-------------[ MAIN MENU ]-------------\n");
 	printf(" Hello, %s\n", name);
 	printf("---------------------------------------\n");
@@ -86,7 +86,7 @@ void drawMenu(User currentUser)
 void drawPatientSearch(FILE *fp)
 {
 	int count = getUserCount(fp);
-	
+	system("clear");
 	printf("\n-------------[ PATIENT SEARCH ]-------------\n");
 	printf("Please enter the social security number of the patient.\n");
 	printf("Patients in file: %d\n", count);
@@ -95,48 +95,56 @@ void drawPatientSearch(FILE *fp)
 
 void drawPatientInfo()
 {
+	system("clear");
 	printf("\n-------------[ PATIENT INFO ]-------------\n");
 	printf("\n");
 }
 
 void drawPatientNew()
 {
+	system("clear");
 	printf("\n-------------[ CREATE NEW PATIENT ]-------------\n");
 	printf("\n");
 }
 
 void drawAppointment()
 {
+	system("clear");
 	printf("\n------------[ NEW APPOINTMENT ]------------\n");
 	printf("\n");
 }
 
 void drawAppointmentList(FILE *fp)
 {
+	system("clear");
 	printf("\n------------[ APPOINTMENT LIST ]------------\n");
 	printf("\n");
 }
 
 void drawLogs()
 {
+	system("clear");
 	printf("\n------------[ LOGS ]------------\n");
 	printf("\n");
 }
 
 void drawViewUsers()
 {
+	system("clear");
 	printf("\n------------[ USER LIST ]------------\n");
 	printf("\n");	
 }
 
 void drawAddUser()
 {
+	system("clear");
 	printf("\n------------[ ADD USER ]------------\n");
 	printf("\n");
 }
 
 void drawPassword()
 {
+	system("clear");
 	printf("\n------------[ CHANGE PASSWORD ]------------\n");
 	printf("\n");
 }

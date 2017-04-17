@@ -28,6 +28,7 @@ int main()
 		writeLogs(currentUser, "Login");
 		
 		int menuchoice;
+		char *menustring = malloc(sizeof(char*)*3);
 		int type = userGetType(currentUser);
 		
 		system("clear");
@@ -41,7 +42,17 @@ int main()
 			{
 				/* now we need to get the user input */
 				printf("Please enter a choice and press ENTER -> ");
-				menuchoice = atoi(sread(0));	
+				strcpy(menustring, sread(2));
+
+				if(strlen(menustring) > 1)
+				{
+					printf("\nInvalid choice. Please try again.\n");
+				}
+				else
+				{
+					menuchoice = atoi(menustring);
+				}
+				
 			}
 			else active = 1;
 			
@@ -52,17 +63,20 @@ int main()
 				{
 					/* search patients */
 					writeLogs(currentUser, "Menu -> Find Patient");
-					findPatient();
+					findPatient();						
 				}
 				else if(menuchoice == 2)
 				{
 					/* create new patient */
-					writeLogs(currentUser, "Menu -> Create New Patient");
-					addNewPatient();
+					if(verify(currentUser))
+					{					
+						writeLogs(currentUser, "Menu -> Create New Patient");
+						addNewPatient();
+					}
 				}
 				else if(menuchoice == 3)
 				{
-					/* change password */
+					/* change password */		
 					writeLogs(currentUser, "Menu -> Change Password");
 					changepass(currentUser);
 				}
@@ -79,8 +93,11 @@ int main()
 				if(menuchoice == 1)
 				{
 					/* view appointments */
-					writeLogs(currentUser, "Menu -> View Appointments");
-					viewAppointments();
+					if(verify(currentUser))
+					{					
+						writeLogs(currentUser, "Menu -> View Appointments");
+						viewAppointments();
+					}
 				}
 				else if(menuchoice == 2)
 				{
@@ -91,7 +108,10 @@ int main()
 				else if(menuchoice == 3)
 				{
 					/* delete appointment */
-					writeLogs(currentUser, "Menu -> Deleted Appointment");
+					if(verify(currentUser))
+					{
+						writeLogs(currentUser, "Menu -> Deleted Appointment");
+					}
 				}
 				else if(menuchoice == 4)
 				{
@@ -140,13 +160,19 @@ int main()
 				else if(menuchoice == 2)
 				{
 					/* create user */
-					writeLogs(currentUser, "Menu -> Create New User");
-					addUser();
+					if(verify(currentUser))
+					{
+						writeLogs(currentUser, "Menu -> Create New User");
+						addUser();
+					}
 				}
 				else if(menuchoice == 3)
 				{
 					/* delete user */
-					writeLogs(currentUser, "Menu -> Delete User");
+					if(verify(currentUser))
+					{					
+						writeLogs(currentUser, "Menu -> Delete User");
+					}
 				}
 				else if(menuchoice == 4)
 				{
@@ -184,7 +210,7 @@ int main()
 		free(time);
 		free(string);
 		free(currentUser);
-		
+		free(menustring);
 	}
 
 	free(newSession);

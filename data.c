@@ -262,7 +262,7 @@ void setAllergyInfo(int ssnhash)
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
 		char *allergies = malloc(sizeof(char*) * MAX_CHAR * 10);
 		
-		printf("Please type in an allergy and then hit ENTER to save. For multiple allergies, please separate each one by a comma:\n");
+		printf("Please type in an allergy and then hit ENTER to save.\nFor multiple allergies, please separate each one by a comma:\n");
 		printf("--> ");
 		strcpy(allergies, sread(MAX_CHAR*10));
 		
@@ -270,10 +270,7 @@ void setAllergyInfo(int ssnhash)
 		snprintf(string, 9, "%d", ssnhash);
 		strcat(string, "|");
 		strcat(string, allergies);
-		
-		/* debug */
-		printf("String: %s\n", string);
-		
+
 		/* encrypt */
 		strncpy(string, encrypt(string), MAX_CHAR*11+1);
 		strcat(string, "\n");
@@ -424,7 +421,7 @@ void getPrescriptionInfo(int ssnhash)
 			if(ssnhash == atoi(temp))
 			{
 				printf("Patient Prescriptions\n");
-				printf("-----------------\n");
+				printf("---------------------\n");
 				
 				/* get the number of commas for counting purposes */
 				int comma = 0;
@@ -514,16 +511,16 @@ void findPatient()
 				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
 				drawPatientInfo();
 				
-				printf("@             First Name: %s\n", patientGetFirstName(newPatient));
-				printf("@              Last Name: %s\n", patientGetLastName(newPatient));
-				printf("@          Date of Birth: %s\n", patientGetDOB(newPatient));
-				printf("@            Height (cm): %d\n", patientGetHeight(newPatient));
-				printf("@            Weight (lb): %d\n", patientGetWeight(newPatient));
-				printf("@          Has allergies? %d\n", patientHasAllergies(newPatient));
-				printf("@       On Prescriptions? %d\n", patientOnPrescriptions(newPatient));				
-				printf("@        Is/was a smoker? %d\n", patientIsSmoker(newPatient));
-				printf("@     Previous surgeries? %d\n", patientHadSurgeries(newPatient));
-				printf("@     Has mental illness? %d\n", patientMentalIllness(newPatient));
+				printf("         First Name: %s\n", patientGetFirstName(newPatient));
+				printf("          Last Name: %s\n", patientGetLastName(newPatient));
+				printf("      Date of Birth: %s\n", patientGetDOB(newPatient));
+				printf("        Height (cm): %d\n", patientGetHeight(newPatient));
+				printf("        Weight (lb): %d\n", patientGetWeight(newPatient));
+				printf("      Has allergies? %d\n", patientHasAllergies(newPatient));
+				printf("   On Prescriptions? %d\n", patientOnPrescriptions(newPatient));				
+				printf("    Is/was a smoker? %d\n", patientIsSmoker(newPatient));
+				printf(" Previous surgeries? %d\n", patientHadSurgeries(newPatient));
+				printf(" Has mental illness? %d\n", patientMentalIllness(newPatient));
 				printf("\n");
 				
 				/* if they have allergies, list them */
@@ -543,6 +540,9 @@ void findPatient()
 					getPrescriptionInfo(hashvalue);
 					printf("\n");
 				}
+				
+				pressEnterKey();
+				
 				fclose(fp);
 				return;
 			}

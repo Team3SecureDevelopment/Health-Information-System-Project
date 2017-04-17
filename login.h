@@ -40,4 +40,9 @@ char *sread(int size);
 char *wspace(int size);
 
 void changepass(User);
+
+void pressEnterKey();
+
+int verify(User);
+
 #endif
