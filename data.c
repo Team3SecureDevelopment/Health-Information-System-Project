@@ -557,6 +557,107 @@ void findPatient()
 	}
 }
 
+void filteredSearch()
+{
+	int MAX_CHAR = 256;
+	
+	FILE *fp = fopen("./patients.bin", "r");
+	
+	if(fp == NULL)
+	{
+		printf("Could not find \"patients.bin\" in the directory!\n");
+		return;
+	}
+	else
+	{
+		int value;
+		int count = getUserCount(fp); //number of patients in file
+		int i;
+		/* draw the tui */
+		drawPatientSearch(fp);
+		
+		printf("Please select search parameter:\n");
+		printf(" 1 | Patients with Allergies\n");
+		printf(" 2 | Patients with Prior Surgeries\n");
+		printf(" 3 | Patients who are Smokers\n");
+		printf(" 4 | Patients with Mental Illnesses\n");
+		printf(" 5 | Patients who are currently on Prescriptions\n");
+		printf("\n");
+		
+		value = atoi(sread(2));
+
+		for(i = 0; i < count; ++i)
+		{
+			char *temp = malloc(sizeof(char*) * MAX_CHAR);
+			char buffer[MAX_CHAR];
+		
+			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+			
+			/* tokenize the line */
+			temp = strtok(buffer, ",");
+			
+			char *lname = strtok(NULL, ",");
+			char *fname = strtok(NULL, ",");
+			char *dob = strtok(NULL, ",");
+			int h = atoi(strtok(NULL,","));
+			int w = atoi(strtok(NULL,","));
+			int a = atoi(strtok(NULL,","));
+			int su = atoi(strtok(NULL,","));
+			int sm = atoi(strtok(NULL,","));
+			int m = atoi(strtok(NULL,","));
+			int dr = atoi(strtok(NULL,","));
+			
+			Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
+			drawPatientInfo();
+			
+			if(value == 1)
+			{
+				if(patientHasAllergies(newPatient))
+				{
+					printf("%3d.) %s, %s\n", i+1, lname, fname);
+				}
+			}
+			
+			if(value == 2)
+			{
+				if(patientHadSurgeries(newPatient))
+				{
+					printf("%3d.) %s, %s\n", i+1, lname, fname);
+				}
+			}
+			
+			if(value == 3)
+			{
+				if(patientIsSmoker(newPatient))
+				{
+					printf("%3d.) %s, %s\n", i+1, lname, fname);
+				}
+			}
+			
+			if(value == 4)
+			{
+				if(patientMentalIllness(newPatient))
+				{
+					printf("%3d.) %s, %s\n", i+1, lname, fname);
+				}
+			}
+			
+			if(value == 5)
+			{
+				if(patientOnPrescriptions(newPatient))
+				{
+					printf("%3d.) %s, %s\n", i+1, lname, fname);
+				}
+			}
+			
+			fclose(fp);
+			return;
+		}
+		
+		fclose(fp);
+	}
+}
+
 Patient createPatient(char *social, char *lastname, char *firstname, char *dob, int height, int weight, char allergies, char surgeries, char smoker, char mental, char drugs)
 {
 	Patient newPatient = malloc(sizeof(*newPatient));
