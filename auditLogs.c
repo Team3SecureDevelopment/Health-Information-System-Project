@@ -97,5 +97,5 @@ void readLogs()
 	}
 
 	fclose(fp);
+	pressEnterKey();
 }
-

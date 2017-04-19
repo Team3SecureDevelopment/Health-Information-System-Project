@@ -45,4 +45,6 @@ void pressEnterKey();
 
 int verify(User);
 
+void deleteUser(User);
+
 #endif

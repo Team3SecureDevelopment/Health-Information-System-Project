@@ -17,7 +17,6 @@ int main()
 	if(newSession == NULL)
 	{
 		printf("You are unable to be authenticated.\n");
-		writeLogs(createNewUser("N/A", -1), "Authentication Failure from Unknown User");
 		exit(1);
 	}
 	else if(newSession != NULL)
@@ -172,6 +171,7 @@ int main()
 					if(verify(currentUser))
 					{					
 						writeLogs(currentUser, "Menu -> Delete User");
+						deleteUser(currentUser);
 					}
 				}
 				else if(menuchoice == 4)
@@ -198,7 +198,7 @@ int main()
 		char *string = malloc(sizeof(char*) * 256);
 		char *time = malloc(sizeof(char*) * 128);;
 		
-		snprintf(time, 128, "%.2f", ((double )departure - (double )sessionGetLoginTime(newSession)));
+		snprintf(time, 128, "%.2f", ((float )departure - (float )sessionGetLoginTime(newSession)));
 		strcpy(string, "Log Off -> Time duration of ");
 		strcat(string, time);
 		strcat(string, " seconds");

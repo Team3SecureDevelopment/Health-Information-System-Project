@@ -119,8 +119,8 @@ User getUser(char *username, int password)
 				}
 				else
 				{
-					printf("Invalid password!\n");
-					writeLogs(createNewUser(username, -1), "Invalid password login");
+					printf("\nInvalid username or password!\n");
+					writeLogs(createNewUser(username, -1), "Authentication failure - Invalid username/password");
 					fclose(fp);
 					return NULL;
 				}
@@ -380,19 +380,34 @@ void viewUsers()
 	}
 	else
 	{
-		char buff[255];
-
+		char *username = malloc(sizeof(char*) * MAX_CHAR);
+		char *type = malloc(sizeof(char*) * MAX_CHAR);
+		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		
+		char buff[256];
+		int i = 1;
 		drawViewUsers();
 		
 		while(1)
 		{
 			fgets(buff, 255, (FILE*)fp);
 			if(feof(fp)) break;
-			printf("%s", decrypt(buff));
-			printf("\n");
+			temp = strtok((char*)decrypt(buff), ",");
+			strcpy(username, temp);
+			temp = strtok(NULL, ",");
+			temp = strtok(NULL, ",");
+			strncpy(type, temp, strlen(temp)-1);
+			printf("%3d.) %s (%s)\n", i, username, type);
+			i++;
 		}
 		
+		
+		
+		free(type);
+		free(username);
 		fclose(fp);
+		
+		pressEnterKey();
 	}
 }
 
@@ -557,7 +572,7 @@ void changepass(User currentUser)
 /* press any key to continue */
 void pressEnterKey()
 {
-	printf("\nPress [ENTER] To Continue...\n");
+	printf("\nPress [ENTER] To Continue...");
 	char *null = malloc(sizeof(char*)*3);
 	strcpy(null, sread(2));
 	free(null);
@@ -628,5 +643,130 @@ int verify(User currentUser)
 		printf("Could not find user in the data file.\n");
 		fclose(fp);
 		return 0;
+	}
+}
+
+void deleteUser(User currentAdmin)
+{
+	FILE *fp = fopen("./userdata.bin", "r");
+	FILE *nfp = fopen("./temp", "a");
+
+	if(fp == NULL)
+	{
+		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		return;
+	}
+	else
+	{
+		system("clear");
+		printf("\n-------------[ DELETE USER ]-------------\n");
+		
+		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		char *username = malloc(sizeof(char*) * MAX_CHAR);
+		
+		char buffer[MAX_CHAR];
+
+		/* get the user to delete */
+		printf("\nUsername to delete: ");
+		strcpy(username, sread(MAX_CHAR));
+		
+		if(strncmp(username, userGetName(currentAdmin), MAX_CHAR) == 0)
+		{
+			printf("\nCannot delete self! Deletion halted.\n");
+			pressEnterKey();
+			return;
+		}
+		
+		int length = getUserCount(fp);
+		int i;
+		int flag = 0;
+		int found = 0;
+		
+		rewind(fp);
+		rewind(nfp);
+		
+		/* go through userdata.bin until we find the user */
+		for(i = 0; i < length; i++)
+		{
+			fgets(line, MAX_CHAR, fp);
+			strncpy(buffer, decrypt(line), strlen(line));
+
+			/* tokenize the line */
+			temp = strtok(buffer, ",");
+			
+			/* check if the username matches */
+			if(strncmp(temp, username, MAX_CHAR) == 0)
+			{
+				found = 1;
+				printf("You are about to delete user %s from the system. This action cannot be undone.\n", username);
+				printf("Proceed? (Y\\N) ");
+
+				char *c = malloc(sizeof(char*) * 3);
+				strcpy(c, sread(3));
+				if(c[0] == 'y' || c[0] == 'Y')
+				{
+					flag = 1;
+				}
+				else if(c[0] == 'n' || c[0] == 'N')
+				{
+					flag = 0;
+				}
+				else
+				{
+					printf("Invalid character!\n");
+					return;
+				}
+
+				/* if admin says yes, then proceed */
+				if(flag == 1)
+				{
+					/* verify admin's password */
+					if(verify(currentAdmin))
+					{
+						/* we aren't going to edit the data as much as we won't copy, so continue */
+						char *string = malloc(sizeof(char*) * MAX_CHAR);
+						
+						strcpy(string, "Administrator deleted user ");
+						strcat(string, username);
+						strcat(string, " from the system");
+						
+						printf("\nUser %s successfully deleted from the system.\n", username);
+						pressEnterKey();
+						writeLogs(currentAdmin, string);
+						free(string);
+					}
+				}
+				else if(flag == 0)
+				{
+					printf("\nUser deletion cancelled. The file has not been changed.\n");
+					pressEnterKey();
+					
+					writeLogs(currentAdmin, "User delete cancelled");
+					fclose(fp);
+					fclose(nfp);
+					remove("./temp");
+					return;
+				}
+			}
+			else
+			{
+				/* copy over the users who are not affected */
+				fprintf(nfp, line);
+			}
+		}
+
+		if(found == 0)
+		{
+			printf("\nCould not find the specified user in the file.\n");
+			pressEnterKey();
+		}
+		
+		fclose(fp);
+		remove("./userdata.bin");
+		rename("./temp", "./userdata.bin");
+		fclose(nfp);
+		
+		return;
 	}
 }
