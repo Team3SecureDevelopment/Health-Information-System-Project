@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "login.h"
 #include "data.h"
@@ -477,6 +478,7 @@ void findPatient()
 		int count = getUserCount(fp); //number of patients in file
 		int i;
 		int found = 0;
+		//char *
 		/* draw the tui */
 		drawPatientSearch(fp);
 		
@@ -560,6 +562,7 @@ void findPatient()
 void filteredSearch()
 {
 	int MAX_CHAR = 256;
+	int j = 1;
 	
 	FILE *fp = fopen("./patients.bin", "r");
 	
@@ -573,8 +576,11 @@ void filteredSearch()
 		int value;
 		int count = getUserCount(fp); //number of patients in file
 		int i;
+		
+		char *input = malloc(sizeof(char*) * MAX_CHAR);
+		
 		/* draw the tui */
-		drawPatientSearch(fp);
+		drawFilteredSearch(fp);
 		
 		printf("Please select search parameter:\n");
 		printf(" 1 | Patients with Allergies\n");
@@ -584,8 +590,56 @@ void filteredSearch()
 		printf(" 5 | Patients who are currently on Prescriptions\n");
 		printf("\n");
 		
-		value = atoi(sread(2));
+		printf("--> ");
+		strncpy(input, sread(2), 2);
+		
+		printf("[%s]\n", input);
+		
+		sleep(5);
+		
+		if((int)strlen(input) <= 2)
+		{
+			value = atoi(input);
+			printf("Value is %d\n", value);
+			free(input);
+		}
+		else
+		{
+			printf("\nInvalid search parameter!\n");
+			pressEnterKey();
+			return;
+		}
 
+		sleep(5);
+		
+		system("clear");
+		
+		/* drawing elements */
+		if(value == 1)
+		{
+			printf("---[ ALLERGIES ]---\n\n");
+		}
+		else if(value == 2)
+		{
+			printf("---[ PRIOR SURGERIES ]---\n\n");			
+		}
+		else if(value == 3)
+		{
+			printf("---[ SMOKERS ]---\n\n");			
+		}
+		else if(value == 4)
+		{
+			printf("---[ MENTAL ILLNESS ]---\n\n");			
+		}
+		else if(value == 5)
+		{
+			printf("---[ PRESCRIPTIONS ]---\n\n");			
+		}
+		else
+		{
+			printf("Invalid search parameter!\n");
+		}
+		
 		for(i = 0; i < count; ++i)
 		{
 			char *temp = malloc(sizeof(char*) * MAX_CHAR);
@@ -608,13 +662,13 @@ void filteredSearch()
 			int dr = atoi(strtok(NULL,","));
 			
 			Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
-			drawPatientInfo();
 			
 			if(value == 1)
 			{
 				if(patientHasAllergies(newPatient))
 				{
-					printf("%3d.) %s, %s\n", i+1, lname, fname);
+					printf("%3d.) %s, %s\n", j, lname, fname);
+					j++;
 				}
 			}
 			
@@ -622,7 +676,8 @@ void filteredSearch()
 			{
 				if(patientHadSurgeries(newPatient))
 				{
-					printf("%3d.) %s, %s\n", i+1, lname, fname);
+					printf("%3d.) %s, %s\n", j, lname, fname);
+					j++;
 				}
 			}
 			
@@ -630,7 +685,8 @@ void filteredSearch()
 			{
 				if(patientIsSmoker(newPatient))
 				{
-					printf("%3d.) %s, %s\n", i+1, lname, fname);
+					printf("%3d.) %s, %s\n", j, lname, fname);
+					j++;
 				}
 			}
 			
@@ -638,7 +694,8 @@ void filteredSearch()
 			{
 				if(patientMentalIllness(newPatient))
 				{
-					printf("%3d.) %s, %s\n", i+1, lname, fname);
+					printf("%3d.) %s, %s\n", j, lname, fname);
+					j++;
 				}
 			}
 			
@@ -646,16 +703,16 @@ void filteredSearch()
 			{
 				if(patientOnPrescriptions(newPatient))
 				{
-					printf("%3d.) %s, %s\n", i+1, lname, fname);
+					printf("%3d.) %s, %s\n", j, lname, fname);
+					j++;
 				}
 			}
-			
-			fclose(fp);
-			return;
 		}
 		
 		fclose(fp);
 	}
+	
+	pressEnterKey();
 }
 
 Patient createPatient(char *social, char *lastname, char *firstname, char *dob, int height, int weight, char allergies, char surgeries, char smoker, char mental, char drugs)

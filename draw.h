@@ -7,6 +7,8 @@ void drawLogin();
 
 void drawPatientSearch(FILE *fp);
 
+void drawFilteredSearch(FILE *fp);
+
 void drawPatientInfo();
 
 void drawPatientNew();

@@ -430,7 +430,19 @@ char *sread(int size)
 		i++;
 	}
 	
+	printf("String: [%s]\n", string);
+	printf("String length is %d\n", (int )strlen(string));
+	
+	if(i > size)
+	{
+		printf("I is greater than the size!\n");
+		printf("We only need a string of length %d\n", size);
+		strncpy(string, )
+	}
+	
 	string[i++] = '\0';
+	
+	fflush(stdin);
 	
 	return string;
 }
@@ -572,8 +584,10 @@ void changepass(User currentUser)
 /* press any key to continue */
 void pressEnterKey()
 {
+	fflush(stdin);
 	printf("\nPress [ENTER] To Continue...");
-	char *null = malloc(sizeof(char*)*3);
+	char *null = malloc(sizeof(char)*3);
+	strcpy(null, wspace(3));
 	strcpy(null, sread(2));
 	free(null);
 }

@@ -39,4 +39,6 @@ int patientHasAllergies(Patient);
 
 int patientOnPrescriptions(Patient);
 
+void filteredSearch();
+
 #endif

@@ -38,9 +38,10 @@ void drawMenu(User currentUser)
 	if(type == 0 || type == 1)
 	{
 		printf(" 1 | Search Patients\n");
-		printf(" 2 | Create New Patient\n");
-		printf(" 3 | Change Password\n");
-		printf(" 4 | Log Off\n");
+		printf(" 2 | Search by Filter\n");
+		printf(" 3 | Create New Patient\n");
+		printf(" 4 | Change Password\n");
+		printf(" 5 | Log Off\n");
 		printf("\n");
 	}
 	/* if help desk */
@@ -89,6 +90,17 @@ void drawPatientSearch(FILE *fp)
 	system("clear");
 	printf("\n-------------[ PATIENT SEARCH ]-------------\n");
 	printf("Please enter the social security number of the patient.\n");
+	printf("Patients in file: %d\n", count);
+	printf("\n");
+}
+
+void drawFilteredSearch(FILE *fp)
+{
+	int count = getUserCount(fp);
+	system("clear");
+	printf("\n-------------[ FILTERED SEARCH ]-------------\n");
+	printf("Here you can view all patients that meet a specific criteria.\n");
+	printf("For more detailed information, please use Search Patient.\n");
 	printf("Patients in file: %d\n", count);
 	printf("\n");
 }

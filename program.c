@@ -43,7 +43,7 @@ int main()
 				printf("Please enter a choice and press ENTER -> ");
 				strcpy(menustring, sread(2));
 
-				if(strlen(menustring) > 1)
+				if(strlen(menustring) > 1 || atoi(menustring) < 0)
 				{
 					printf("\nInvalid choice. Please try again.\n");
 				}
@@ -51,10 +51,9 @@ int main()
 				{
 					menuchoice = atoi(menustring);
 				}
-				
 			}
 			else active = 1;
-			
+
 			/* doctor/nurse */
 			if(type == 0 || type == 1)
 			{
@@ -69,17 +68,26 @@ int main()
 					/* create new patient */
 					if(verify(currentUser))
 					{					
+						writeLogs(currentUser, "Menu -> Filtered Patient Search");
+						filteredSearch();
+					}
+				}
+				else if(menuchoice == 3)
+				{
+					/* create new patient */
+					if(verify(currentUser))
+					{					
 						writeLogs(currentUser, "Menu -> Create New Patient");
 						addNewPatient();
 					}
 				}
-				else if(menuchoice == 3)
+				else if(menuchoice == 4)
 				{
 					/* change password */		
 					writeLogs(currentUser, "Menu -> Change Password");
 					changepass(currentUser);
 				}
-				else if(menuchoice == 4)
+				else if(menuchoice == 5)
 				{
 					/* log off */
 					active = 1; //set flag
