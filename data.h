@@ -3,6 +3,8 @@
 
 typedef struct patient* Patient;
 
+typedef struct user* User;
+
 void addNewPatient();
 
 void findPatient();
@@ -40,5 +42,7 @@ int patientHasAllergies(Patient);
 int patientOnPrescriptions(Patient);
 
 void filteredSearch();
+
+void deletePatient(User currentDoctor);
 
 #endif

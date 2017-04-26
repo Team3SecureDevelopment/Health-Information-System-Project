@@ -16,7 +16,7 @@ void drawLogin()
 	printf("|    ###    | ':.:'  Health Information  ':.:'\n");
 	printf("|    ###    |    ':. Data Record System .:'	\n");
 	printf("| ######### |\n");
-	printf("| ######### |           Version 1.2\n");
+	printf("| ######### |           Version 1.6\n");
 	printf("|    ###    |\n");
 	printf("|    ###    |            By TEAM 3\n");
 	printf("'-----------'\n");
@@ -34,8 +34,19 @@ void drawMenu(User currentUser)
 	printf("---------------------------------------\n");
 	printf("\n");
 	
-	/* if doctor/nurse */
-	if(type == 0 || type == 1)
+	/* if doctor */
+	if(type == 0)
+	{
+		printf(" 1 | Search Patients\n");
+		printf(" 2 | Search by Filter\n");
+		printf(" 3 | Create New Patient\n");
+		printf(" 4 | Delete Patient\n");
+		printf(" 5 | Change Password\n");
+		printf(" 6 | Log Off\n");
+		printf("\n");
+	}
+	/* if nurse */
+	else if(type == 1)
 	{
 		printf(" 1 | Search Patients\n");
 		printf(" 2 | Search by Filter\n");

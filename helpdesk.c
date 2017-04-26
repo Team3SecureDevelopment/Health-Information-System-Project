@@ -4,11 +4,10 @@
 #include <unistd.h>
 #include <time.h>
 
-#include "data.h"
-#include "helpdesk.h"
 #include "login.h"
+#include "helpdesk.h"
 #include "draw.h"
-
+#include "data.h"
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 void createAppointment()

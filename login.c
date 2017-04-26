@@ -49,7 +49,7 @@ Session authenticate()
 	printf("Password: ");
 	strcpy(password, sread(MAX_CHAR));
 
-	if(strlen(password) > 256)
+	if(strlen(password) > 256 || strlen(password) < 8)
 	{
 		printf("Invalid password length!\n");
 		return NULL;
@@ -337,7 +337,7 @@ void addUser()
 		strcpy(username, sread(64));
 		
 		printf("Password: ");
-		strcpy(password, sread(16));
+		strcpy(password, createPassword());
 		
 		hashvalue = hash(password);
 		strcpy(password, wspace(strlen(password)));
@@ -416,9 +416,11 @@ char *sread(int size)
 {
 	int i = 0;
 	char ch;
-	char *string = malloc(sizeof(char*) * size);
 	
-	if(string == NULL)
+	char *temp = malloc(sizeof(char*) * 16 * size);
+	char *string = malloc(sizeof(char*) * size+1);
+
+	if(string == NULL && temp == NULL)
 	{
 		printf("Could not allocate memory\n");
 		return NULL;
@@ -426,24 +428,33 @@ char *sread(int size)
 	
 	while((ch = getchar()) != '\n')
 	{
-		string[i] = ch;
+		temp[i] = ch;
 		i++;
 	}
 	
+	printf("Temp: [%s]\n", temp);
+	printf("Temp length is %d\n", (int )strlen(temp));
+	
+	printf("Size is %d\n", size);
+
+	if(i < size)
+	{
+		strncpy(string, temp, i);
+	}
+	else
+	{
+		strncpy(string, temp, size);
+	}
+	printf("i = %d\n", i);
+	string[size] = '\0';
+
 	printf("String: [%s]\n", string);
 	printf("String length is %d\n", (int )strlen(string));
-	
-	if(i > size)
-	{
-		printf("I is greater than the size!\n");
-		printf("We only need a string of length %d\n", size);
-		strncpy(string, )
-	}
-	
-	string[i++] = '\0';
-	
 	fflush(stdin);
 	
+	printf("Size of temp = %d\n", (int )sizeof(temp));
+	printf("Size of string = %d\n", (int )sizeof(string));
+	free(temp);
 	return string;
 }
 
@@ -688,6 +699,8 @@ void deleteUser(User currentAdmin)
 		if(strncmp(username, userGetName(currentAdmin), MAX_CHAR) == 0)
 		{
 			printf("\nCannot delete self! Deletion halted.\n");
+			fclose(fp);
+			fclose(nfp);
 			pressEnterKey();
 			return;
 		}
@@ -770,17 +783,30 @@ void deleteUser(User currentAdmin)
 			}
 		}
 
+		fclose(fp);
+		fclose(nfp);
+		
 		if(found == 0)
 		{
 			printf("\nCould not find the specified user in the file.\n");
 			pressEnterKey();
 		}
-		
-		fclose(fp);
-		remove("./userdata.bin");
-		rename("./temp", "./userdata.bin");
-		fclose(nfp);
-		
-		return;
+		else
+		{		
+			remove("./userdata.bin");
+			rename("./temp", "./userdata.bin");		
+		}
+
 	}
+}
+
+char *createPassword()
+{
+	/* passwords must be between 8-16 characters,
+	 * must contain at least one CAPITAL, number, and special character
+	 */
+	 
+	char *password = malloc(sizeof(char*) * 16);
+	
+	
 }

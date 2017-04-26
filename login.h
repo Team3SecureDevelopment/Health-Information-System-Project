@@ -47,4 +47,6 @@ int verify(User);
 
 void deleteUser(User);
 
+char *createPassword();
+
 #endif

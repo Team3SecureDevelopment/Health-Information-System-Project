@@ -4,8 +4,9 @@
 #include <unistd.h>
 
 #include "login.h"
-#include "data.h"
+#include "auditLogs.h"
 #include "draw.h"
+#include "data.h"
 
 struct patient
 {
@@ -528,7 +529,7 @@ void findPatient()
 				/* if they have allergies, list them */
 				if(a == 1)
 				{
-					printf("\nPress ENTER to view allergy information\n");
+					printf("\nPress [ENTER] to view allergy information\n");
 					getchar();
 					getAllergyInfo(hashvalue);
 					printf("\n");
@@ -537,7 +538,7 @@ void findPatient()
 				/* if they have allergies, list them */
 				if(dr == 1)
 				{
-					printf("\nPress ENTER to view prescription information\n");
+					printf("\nPress [ENTER] to view prescription information\n");
 					getchar();
 					getPrescriptionInfo(hashvalue);
 					printf("\n");
@@ -553,6 +554,7 @@ void findPatient()
 		if(found == 0)
 		{
 			printf("\nCould not find patient under the social security number.\n");
+			pressEnterKey();
 		}
 		
 		fclose(fp);
@@ -592,15 +594,10 @@ void filteredSearch()
 		
 		printf("--> ");
 		strncpy(input, sread(2), 2);
-		
-		printf("[%s]\n", input);
-		
-		sleep(5);
-		
+
 		if((int)strlen(input) <= 2)
 		{
 			value = atoi(input);
-			printf("Value is %d\n", value);
 			free(input);
 		}
 		else
@@ -638,6 +635,8 @@ void filteredSearch()
 		else
 		{
 			printf("Invalid search parameter!\n");
+			pressEnterKey();
+			return;
 		}
 		
 		for(i = 0; i < count; ++i)
@@ -741,6 +740,146 @@ Patient createPatient(char *social, char *lastname, char *firstname, char *dob, 
 	newPatient->drugs = drugs;
 	
 	return newPatient;
+}
+
+void deletePatient(User currentDoctor)
+{
+	int MAX_CHAR = 256;
+	FILE *fp = fopen("./patients.bin", "r");
+	FILE *nfp = fopen("./temp", "a");
+
+	if(fp == NULL)
+	{
+		printf("Error! Could not locate \"patients.bin\" in the directory.\n");
+		return;
+	}
+	else
+	{
+		system("clear");
+		printf("\n-------------[ DELETE PATIENT ]-------------\n");
+		
+		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		char *social = malloc(sizeof(char*) * MAX_CHAR);
+		
+		char buffer[MAX_CHAR];
+
+		/* get the user to delete */
+		printf("\nSocial Security of the patient to delete: ");
+		strcpy(social, sread(10));
+
+		/* go ahead and get the hash value, overwrite the string from memory */
+		int hashsocial = hash(social);
+		strncpy(social, wspace(strlen(social)), strlen(social));
+		free(social);
+		
+		int length = getUserCount(fp);
+		int i;
+		int flag = 0;
+		int found = 0;
+		
+		rewind(fp);
+		rewind(nfp);
+		
+		/* go through userdata.bin until we find the user */
+		for(i = 0; i < length; i++)
+		{
+			fgets(line, MAX_CHAR, fp);
+			strncpy(buffer, decrypt(line), strlen(line));
+
+			/* tokenize the line */
+			temp = strtok(buffer, ",");
+			
+			/* check if the social security hash matches */
+			if(atoi(temp) == hashsocial)
+			{
+				found = 1;
+				
+				/* temporary holder for first, last name */
+				char *fname = malloc(sizeof(char*) * MAX_CHAR);
+				char *lname = malloc(sizeof(char*) * MAX_CHAR);
+				temp = strtok(NULL, ",");
+				strcpy(lname, temp);
+				temp = strtok(NULL, ",");
+				strcpy(fname, temp);
+				
+				printf("You are about to delete patient: %s, %s from the system. This action cannot be undone.\n", lname, fname);
+				printf("Proceed? (Y\\N) ");
+
+				char *c = malloc(sizeof(char*) * 3);
+				strcpy(c, sread(3));
+				if(c[0] == 'y' || c[0] == 'Y')
+				{
+					flag = 1;
+				}
+				else if(c[0] == 'n' || c[0] == 'N')
+				{
+					flag = 0;
+				}
+				else
+				{
+					printf("Invalid character!\n");
+					return;
+				}
+
+				/* if admin says yes, then proceed */
+				if(flag == 1)
+				{
+					/* verify admin's password */
+					if(verify(currentDoctor))
+					{
+						/* we aren't going to edit the data as much as we won't copy, so continue */
+						char *string = malloc(sizeof(char*) * MAX_CHAR);
+						
+						strcpy(string, "Deleted patient: ");
+						strcat(string, lname);
+						strcat(string, ", ");
+						strcat(string, fname);
+						strcat(string, " from the system");
+						
+						printf("\nPatient: %s, %s (%d) successfully deleted from the system.\n", lname, fname, hashsocial);
+						pressEnterKey();
+						writeLogs(currentDoctor, string);
+						free(string);
+						
+						free(lname);
+						free(fname);
+					}
+				}
+				else if(flag == 0)
+				{
+					printf("\nPatient deletion cancelled. The file has not been changed.\n");
+					pressEnterKey();
+					
+					writeLogs(currentDoctor, "Patient delete cancelled");
+					fclose(fp);
+					fclose(nfp);
+					remove("./temp");
+					return;
+				}
+			}
+			else
+			{
+				/* copy over the users who are not affected */
+				fprintf(nfp, line);
+			}
+		}
+
+		fclose(fp);
+		fclose(nfp);
+		
+		if(found == 0)
+		{
+			printf("\nCould not find the specified patient in the file.\n");
+			pressEnterKey();
+		}
+		else
+		{		
+			remove("./patients.bin");
+			rename("./temp", "./patients.bin");		
+		}
+
+	}
 }
 
 char *patientGetFirstName(Patient currentPatient)

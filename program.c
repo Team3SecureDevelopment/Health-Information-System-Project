@@ -27,11 +27,11 @@ int main()
 		writeLogs(currentUser, "Login");
 		
 		int menuchoice;
-		char *menustring = malloc(sizeof(char*)*3);
 		int type = userGetType(currentUser);
-		
+		char *menustring = malloc(sizeof(char) * 2);
+
 		system("clear");
-		
+
 		while(active == 0)
 		{
 			/* user authenticated, draw the menu */
@@ -41,21 +41,27 @@ int main()
 			{
 				/* now we need to get the user input */
 				printf("Please enter a choice and press ENTER -> ");
-				strcpy(menustring, sread(2));
-
-				if(strlen(menustring) > 1 || atoi(menustring) < 0)
+				strcpy(menustring, sread(1));
+				printf("Menu String: [%s]\n", menustring);
+				menuchoice = atoi(menustring);
+				
+				printf("Size of menustring = %d\n", (int)(sizeof(menustring)));
+				printf("Menuchoice = %d\n", menuchoice);
+				free(menustring);
+				
+				if(menuchoice > 6)
 				{
 					printf("\nInvalid choice. Please try again.\n");
 				}
 				else
 				{
-					menuchoice = atoi(menustring);
+					//menuchoice = atoi(menustring);
 				}
 			}
 			else active = 1;
 
-			/* doctor/nurse */
-			if(type == 0 || type == 1)
+			/* doctor */
+			if(type == 0)
 			{
 				if(menuchoice == 1)
 				{
@@ -66,6 +72,54 @@ int main()
 				else if(menuchoice == 2)
 				{
 					/* create new patient */
+					if(verify(currentUser))
+					{					
+						writeLogs(currentUser, "Menu -> Filtered Patient Search");
+						filteredSearch();
+					}
+				}
+				else if(menuchoice == 3)
+				{
+					/* create new patient */
+					if(verify(currentUser))
+					{					
+						writeLogs(currentUser, "Menu -> Create New Patient");
+						addNewPatient();
+					}
+				}
+				else if(menuchoice == 4)
+				{
+					/* create new patient */
+					if(verify(currentUser))
+					{					
+						writeLogs(currentUser, "Menu -> Delete Patient");
+						deletePatient(currentUser);
+					}
+				}
+				else if(menuchoice == 5)
+				{
+					/* change password */		
+					writeLogs(currentUser, "Menu -> Change Password");
+					changepass(currentUser);
+				}
+				else if(menuchoice == 6)
+				{
+					/* log off */
+					active = 1; //set flag
+				}
+				else continue;
+			}
+			else if(type == 1)
+			{
+				if(menuchoice == 1)
+				{
+					/* search patients */
+					writeLogs(currentUser, "Menu -> Find Patient");
+					findPatient();						
+				}
+				else if(menuchoice == 2)
+				{
+					/* filtered patient search */
 					if(verify(currentUser))
 					{					
 						writeLogs(currentUser, "Menu -> Filtered Patient Search");
