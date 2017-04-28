@@ -90,7 +90,7 @@ void drawMenu(User currentUser)
 		printf("\n");
 		printf("If you believe this to be in error, please contact the system administrator.\n");
 		printf("\n");
-		sleep(4);
+		pressEnterKey();
 	}
 }
 

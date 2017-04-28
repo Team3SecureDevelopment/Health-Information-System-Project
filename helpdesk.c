@@ -109,9 +109,8 @@ void viewAppointments()
 	
 	if(fp == NULL)
 	{
-		printf("Could not open file\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		printf("Error: Could not open \"appointments.bin\" file\n");
+		pressEnterKey();
 		return;
 	}
 	else

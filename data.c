@@ -37,9 +37,8 @@ void addNewPatient()
    
    if(fp == NULL)
    {
-     	printf("File could not be opened\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+     	printf("Error: File \"patients.bin\" could not be opened!\n");
+		pressEnterKey();
       	exit(1);
    }
    else
@@ -246,6 +245,9 @@ void addNewPatient()
 		fprintf(fp, string);
 	  
 		fclose(fp);
+		
+		printf("New patient successfully created!\n");
+		pressEnterKey();
    }
 }
 
@@ -255,9 +257,8 @@ void setAllergyInfo(int ssnhash)
 	
 	if(fp == NULL)
 	{
-		printf("Could not find or open \"allergy.bin\" in the directory!\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		printf("Error: Could not find or open \"allergy.bin\" in the directory!\n");
+		pressEnterKey();
 		fclose(fp);
 		return;
 	}
@@ -294,8 +295,7 @@ void getAllergyInfo(int ssnhash)
 	if(fp == NULL)
 	{
 		printf("Could not find or open \"allergy.bin\" in the directory!\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		pressEnterKey();
 		fclose(fp);
 		return;
 	}
@@ -353,8 +353,7 @@ void getAllergyInfo(int ssnhash)
 		if(found == 0)
 		{
 			printf("\nCould not find allergy information for the specified patient.\n");
-			printf("\nPress any key to continue...\n");
-			getchar();
+			pressEnterKey();
 		}
 		
 		fclose(fp);
@@ -368,8 +367,7 @@ void setPrescriptionInfo(int ssnhash)
 	if(fp == NULL)
 	{
 		printf("Could not find or open \"prescriptions.bin\" in the directory!\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		pressEnterKey();
 		fclose(fp);
 		return;
 	}
@@ -388,10 +386,7 @@ void setPrescriptionInfo(int ssnhash)
 		snprintf(string, 9, "%d", ssnhash);
 		strcat(string, "|");
 		strcat(string, prescriptions);
-		
-		/* debug */
-		printf("String: %s\n", string);
-		
+
 		/* encrypt */
 		strncpy(string, encrypt(string), MAX_CHAR*11+1);
 		strcat(string, "\n");
@@ -409,8 +404,7 @@ void getPrescriptionInfo(int ssnhash)
 	if(fp == NULL)
 	{
 		printf("Could not find or open \"prescriptions.bin\" in the directory!\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		pressEnterKey();
 		fclose(fp);
 		return;
 	}
@@ -468,8 +462,7 @@ void getPrescriptionInfo(int ssnhash)
 		if(found == 0)
 		{
 			printf("\nCould not find prescription information for the specified patient.\n");
-			printf("\nPress any key to continue...\n");
-			getchar();
+			pressEnterKey();
 		}
 		
 		fclose(fp);
@@ -485,8 +478,7 @@ void findPatient()
 	if(fp == NULL)
 	{
 		printf("Could not find \"patients.bin\" in the directory!\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		pressEnterKey();
 		return;
 	}
 	else
@@ -570,8 +562,6 @@ void findPatient()
 		if(found == 0)
 		{
 			printf("\nCould not find patient under the social security number.\n");
-			printf("\nPress any key to continue...\n");
-			getchar();
 			pressEnterKey();
 		}
 		
@@ -589,8 +579,7 @@ void filteredSearch()
 	if(fp == NULL)
 	{
 		printf("Could not find \"patients.bin\" in the directory!\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		pressEnterKey();
 		return;
 	}
 	else
@@ -613,9 +602,9 @@ void filteredSearch()
 		printf("\n");
 		
 		printf("--> ");
-		strncpy(input, sread(2), 2);
+		strncpy(input, sread(1), 1);
 
-		if((int)strlen(input) <= 2)
+		if((int)strlen(input) < 2)
 		{
 			value = atoi(input);
 			free(input);
@@ -766,13 +755,12 @@ void deletePatient(User currentDoctor)
 {
 	int MAX_CHAR = 256;
 	FILE *fp = fopen("./patients.bin", "r");
-	FILE *nfp = fopen("./temp", "a");
+	FILE *nfp = fopen("./temp2", "a");
 
 	if(fp == NULL)
 	{
-		printf("Error! Could not locate \"patients.bin\" in the directory.\n");
-		printf("\nPress any key to continue...\n");
-		getchar();
+		printf("Error: Could not locate \"patients.bin\" in the directory.\n");
+		pressEnterKey();
 		return;
 	}
 	else
@@ -788,7 +776,7 @@ void deletePatient(User currentDoctor)
 
 		/* get the user to delete */
 		printf("\nSocial Security of the patient to delete: ");
-		strcpy(social, sread(10));
+		strcpy(social, sread(9));
 
 		/* go ahead and get the hash value, overwrite the string from memory */
 		int hashsocial = hash(social);
@@ -813,7 +801,7 @@ void deletePatient(User currentDoctor)
 			temp = strtok(buffer, ",");
 			
 			/* check if the social security hash matches */
-			if(atoi(temp) == hashsocial)
+			if(atoi(temp) == hashsocial && found == 0)
 			{
 				found = 1;
 				
@@ -829,7 +817,7 @@ void deletePatient(User currentDoctor)
 				printf("Proceed? (Y\\N) ");
 
 				char *c = malloc(sizeof(char*) * 3);
-				strcpy(c, sread(3));
+				strcpy(c, sread(1));
 				if(c[0] == 'y' || c[0] == 'Y')
 				{
 					flag = 1;
@@ -863,7 +851,6 @@ void deletePatient(User currentDoctor)
 						pressEnterKey();
 						writeLogs(currentDoctor, string);
 						free(string);
-						
 						free(lname);
 						free(fname);
 					}
@@ -876,7 +863,7 @@ void deletePatient(User currentDoctor)
 					writeLogs(currentDoctor, "Patient delete cancelled");
 					fclose(fp);
 					fclose(nfp);
-					remove("./temp");
+					remove("./temp2");
 					return;
 				}
 			}
@@ -898,7 +885,7 @@ void deletePatient(User currentDoctor)
 		else
 		{		
 			remove("./patients.bin");
-			rename("./temp", "./patients.bin");		
+			rename("./temp2", "./patients.bin");		
 		}
 
 	}

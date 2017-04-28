@@ -42,20 +42,12 @@ int main()
 				/* now we need to get the user input */
 				printf("Please enter a choice and press ENTER -> ");
 				strcpy(menustring, sread(1));
-				printf("Menu String: [%s]\n", menustring);
 				menuchoice = atoi(menustring);
-				
-				printf("Size of menustring = %d\n", (int)(sizeof(menustring)));
-				printf("Menuchoice = %d\n", menuchoice);
 				free(menustring);
 				
 				if(menuchoice > 6)
 				{
 					printf("\nInvalid choice. Please try again.\n");
-				}
-				else
-				{
-					//menuchoice = atoi(menustring);
 				}
 			}
 			else active = 1;
