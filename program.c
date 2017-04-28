@@ -168,19 +168,11 @@ int main()
 				}
 				else if(menuchoice == 3)
 				{
-					/* delete appointment */
-					if(verify(currentUser))
-					{
-						writeLogs(currentUser, "Menu -> Deleted Appointment");
-					}
-				}
-				else if(menuchoice == 4)
-				{
 					/* change password */
 					writeLogs(currentUser, "Menu -> Change Password");
 					changepass(currentUser);
 				}
-				else if(menuchoice == 5)
+				else if(menuchoice == 4)
 				{
 					/* log off */
 					active = 1;

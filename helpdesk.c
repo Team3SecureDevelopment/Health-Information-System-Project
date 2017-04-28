@@ -110,6 +110,8 @@ void viewAppointments()
 	if(fp == NULL)
 	{
 		printf("Could not open file\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return;
 	}
 	else
