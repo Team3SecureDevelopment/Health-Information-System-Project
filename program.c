@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <time.h>
 
+/* printf("\033[2J\033[;H"); <------------------ ANSI sequence for clear screen, reset cursor */
+
 int MAX_CHAR = 256;
 
 typedef struct patient* Patient;
@@ -106,7 +108,7 @@ char *createPassword();
 /* MAIN FUNCTION */
 int main()
 {
-	Session newSession = authenticate();
+	const Session newSession = authenticate();
 
 	if(newSession == NULL)
 	{
@@ -117,17 +119,25 @@ int main()
 	{
 		/* should we keep running? */
 		int active = 0;
-		User currentUser = sessionGetUser(newSession);
+		User currentUser;
+		
+		if(newSession->currentUser != NULL)
+		{
+			currentUser = sessionGetUser(newSession);
+		}
+		
 		writeLogs(currentUser, "Login");
 		
-		int menuchoice;
-		int type = userGetType(currentUser);
-		char *menustring = malloc(sizeof(char) * 2);
-
-		printf("\033[2J");
+		const int type = userGetType(currentUser);
+		
+		long int menuchoice;
+		
+		printf("\033[2J\033[;H");
 
 		while(active == 0)
 		{
+			char *menustring = malloc(sizeof(char) * 2);
+			
 			/* user authenticated, draw the menu */
 			drawMenu(currentUser);
 		
@@ -136,9 +146,19 @@ int main()
 				/* now we need to get the user input */
 				printf("Please enter a choice and press ENTER -> ");
 				strcpy(menustring, sread(1));
-				menuchoice = atoi(menustring);
-				free(menustring);
 				
+				if(menustring != NULL)
+				{
+					menuchoice = strtol(menustring, NULL, 10);
+					free(menustring);
+					menustring = NULL;
+				}
+				else
+				{
+					printf("System Error: string pointer is NULL!\n");
+					exit(1);
+				}
+
 				if(menuchoice > 6)
 				{
 					printf("\nInvalid choice. Please try again.\n");
@@ -329,7 +349,7 @@ int main()
 			}
 		}
 		
-		time_t departure = time(NULL);
+		const time_t departure = time(NULL);
 		
 		/* show exit screen */
 		drawExit();
@@ -347,15 +367,30 @@ int main()
 		writeLogs(currentUser, string);
 		
 		/* free */
-		free(time);
-		free(string);
-		free(currentUser);
-		free(menustring);
+		if(time != NULL)
+		{
+			free(time);
+			time = NULL;
+		}
+		
+		if(string != NULL)
+		{
+			free(string);
+			string = NULL;
+		}
+		
+		if(currentUser != NULL)
+		{
+			free(currentUser);
+			currentUser = NULL;
+		}
 	}
 
 	free(newSession);
+	//newSession = NULL;
+	
 	sleep(2);
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	return 0;
 }
 ///////////////////
@@ -369,8 +404,9 @@ Session authenticate()
 {
 	char *username = malloc(sizeof(char*) * MAX_CHAR);
 	char *password = malloc(sizeof(char*) * MAX_CHAR);
-	time_t logintime = time(NULL);
-
+	const time_t logintime = time(NULL);
+	int hashvalue = 0;
+	
 	drawLogin();
 
 	printf("To access the program, please enter your username and password\n\n");
@@ -387,30 +423,42 @@ Session authenticate()
 	printf("Password: ");
 	strcpy(password, sread(MAX_CHAR));
 
-	if(strlen(password) > 256)
+	if(password != NULL)
 	{
-		printf("Invalid password length!\n");
-		return NULL;
+		if(strlen(password) > 256)
+		{
+			printf("Password is too long!\n");
+		}
+		else
+		{
+			/* if the password is valid, get its hash */
+			hashvalue = hash(password);
+		}
+		
+		/* overwrite the password with blank spaces */
+		strcpy(password, wspace(strlen(password)));
+		
+		/* get rid of it */
+		if(password != NULL)
+		{
+			free(password);
+			password = NULL;
+		}
 	}
-
-	/* get the hash value of password */
-	int hashValue = hash(password);
-	/* before freeing memory, fill the address with whitespace */
-	strcpy(password, wspace(strlen(password)));
-	free(password);
-
-	User newUser = getUser(username, hashValue);
+	
+	User newUser = getUser(username, hashvalue);
 		
 	if(newUser != NULL)
 	{
 		Session newSession = createNewSession(newUser, logintime);
-		return newSession;
+		
+		if(newSession != NULL)
+		{
+			return newSession;
+		}
 	}
-	else
-	{
-		free(newUser);
-		return NULL;
-	}
+	
+	return NULL;
 }
 
 /* returns type User if exists in a data file */
@@ -445,10 +493,10 @@ User getUser(char *username, int password)
 				temp = strtok(NULL, ",");
 			
 				/* password match? */
-				if(password == atoi(temp))
+				if(password == (int)strtol(temp, NULL, 10))
 				{
 					temp = strtok(NULL, ",");
-					int type = atoi(temp);
+					long int type = strtol(temp, NULL, 10);
 
 					User newUser = createNewUser(username, type);
 					
@@ -627,7 +675,17 @@ char *getLine(FILE *fp, int line)
 			buffer[strnlen(buffer, MAX_CHAR)] = '\0';
 			strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
 			
-			return (char *)string;
+			if(buffer != NULL)
+			{
+				strncpy(buffer, wspace(MAX_CHAR), strlen(buffer));
+				free(buffer);
+				buffer = NULL;
+			}
+			
+			if(string != NULL)
+			{
+				return (char*)string;
+			}
 		}
 
 		i++;
@@ -695,7 +753,7 @@ void addUser()
 		
 		printf("\nPlease select a user type (0 - doctor, 1 - nurse, 2 - helpdesk, 3 - auditor, 4 - administrator\n");
 		printf("User Type: ");
-		type = atoi(sread(1));
+		type = (int)strtol(sread(1), NULL, 10);
 		
 		string[0] = '\0';
 
@@ -732,19 +790,24 @@ void viewUsers()
 	}
 	else
 	{
+		fseek(fp, 0, SEEK_SET);
+		
 		char *username = malloc(sizeof(char*) * MAX_CHAR);
 		char *type = malloc(sizeof(char*) * MAX_CHAR);
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
 		
 		char buff[256];
 		int i = 1;
+		
 		drawViewUsers();
 		
 		while(1)
 		{
 			fgets(buff, 255, (FILE*)fp);
+			
 			if(feof(fp)) break;
-			temp = strtok((char*)decrypt(buff), ",");
+			
+			temp = strtok(decrypt(buff), ",");
 			strcpy(username, temp);
 			temp = strtok(NULL, ",");
 			temp = strtok(NULL, ",");
@@ -753,10 +816,27 @@ void viewUsers()
 			i++;
 		}
 		
-		free(type);
-		free(username);
-		fclose(fp);
+		temp = strtok(NULL, ",");
 		
+		if(type != NULL)
+		{
+			free(type);
+			type = NULL;
+		}
+		
+		if(username != NULL)
+		{
+			free(username);
+			username = NULL;
+		}
+
+		if(temp == NULL)
+		{
+			free(temp);
+			temp = NULL;
+		}
+		
+		fclose(fp);
 		pressEnterKey();
 	}
 }
@@ -793,6 +873,12 @@ char *sread(int size)
 	else
 	{
 		strncpy(string, temp, size);
+	}
+	
+	if(temp != NULL)
+	{
+		free(temp);
+		temp = NULL;
 	}
 	
 	string[size] = '\0';
@@ -871,50 +957,59 @@ void changepass(User currentUser)
 				strcpy(pass, sread(16));
 
 				/* does it match? */
-				if(hash(pass) == atoi(temp))
+				if(hash(pass) == (int)strtol(temp, NULL, 10))
 				{
 					printf("New Password: ");
 					strcpy(pass, wspace(16));
 					strcpy(pass, createPassword());
-
-					/* verify it was valid */
-					printf("Reenter New Password: ");
-					strcpy(pass2, createPassword());
-					
-					if(strcmp(pass, pass2) == 0)
+					printf("DONE\n");
+					printf("pass = [%s]\n", pass);
+					if(pass != NULL)
 					{
-						/* get the type again */
-						temp = strtok(NULL, ",");
-
-						strcpy(string, userGetName(currentUser));
-						strcat(string, ",");
-					
-						snprintf(buff, 10, "%d", hash(pass));
-						strcat(string, buff);
-					
-						strcat(string, ",");
-						strncat(string, temp, 1);
-					
-						strcpy(string, encrypt(string));
-						strcat(string, "\n");
-				
-						strcpy(pass, wspace(strlen(pass)));
-						strcpy(pass2, wspace(strlen(pass2)));
-						strcpy(buffer, wspace(strlen(buffer)));
-					
-						fprintf(nfp, "%s", string);
-					
-						strcpy(string, wspace(strlen(string)));
+						/* verify it was valid */
+						printf("Reenter New Password: ");
+						strcpy(pass2, createPassword());
 						
-						writeLogs(currentUser, "Password change success");
+						if(strcmp(pass, pass2) == 0)
+						{
+							/* get the type again */
+							temp = strtok(NULL, ",");
+
+							strcpy(string, userGetName(currentUser));
+							strcat(string, ",");
+						
+							snprintf(buff, 10, "%d", hash(pass));
+							strcat(string, buff);
+						
+							strcat(string, ",");
+							strncat(string, temp, 1);
+						
+							strcpy(string, encrypt(string));
+							strcat(string, "\n");
+					
+							strcpy(pass, wspace(strlen(pass)));
+							strcpy(pass2, wspace(strlen(pass2)));
+							strcpy(buffer, wspace(strlen(buffer)));
+						
+							fprintf(nfp, "%s", string);
+						
+							strcpy(string, wspace(strlen(string)));
+							
+							writeLogs(currentUser, "Password change success");
+						}
+						else
+						{
+							printf("\nNew password mismatch! Password was not changed.\n");
+							writeLogs(currentUser, "Password change failure - password mismatch");
+							pressEnterKey();
+							fprintf(nfp, "%s", line);
+						}						
 					}
 					else
 					{
-						printf("\nNew password mismatch! Password was not changed.\n");
-						writeLogs(currentUser, "Password change failure - password mismatch");
-						pressEnterKey();
-						fprintf(nfp, "%s", line);
+						printf("New password does not meet requirements!\n");
 					}
+
 				}
 				else
 				{
@@ -1000,7 +1095,7 @@ int verify(User currentUser)
 				strcpy(password, wspace(MAX_CHAR));
 				
 				/* password match? */
-				if(hashpass == atoi(temp))
+				if(hashpass == (int)strtol(temp, NULL, 10))
 				{
 					fclose(fp);
 					return 1;
@@ -1036,7 +1131,7 @@ void deleteUser(User currentAdmin)
 	}
 	else
 	{
-		printf("\033[2J");
+		printf("\033[2J\033[;H");
 		printf("\n-------------[ DELETE USER ]-------------\n");
 		
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
@@ -1194,17 +1289,19 @@ char *createPassword()
 		{
 			return password;
 		}
-		else return NULL;
+		else return 0;
 	}
-	else return NULL;
+	else
+	{
+		printf("Password is not between 8 and 16 characters!\n");
+		return 0;
+	}
 }
 //////////////////////////////
 
 /* DATA */
 void addNewPatient()
 { 
-   int MAX_CHAR = 256;
-   
    // open file
    FILE *fp;
    fp = fopen("./patients.bin","a");
@@ -1275,7 +1372,7 @@ void addNewPatient()
 		}
 	  
 		printf("Patient Height(cm): ");
-		height = atoi(sread(3));
+		height = (int)strtol(sread(3), NULL, 10);
 		if(height > 300)
 		{
 			printf("Invalid input length!\n");
@@ -1283,7 +1380,7 @@ void addNewPatient()
 		}
 	  
 		printf("Patient Weight(lbs): ");
-		weight = atoi(sread(3));
+		weight = (int)strtol(sread(3), NULL, 10);
 		if(weight > 999)
 		{
 			printf("Invalid input length!\n");
@@ -1440,8 +1537,6 @@ void setAllergyInfo(int ssnhash)
 	}
 	else
 	{
-		int MAX_CHAR = 256;
-		
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
 		char *allergies = malloc(sizeof(char*) * MAX_CHAR * 10);
 		
@@ -1477,7 +1572,6 @@ void getAllergyInfo(int ssnhash)
 	}
 	else
 	{
-		int MAX_CHAR = 256;
 		int count = getUserCount(fp); //number of patients in file
 		int i;
 		int found = 0;
@@ -1493,7 +1587,7 @@ void getAllergyInfo(int ssnhash)
 			temp = strtok(buffer, "|");
 			
 			/* hash match? */
-			if(ssnhash == atoi(temp))
+			if(ssnhash == (int)strtol(temp, NULL, 10))
 			{
 				printf("Patient Allergies\n");
 				printf("-----------------\n");
@@ -1549,8 +1643,6 @@ void setPrescriptionInfo(int ssnhash)
 	}
 	else
 	{
-		int MAX_CHAR = 256;
-		
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
 		char *prescriptions = malloc(sizeof(char*) * MAX_CHAR * 10);
 		
@@ -1586,7 +1678,6 @@ void getPrescriptionInfo(int ssnhash)
 	}
 	else
 	{
-		int MAX_CHAR = 256;
 		int count = getUserCount(fp); //number of patients in file
 		int i;
 		int found = 0;
@@ -1602,7 +1693,7 @@ void getPrescriptionInfo(int ssnhash)
 			temp = strtok(buffer, "|");
 			
 			/* hash match? */
-			if(ssnhash == atoi(temp))
+			if(ssnhash == (int)strtol(temp, NULL, 10))
 			{
 				printf("Patient Prescriptions\n");
 				printf("---------------------\n");
@@ -1647,8 +1738,6 @@ void getPrescriptionInfo(int ssnhash)
 
 void findPatient()
 {
-	int MAX_CHAR = 256;
-	
 	FILE *fp = fopen("./patients.bin", "r");
 	
 	if(fp == NULL)
@@ -1681,19 +1770,19 @@ void findPatient()
 			temp = strtok(buffer, ",");
 			
 			/* hash match? */
-			if(hashvalue == atoi(temp))
+			if(hashvalue == (int)strtol(temp, NULL, 10))
 			{
 				found = 1;
 				char *lname = strtok(NULL, ",");
 				char *fname = strtok(NULL, ",");
 				char *dob = strtok(NULL, ",");
-				int h = atoi(strtok(NULL,","));
-				int w = atoi(strtok(NULL,","));
-				int a = atoi(strtok(NULL,","));
-				int su = atoi(strtok(NULL,","));
-				int sm = atoi(strtok(NULL,","));
-				int m = atoi(strtok(NULL,","));
-				int dr = atoi(strtok(NULL,","));
+				int h = (int)strtol((strtok(NULL,",")), NULL, 10);
+				int w = (int)strtol((strtok(NULL,",")), NULL, 10);
+				int a = (int)strtol((strtok(NULL,",")), NULL, 10);
+				int su = (int)strtol((strtok(NULL,",")), NULL, 10);
+				int sm = (int)strtol((strtok(NULL,",")), NULL, 10);
+				int m = (int)strtol((strtok(NULL,",")), NULL, 10);
+				int dr = (int)strtol((strtok(NULL,",")), NULL, 10);
 				
 				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
 				drawPatientInfo();
@@ -1747,7 +1836,6 @@ void findPatient()
 
 void filteredSearch()
 {
-	int MAX_CHAR = 256;
 	int j = 1;
 	
 	FILE *fp = fopen("./patients.bin", "r");
@@ -1782,7 +1870,7 @@ void filteredSearch()
 
 		if((int)strlen(input) < 2)
 		{
-			value = atoi(input);
+			value = (int)strtol(input, NULL, 10);
 			free(input);
 		}
 		else
@@ -1791,35 +1879,36 @@ void filteredSearch()
 			pressEnterKey();
 			return;
 		}
-
-		sleep(5);
-		
-		printf("\033[2J");
 		
 		/* drawing elements */
 		if(value == 1)
 		{
+			printf("\033[2J\033[;H");
 			printf("---[ ALLERGIES ]---\n\n");
 		}
 		else if(value == 2)
 		{
+			printf("\033[2J\033[;H");
 			printf("---[ PRIOR SURGERIES ]---\n\n");			
 		}
 		else if(value == 3)
 		{
+			printf("\033[2J\033[;H");
 			printf("---[ SMOKERS ]---\n\n");			
 		}
 		else if(value == 4)
 		{
+			printf("\033[2J\033[;H");
 			printf("---[ MENTAL ILLNESS ]---\n\n");			
 		}
 		else if(value == 5)
 		{
+			printf("\033[2J\033[;H");
 			printf("---[ PRESCRIPTIONS ]---\n\n");			
 		}
 		else
 		{
-			printf("Invalid search parameter!\n");
+			printf("\nInvalid search parameter!\n");
 			pressEnterKey();
 			return;
 		}
@@ -1837,13 +1926,13 @@ void filteredSearch()
 			char *lname = strtok(NULL, ",");
 			char *fname = strtok(NULL, ",");
 			char *dob = strtok(NULL, ",");
-			int h = atoi(strtok(NULL,","));
-			int w = atoi(strtok(NULL,","));
-			int a = atoi(strtok(NULL,","));
-			int su = atoi(strtok(NULL,","));
-			int sm = atoi(strtok(NULL,","));
-			int m = atoi(strtok(NULL,","));
-			int dr = atoi(strtok(NULL,","));
+			int h = (int)strtol((strtok(NULL,",")), NULL, 10);
+			int w = (int)strtol((strtok(NULL,",")), NULL, 10);
+			int a = (int)strtol((strtok(NULL,",")), NULL, 10);
+			int su = (int)strtol((strtok(NULL,",")), NULL, 10);
+			int sm = (int)strtol((strtok(NULL,",")), NULL, 10);
+			int m = (int)strtol((strtok(NULL,",")), NULL, 10);
+			int dr = (int)strtol((strtok(NULL,",")), NULL, 10);
 			
 			Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
 			
@@ -1893,6 +1982,12 @@ void filteredSearch()
 			}
 		}
 		
+		j--;
+		
+		if(j == 0)
+		{
+			printf("No patients match the search parameter.\n");
+		}
 		fclose(fp);
 	}
 	
@@ -1929,7 +2024,6 @@ Patient createPatient(char *social, char *lastname, char *firstname, char *dob, 
 
 void deletePatient(User currentDoctor)
 {
-	int MAX_CHAR = 256;
 	FILE *fp = fopen("./patients.bin", "r");
 	FILE *nfp = fopen("./temp2", "a");
 
@@ -1941,7 +2035,7 @@ void deletePatient(User currentDoctor)
 	}
 	else
 	{
-		printf("\033[2J");
+		printf("\033[2J\033[;H");
 		printf("\n-------------[ DELETE PATIENT ]-------------\n");
 		
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
@@ -1977,7 +2071,7 @@ void deletePatient(User currentDoctor)
 			temp = strtok(buffer, ",");
 			
 			/* check if the social security hash matches */
-			if(atoi(temp) == hashsocial && found == 0)
+			if((int)strtol(temp, NULL, 10) == hashsocial && found == 0)
 			{
 				found = 1;
 				
@@ -2203,7 +2297,7 @@ void readLogs()
 	
 	char buff[255];
 	
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 
 	drawLogs();
 
@@ -2351,7 +2445,7 @@ void viewAppointments()
 void drawLogin()
 {
 	/* clear the screen */
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf(".-----------.\n");
 	printf("|    ###    | ':.:'  Health Information  ':.:'\n");
 	printf("|    ###    |    ':. Data Record System .:'	\n");
@@ -2366,9 +2460,9 @@ void drawLogin()
 /* draw the main menu depending on user */
 void drawMenu(User currentUser)
 {
-	char *name = userGetName(currentUser);
-	int type = userGetType(currentUser);
-	printf("\033[2J");
+	const char *name = userGetName(currentUser);
+	const int type = userGetType(currentUser);
+	printf("\033[2J\033[;H");
 	printf("\n-------------[ MAIN MENU ]-------------\n");
 	printf(" Hello, %s\n", name);
 	printf("---------------------------------------\n");
@@ -2437,7 +2531,7 @@ void drawMenu(User currentUser)
 void drawPatientSearch(FILE *fp)
 {
 	int count = getUserCount(fp);
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n-------------[ PATIENT SEARCH ]-------------\n");
 	printf("Please enter the social security number of the patient.\n");
 	printf("Patients in file: %d\n", count);
@@ -2447,7 +2541,7 @@ void drawPatientSearch(FILE *fp)
 void drawFilteredSearch(FILE *fp)
 {
 	int count = getUserCount(fp);
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n-------------[ FILTERED SEARCH ]-------------\n");
 	printf("Here you can view all patients that meet a specific criteria.\n");
 	printf("For more detailed information, please use Search Patient.\n");
@@ -2457,63 +2551,63 @@ void drawFilteredSearch(FILE *fp)
 
 void drawPatientInfo()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n-------------[ PATIENT INFO ]-------------\n");
 	printf("\n");
 }
 
 void drawPatientNew()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n-------------[ CREATE NEW PATIENT ]-------------\n");
 	printf("\n");
 }
 
 void drawAppointment()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n------------[ NEW APPOINTMENT ]------------\n");
 	printf("\n");
 }
 
 void drawAppointmentList(FILE *fp)
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n------------[ APPOINTMENT LIST ]------------\n");
 	printf("\n");
 }
 
 void drawLogs()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n------------[ LOGS ]------------\n");
 	printf("\n");
 }
 
 void drawViewUsers()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n------------[ USER LIST ]------------\n");
 	printf("\n");	
 }
 
 void drawAddUser()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n------------[ ADD USER ]------------\n");
 	printf("\n");
 }
 
 void drawPassword()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("\n------------[ CHANGE PASSWORD ]------------\n");
 	printf("\n");
 }
 
 void drawExit()
 {
-	printf("\033[2J");
+	printf("\033[2J\033[;H");
 	printf("'':. You have been successfully logged off! .:''\n");
 	printf("  ':.: The program will close momentarily :.:'\n");
 	printf("\n");		
