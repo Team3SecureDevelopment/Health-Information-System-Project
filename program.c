@@ -43,121 +43,63 @@ struct patient
 
 /* PROTOTYPES */
 void writeLogs(User currentUser, char *purpose);
-
 void readLogs();
-
 void addNewPatient();
-
 void findPatient();
-
 Patient createPatient(char*, char*, char*, char*, int, int, char, char, char, char, char);
-
 void setAllergyInfo(int);
-
 void getAllergyInfo(int);
-
 void setPrescriptionInfo(int);
-
 void getPrescriptionInfo(int);
-
 char *patientGetFirstName(Patient);
-
 char *patientGetLastName(Patient);
-
 char *patientGetDOB(Patient);
-
 char *patientGetSocial(Patient);
-
 int patientGetHeight(Patient);
-
 int patientGetWeight(Patient);
-
 int patientIsSmoker(Patient);
-
 int patientHadSurgeries(Patient);
-
 int patientMentalIllness(Patient);
-
 int patientHasAllergies(Patient);
-
 int patientOnPrescriptions(Patient);
-
 void filteredSearch();
-
 void deletePatient(User currentDoctor);
-
 void drawMenu(User);
-
 void drawLogin();
-
 void drawPatientSearch(FILE *fp);
-
 void drawFilteredSearch(FILE *fp);
-
 void drawPatientInfo();
-
 void drawPatientNew();
-
 void drawAppointment();
-
 void drawAppointmentList(FILE *fp);
-
 void drawLogs();
-
 void drawViewUsers();
-
 void drawAddUser();
-
 void drawPassword();
-
 void drawExit();
-
 void createAppointment();
-
 void viewAppointments();
-
 char *encrypt(char *);
-
 char *decrypt(char *);
-
 User getUser(char *, int);
-
 Session createNewSession(User, unsigned long int);
-
 User sessionGetUser(Session);
-
 time_t sessionGetLoginTime(Session);
-
 char *userGetName(User);
-
 int userGetType(User);
-
 Session  authenticate();
-
 int hash(char *);
-
 int getUserCount(FILE *fp);
-
 char *getLine(FILE *fp, int);
-
 User createNewUser(char *, int);
-
 void addUser();
-
 void viewUsers();
-
 char *sread(int size);
-
 char *wspace(int size);
-
 void changepass(User);
-
 void pressEnterKey();
-
 int verify(User);
-
 void deleteUser(User);
-
 char *createPassword();
 
 ////////////////
@@ -182,7 +124,7 @@ int main()
 		int type = userGetType(currentUser);
 		char *menustring = malloc(sizeof(char) * 2);
 
-		system("clear");
+		printf("\033[2J");
 
 		while(active == 0)
 		{
@@ -413,7 +355,7 @@ int main()
 
 	free(newSession);
 	sleep(2);
-	system("clear");
+	printf("\033[2J");
 	return 0;
 }
 ///////////////////
@@ -645,7 +587,7 @@ int getUserCount(FILE *fp)
 	char c;
 
 	/* make sure we are at the beginning of the file */
-	rewind(fp);
+	fseek(fp, 0, SEEK_SET);
 
 	while(c != EOF)
 	{
@@ -667,7 +609,7 @@ char *getLine(FILE *fp, int line)
 	char *string = malloc(sizeof(char*) * MAX_CHAR);
 	int i = 0;
 
-	rewind(fp);
+	fseek(fp, 0, SEEK_SET);
 
 	while(i <= line)
 	{
@@ -904,8 +846,8 @@ void changepass(User currentUser)
 		int length = getUserCount(fp);
 		int i;
 		
-		rewind(fp);
-		rewind(nfp);
+		fseek(fp, 0, SEEK_SET);
+		fseek(nfp, 0, SEEK_SET);
 		
 		for(i = 0; i < length; i++)
 		{
@@ -1094,7 +1036,7 @@ void deleteUser(User currentAdmin)
 	}
 	else
 	{
-		system("clear");
+		printf("\033[2J");
 		printf("\n-------------[ DELETE USER ]-------------\n");
 		
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
@@ -1121,8 +1063,8 @@ void deleteUser(User currentAdmin)
 		int flag = 0;
 		int found = 0;
 		
-		rewind(fp);
-		rewind(nfp);
+		fseek(fp, 0, SEEK_SET);
+		fseek(nfp, 0, SEEK_SET);
 		
 		/* go through userdata.bin until we find the user */
 		for(i = 0; i < length; i++)
@@ -1267,7 +1209,7 @@ void addNewPatient()
    FILE *fp;
    fp = fopen("./patients.bin","a");
    
-   rewind(fp);
+   fseek(fp, 0, SEEK_SET);
    
    if(fp == NULL)
    {
@@ -1852,7 +1794,7 @@ void filteredSearch()
 
 		sleep(5);
 		
-		system("clear");
+		printf("\033[2J");
 		
 		/* drawing elements */
 		if(value == 1)
@@ -1999,7 +1941,7 @@ void deletePatient(User currentDoctor)
 	}
 	else
 	{
-		system("clear");
+		printf("\033[2J");
 		printf("\n-------------[ DELETE PATIENT ]-------------\n");
 		
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
@@ -2022,8 +1964,8 @@ void deletePatient(User currentDoctor)
 		int flag = 0;
 		int found = 0;
 		
-		rewind(fp);
-		rewind(nfp);
+		fseek(fp, 0, SEEK_SET);
+		fseek(nfp, 0, SEEK_SET);
 		
 		/* go through userdata.bin until we find the user */
 		for(i = 0; i < length; i++)
@@ -2261,7 +2203,7 @@ void readLogs()
 	
 	char buff[255];
 	
-	system("clear");
+	printf("\033[2J");
 
 	drawLogs();
 
@@ -2409,7 +2351,7 @@ void viewAppointments()
 void drawLogin()
 {
 	/* clear the screen */
-	system("clear");
+	printf("\033[2J");
 	printf(".-----------.\n");
 	printf("|    ###    | ':.:'  Health Information  ':.:'\n");
 	printf("|    ###    |    ':. Data Record System .:'	\n");
@@ -2426,7 +2368,7 @@ void drawMenu(User currentUser)
 {
 	char *name = userGetName(currentUser);
 	int type = userGetType(currentUser);
-	system("clear");
+	printf("\033[2J");
 	printf("\n-------------[ MAIN MENU ]-------------\n");
 	printf(" Hello, %s\n", name);
 	printf("---------------------------------------\n");
@@ -2495,7 +2437,7 @@ void drawMenu(User currentUser)
 void drawPatientSearch(FILE *fp)
 {
 	int count = getUserCount(fp);
-	system("clear");
+	printf("\033[2J");
 	printf("\n-------------[ PATIENT SEARCH ]-------------\n");
 	printf("Please enter the social security number of the patient.\n");
 	printf("Patients in file: %d\n", count);
@@ -2505,7 +2447,7 @@ void drawPatientSearch(FILE *fp)
 void drawFilteredSearch(FILE *fp)
 {
 	int count = getUserCount(fp);
-	system("clear");
+	printf("\033[2J");
 	printf("\n-------------[ FILTERED SEARCH ]-------------\n");
 	printf("Here you can view all patients that meet a specific criteria.\n");
 	printf("For more detailed information, please use Search Patient.\n");
@@ -2515,63 +2457,63 @@ void drawFilteredSearch(FILE *fp)
 
 void drawPatientInfo()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n-------------[ PATIENT INFO ]-------------\n");
 	printf("\n");
 }
 
 void drawPatientNew()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n-------------[ CREATE NEW PATIENT ]-------------\n");
 	printf("\n");
 }
 
 void drawAppointment()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n------------[ NEW APPOINTMENT ]------------\n");
 	printf("\n");
 }
 
 void drawAppointmentList(FILE *fp)
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n------------[ APPOINTMENT LIST ]------------\n");
 	printf("\n");
 }
 
 void drawLogs()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n------------[ LOGS ]------------\n");
 	printf("\n");
 }
 
 void drawViewUsers()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n------------[ USER LIST ]------------\n");
 	printf("\n");	
 }
 
 void drawAddUser()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n------------[ ADD USER ]------------\n");
 	printf("\n");
 }
 
 void drawPassword()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("\n------------[ CHANGE PASSWORD ]------------\n");
 	printf("\n");
 }
 
 void drawExit()
 {
-	system("clear");
+	printf("\033[2J");
 	printf("'':. You have been successfully logged off! .:''\n");
 	printf("  ':.: The program will close momentarily :.:'\n");
 	printf("\n");		
