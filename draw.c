@@ -60,9 +60,8 @@ void drawMenu(User currentUser)
 	{
 		printf(" 1 | View Appointments\n");
 		printf(" 2 | Create New Appointment\n");
-		printf(" 3 | Delete Appointment\n");
-		printf(" 4 | Change Password\n");
-		printf(" 5 | Log Off\n");
+		printf(" 3 | Change Password\n");
+		printf(" 4 | Log Off\n");
 		printf("\n");
 	}
 	/* if auditor */

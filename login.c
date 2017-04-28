@@ -44,6 +44,8 @@ Session authenticate()
 	if(strlen(username) > 256)
 	{
 		printf("Invalid username length!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 	printf("Password: ");
@@ -52,6 +54,8 @@ Session authenticate()
 	if(strlen(password) > 256 || strlen(password) < 8)
 	{
 		printf("Invalid password length!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 
@@ -83,6 +87,8 @@ User getUser(char *username, int password)
 	if(fp == NULL)
 	{
 		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 	else
@@ -120,6 +126,8 @@ User getUser(char *username, int password)
 				else
 				{
 					printf("\nInvalid username or password!\n");
+					printf("\nPress any key to continue...\n");
+					getchar();
 					writeLogs(createNewUser(username, -1), "Authentication failure - Invalid username/password");
 					fclose(fp);
 					return NULL;
@@ -128,6 +136,8 @@ User getUser(char *username, int password)
 		}
 		
 		printf("Could not find user in the data file.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		fclose(fp);
 		return NULL;
 	}
@@ -319,6 +329,8 @@ void addUser()
 	if(fp == NULL)
 	{
 		printf("Error! Could not open \"userdata.bin\" in the directory!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		exit(1);
 	}
 	else
@@ -376,6 +388,8 @@ void viewUsers()
 	if(fp == NULL)
 	{
 		printf("Could not open \"userdata.bin\" file!\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return;
 	}
 	else
@@ -423,6 +437,8 @@ char *sread(int size)
 	if(string == NULL && temp == NULL)
 	{
 		printf("Could not allocate memory\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 	
@@ -466,6 +482,8 @@ char *wspace(int size)
 	if(string == NULL)
 	{
 		printf("Could not allocate memory\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return NULL;
 	}
 	
@@ -487,6 +505,8 @@ void changepass(User currentUser)
 	if(fp == NULL)
 	{
 		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return;
 	}
 	else
@@ -565,6 +585,8 @@ void changepass(User currentUser)
 					else
 					{
 						printf("\nNew password mismatch! Password was not changed.\n");
+						printf("\nPress any key to continue...\n");
+						getchar();
 						writeLogs(currentUser, "Password change failure - password mismatch");
 						fprintf(nfp, line);
 					}
@@ -614,6 +636,8 @@ int verify(User currentUser)
 	if(fp == NULL)
 	{
 		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return 0;
 	}
 	else
@@ -658,6 +682,8 @@ int verify(User currentUser)
 				else
 				{
 					printf("Invalid password!\n");
+					printf("\nPress any key to continue...\n");
+					getchar();
 					writeLogs(currentUser, "Password verification failure");
 					fclose(fp);
 					return 0;
@@ -666,6 +692,8 @@ int verify(User currentUser)
 		}
 		
 		printf("Could not find user in the data file.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		fclose(fp);
 		return 0;
 	}
@@ -679,6 +707,8 @@ void deleteUser(User currentAdmin)
 	if(fp == NULL)
 	{
 		printf("Error! Could not locate \"userdata.bin\" in the directory.\n");
+		printf("\nPress any key to continue...\n");
+		getchar();
 		return;
 	}
 	else
@@ -699,6 +729,8 @@ void deleteUser(User currentAdmin)
 		if(strncmp(username, userGetName(currentAdmin), MAX_CHAR) == 0)
 		{
 			printf("\nCannot delete self! Deletion halted.\n");
+			printf("\nPress any key to continue...\n");
+			getchar();
 			fclose(fp);
 			fclose(nfp);
 			pressEnterKey();
@@ -789,6 +821,8 @@ void deleteUser(User currentAdmin)
 		if(found == 0)
 		{
 			printf("\nCould not find the specified user in the file.\n");
+			printf("\nPress any key to continue...\n");
+			getchar();
 			pressEnterKey();
 		}
 		else
