@@ -49,7 +49,7 @@ Session authenticate()
 	printf("Password: ");
 	strcpy(password, sread(MAX_CHAR));
 
-	if(strlen(password) > 256 || strlen(password) < 8)
+	if(strlen(password) > 256)
 	{
 		printf("Invalid password length!\n");
 		return NULL;
@@ -336,8 +336,17 @@ void addUser()
 		printf("Username: ");
 		strcpy(username, sread(64));
 		
+		printf("All passwords must contain at least one capital, one number, and one special character !@#$* \nLength must be between 8 and 16 characters\n");
 		printf("Password: ");
 		strcpy(password, createPassword());
+		
+		printf("created password is [%s]\n", password);
+		/* if password creation fails */
+		if(password == NULL)
+		{
+			printf("\nPassword entered does not meet the requirements!\n");
+			return;
+		}
 		
 		hashvalue = hash(password);
 		strcpy(password, wspace(strlen(password)));
@@ -392,6 +401,7 @@ void viewUsers()
 		{
 			fgets(buff, 255, (FILE*)fp);
 			if(feof(fp)) break;
+			printf("LINE: %s\n", decrypt(buff));
 			temp = strtok((char*)decrypt(buff), ",");
 			strcpy(username, temp);
 			temp = strtok(NULL, ",");
@@ -417,7 +427,7 @@ char *sread(int size)
 	int i = 0;
 	char ch;
 	
-	char *temp = malloc(sizeof(char*) * 16 * size);
+	char *temp = malloc(sizeof(char*) * size+1);
 	char *string = malloc(sizeof(char*) * size+1);
 
 	if(string == NULL && temp == NULL)
@@ -429,15 +439,13 @@ char *sread(int size)
 	while((ch = getchar()) != '\n')
 	{
 		temp[i] = ch;
-		i++;
+		if(i < size)
+		{
+			i++;
+		}
 	}
-	
-	printf("Temp: [%s]\n", temp);
-	printf("Temp length is %d\n", (int )strlen(temp));
-	
-	printf("Size is %d\n", size);
 
-	if(i < size)
+	if(i <= size)
 	{
 		strncpy(string, temp, i);
 	}
@@ -445,16 +453,11 @@ char *sread(int size)
 	{
 		strncpy(string, temp, size);
 	}
-	printf("i = %d\n", i);
+	
 	string[size] = '\0';
 
-	printf("String: [%s]\n", string);
-	printf("String length is %d\n", (int )strlen(string));
 	fflush(stdin);
-	
-	printf("Size of temp = %d\n", (int )sizeof(temp));
-	printf("Size of string = %d\n", (int )sizeof(string));
-	free(temp);
+
 	return string;
 }
 
@@ -529,11 +532,11 @@ void changepass(User currentUser)
 				{
 					printf("New Password: ");
 					strcpy(pass, wspace(16));
-					strcpy(pass, sread(16));
+					strcpy(pass, createPassword());
 
 					/* verify it was valid */
 					printf("Reenter New Password: ");
-					strcpy(pass2, sread(16));
+					strcpy(pass2, createPassword());
 					
 					if(strcmp(pass, pass2) == 0)
 					{
@@ -807,6 +810,41 @@ char *createPassword()
 	 */
 	 
 	char *password = malloc(sizeof(char*) * 16);
+	strcpy(password, sread(16));
 	
-	
+	if(strlen(password) >= 8 && strlen(password) <= 16)
+	{
+		int capflag = 0;
+		int numflag = 0;
+		int spcflag = 0;
+		int i;
+		
+		for(i = 0; i < strlen(password); i++)
+		{
+			/* check if it is a CAPITAL */
+			if(password[i] >=65 && password[i] <= 90)
+			{
+				capflag = 1;
+			}
+			/* check if it is a NUMBER */
+			else if(password[i] >= 48 && password[i] <= 57)
+			{
+				numflag = 1;
+			}
+			else if(password[i] == '!' || password[i] == '@' || password[i] == '#'
+					|| password[i] == '$' || password[i] == '*')
+			{
+				spcflag = 1;
+			}
+		}
+		
+		/* check if the password satisfies all */
+		if(capflag == 1 && numflag == 1 && spcflag == 1)
+		{
+			printf("Password is looking good!\n");
+			return password;
+		}
+		else return NULL;
+	}
+	else return NULL;
 }
