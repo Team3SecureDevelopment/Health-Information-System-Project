@@ -710,7 +710,7 @@ void addUser()
 		strncpy(string, encrypt(string), MAX_CHAR);
 
 		strcat(string, "\n");
-		fprintf(fp, string);
+		fprintf(fp, "%s", string);
 		
 		free(string);
 		free(buffer);
@@ -902,7 +902,7 @@ void changepass(User currentUser)
 						strcpy(pass2, wspace(strlen(pass2)));
 						strcpy(buffer, wspace(strlen(buffer)));
 					
-						fprintf(nfp, string);
+						fprintf(nfp, "%s", string);
 					
 						strcpy(string, wspace(strlen(string)));
 						
@@ -913,7 +913,7 @@ void changepass(User currentUser)
 						printf("\nNew password mismatch! Password was not changed.\n");
 						writeLogs(currentUser, "Password change failure - password mismatch");
 						pressEnterKey();
-						fprintf(nfp, line);
+						fprintf(nfp, "%s", line);
 					}
 				}
 				else
@@ -921,13 +921,13 @@ void changepass(User currentUser)
 					printf("\nOld password is incorrect!\n");
 					writeLogs(currentUser, "Password change failure - incorrect password");
 					pressEnterKey();
-					fprintf(nfp, line);
+					fprintf(nfp, "%s", line);
 				}
 			}
 			else
 			{
 				/* not the one we need to change, so add to temp */
-				fprintf(nfp, line);
+				fprintf(nfp, "%s", line);
 			}
 		}
 
@@ -1133,7 +1133,7 @@ void deleteUser(User currentAdmin)
 			else
 			{
 				/* copy over the users who are not affected */
-				fprintf(nfp, line);
+				fprintf(nfp, "%s", line);
 			}
 		}
 
@@ -1418,7 +1418,7 @@ void addNewPatient()
 		strncpy(string, encrypt(string), MAX_CHAR);
 	
 		strcat(string, "\n");
-		fprintf(fp, string);
+		fprintf(fp, "%s", string);
 	  
 		fclose(fp);
 		
@@ -1459,7 +1459,7 @@ void setAllergyInfo(int ssnhash)
 		strcat(string, "\n");
 		
 		/* write to file */
-		fprintf(fp, string);
+		fprintf(fp, "%s", string);
 		fclose(fp);
 	}
 }
@@ -1568,7 +1568,7 @@ void setPrescriptionInfo(int ssnhash)
 		strcat(string, "\n");
 		
 		/* write to file */
-		fprintf(fp, string);
+		fprintf(fp, "%s", string);
 		fclose(fp);
 	}
 }
@@ -2051,7 +2051,7 @@ void deletePatient(User currentDoctor)
 			else
 			{
 				/* copy over the users who are not affected */
-				fprintf(nfp, line);
+				fprintf(nfp, "%s", line);
 			}
 		}
 
@@ -2191,7 +2191,7 @@ void writeLogs(User currentUser, char *purpose)
 	strcpy(string, encrypt(string));
 	strcat(string, "\n");
 	
-	fprintf(fp, string);
+	fprintf(fp, "%s", string);
 	fclose(fp);
 	free(string);
 }
@@ -2297,7 +2297,7 @@ void createAppointment()
 	strcpy(string, encrypt(string));
 	strcat(string, "\n");
 	
-	fprintf(fp, string);
+	fprintf(fp, "%s", string);
 	
 	strcpy(string, wspace(strlen(string)));
 	free(string);
