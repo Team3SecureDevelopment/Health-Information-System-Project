@@ -1,0 +1,401 @@
+Script started on Fri 28 Apr 2017 11:00:46 AM EDT
+]0;rose@rosebud: ~/Health-Information-System-Projectrose@rosebud:~/Health-Information-System-Project$ sc[K[Krosecheckers program.c 
+"/home/rose/Health-Information-System-Project/program.c", line 592: warning: 
+          variable "c" is used before its value is set
+  	while(c != EOF)
+  	      ^
+
+"/home/rose/Health-Information-System-Project/program.c", line 2521: warning: 
+          last line of file ends without a newline
+  /////////////////////////////////////////////
+                                               ^
+
+program.c:109: warning: DCL00-C: Const-qualify immutable objects: newSession
+program.c:120: warning: DCL00-C: Const-qualify immutable objects: currentUser
+program.c:124: warning: DCL00-C: Const-qualify immutable objects: type
+program.c:125: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:139: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:140: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:140: error: MEM30-C: Do not access freed memory
+program.c:140: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:332: warning: DCL00-C: Const-qualify immutable objects: departure
+program.c:338: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:339: warning: DCL01-C: Do not reuse variable names in subscopes: time
+program.c:339: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:350: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:351: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:352: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:352: error: MEM34-C: Only free memory allocated dynamically
+program.c:356: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:356: error: MEM34-C: Only free memory allocated dynamically
+program.c:357: warning: EXP12-C: Do not ignore values returned by functions: sleep
+program.c:370: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:371: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:372: warning: DCL00-C: Const-qualify immutable objects: logintime
+program.c:397: warning: DCL00-C: Const-qualify immutable objects: hashValue
+program.c:400: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:402: warning: DCL00-C: Const-qualify immutable objects: newUser
+program.c:406: warning: DCL00-C: Const-qualify immutable objects: newSession
+program.c:411: error: MEM34-C: Only free memory allocated dynamically
+program.c:429: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:432: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:448: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:451: warning: DCL00-C: Const-qualify immutable objects: type
+program.c:451: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:453: warning: DCL00-C: Const-qualify immutable objects: newUser
+program.c:479: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:510: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:523: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:526: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:554: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:557: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:590: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:594: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:594: error: FIO34-C: Use int to capture the return value of character I/O functions
+program.c:608: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:609: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:612: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:617: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:670: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:671: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:672: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:673: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:694: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:698: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:713: error: FIO30-C: Exclude user input from format strings
+program.c:715: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:716: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:735: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:736: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:737: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:745: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:756: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:757: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:780: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:780: error: FIO34-C: Use int to capture the return value of character I/O functions
+program.c:798: error: ARR30-C: Guarantee that array indices are within the valid range
+program.c:842: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:843: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:846: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:849: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:850: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:854: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:865: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:866: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:867: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:868: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:874: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:903: error: STR31-C: String copy destination must contain sufficient storage
+program.c:905: error: FIO30-C: Exclude user input from format strings
+program.c:916: error: FIO30-C: Exclude user input from format strings
+program.c:924: error: FIO30-C: Exclude user input from format strings
+program.c:930: error: FIO30-C: Exclude user input from format strings
+program.c:935: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:936: warning: EXP12-C: Do not ignore values returned by functions: rename
+program.c:948: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:970: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:973: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:976: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:977: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1003: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1042: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1043: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1044: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1061: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:1066: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1067: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1072: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:1085: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1109: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1118: error: MEM30-C: Do not access freed memory
+program.c:1129: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1136: error: FIO30-C: Exclude user input from format strings
+program.c:1150: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1151: warning: EXP12-C: Do not ignore values returned by functions: rename
+program.c:1163: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1173: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1206: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1206: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1212: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1232: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1234: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1235: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1236: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1237: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1238: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1239: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1246: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1254: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1278: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1286: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1421: error: FIO30-C: Exclude user input from format strings
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1443: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1443: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1445: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1446: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1462: error: FIO30-C: Exclude user input from format strings
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1480: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1480: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1481: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:1483: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1487: error: EXP34-C: Ensure pointer is valid before dereferencing it
+compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1496: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1504: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1552: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1552: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1554: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1555: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1571: error: FIO30-C: Exclude user input from format strings
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1589: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1589: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1590: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:1592: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1596: error: EXP34-C: Ensure pointer is valid before dereferencing it
+compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1605: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1613: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1650: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1650: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1663: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1675: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1684: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1690: warning: DCL00-C: Const-qualify immutable objects: h
+program.c:1690: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1691: warning: DCL00-C: Const-qualify immutable objects: w
+program.c:1691: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1692: warning: DCL00-C: Const-qualify immutable objects: a
+program.c:1692: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1693: warning: DCL00-C: Const-qualify immutable objects: su
+program.c:1693: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1694: warning: DCL00-C: Const-qualify immutable objects: sm
+program.c:1694: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1695: warning: DCL00-C: Const-qualify immutable objects: m
+program.c:1695: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1696: warning: DCL00-C: Const-qualify immutable objects: dr
+program.c:1696: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1698: warning: DCL00-C: Const-qualify immutable objects: newPatient
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1717: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1726: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1750: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1750: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1764: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:1767: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1785: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1786: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1795: warning: EXP12-C: Do not ignore values returned by functions: sleep
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1829: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1840: warning: DCL00-C: Const-qualify immutable objects: h
+program.c:1840: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1841: warning: DCL00-C: Const-qualify immutable objects: w
+program.c:1841: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1842: warning: DCL00-C: Const-qualify immutable objects: a
+program.c:1842: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1843: warning: DCL00-C: Const-qualify immutable objects: su
+program.c:1843: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1844: warning: DCL00-C: Const-qualify immutable objects: sm
+program.c:1844: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1845: warning: DCL00-C: Const-qualify immutable objects: m
+program.c:1845: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1846: warning: DCL00-C: Const-qualify immutable objects: dr
+program.c:1846: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1848: warning: DCL00-C: Const-qualify immutable objects: newPatient
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1904: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL00-C: Const-qualify immutable objects: MAX_CHAR
+program.c:1932: warning: DCL01-C: Do not reuse variable names in subscopes: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1947: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1948: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1949: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1958: warning: DCL00-C: Const-qualify immutable objects: hashsocial
+program.c:1960: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1962: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:1967: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1968: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1973: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1980: warning: INT01-C: Use strtol() or a related function to convert a string token to an integer
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1985: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1986: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1995: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:2018: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2029: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2029: error: MEM30-C: Do not access freed memory
+program.c:2030: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2030: error: MEM30-C: Do not access freed memory
+program.c:2031: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2031: error: MEM30-C: Do not access freed memory
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:2047: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:2054: error: FIO30-C: Exclude user input from format strings
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:1932: warning: DCL02-C: Use visually distinct identifiers: MAX_CHAR
+program.c:2068: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:2069: warning: EXP12-C: Do not ignore values returned by functions: rename
+program.c:2140: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2141: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2194: error: FIO30-C: Exclude user input from format strings
+program.c:2212: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:2215: error: STR31-C: String copy destination must contain sufficient storage
+program.c:2234: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2235: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2236: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2237: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2238: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2300: error: FIO30-C: Exclude user input from format strings
+program.c:2303: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2306: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2309: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2312: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2315: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2339: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:2370: warning: DCL00-C: Const-qualify immutable objects: type
+program.c:2439: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:2449: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:2479: warning: DCL13-C: Declare function parameters that are pointers to values not changed by the function as const: fp
+]0;rose@rosebud: ~/Health-Information-System-Projectrose@rosebud:~/Health-Information-System-Project$ exit
+exit
+
+Script done on Fri 28 Apr 2017 11:01:16 AM EDT
