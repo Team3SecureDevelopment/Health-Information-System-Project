@@ -157,7 +157,6 @@ int main()
 				if(menustring != NULL)
 				{
 					menuchoice = strtol(menustring, NULL, 10);
-					//free(menustring);
 					menustring = NULL;
 				}
 				else
@@ -392,19 +391,16 @@ int main()
 		/* free */
 		if(timetotal != NULL)
 		{
-			free(timetotal);
 			timetotal = NULL;
 		}
 		
 		if(string != NULL)
 		{
-			free(string);
 			string = NULL;
 		}
 		
 		if(currentUser != NULL)
 		{
-			free(currentUser);
 			currentUser = NULL;
 		}
 	}
@@ -484,7 +480,6 @@ Session authenticate()
 		/* get rid of it */
 		if(password != NULL)
 		{
-			free(password);
 			password = NULL;
 		}
 	}
@@ -782,7 +777,6 @@ char *getLine(FILE *fp, int line)
 					if(buffer != NULL)
 					{
 						strncpy(buffer, wspace(MAX_CHAR), strlen(buffer));
-						free(buffer);
 						buffer = NULL;
 					}
 					
@@ -892,7 +886,6 @@ void addUser()
 		
 		if(password != NULL)
 		{
-			free(password);
 			password = NULL;
 		}
 		
@@ -917,19 +910,16 @@ void addUser()
 		
 		if(string != NULL)
 		{
-			free(string);
 			string = NULL;
 		}
 		
 		if(buffer != NULL)
 		{
-			free(buffer);
 			buffer = NULL;
 		}
 		
 		if(username != NULL)
 		{
-			free(username);
 			username = NULL;
 		}
 	}
@@ -1003,19 +993,16 @@ void viewUsers()
 			
 			if(type != NULL)
 			{
-				free(type);
 				type = NULL;
 			}
 			
 			if(username != NULL)
 			{
-				free(username);
 				username = NULL;
 			}
 
 			if(temp == NULL)
 			{
-				free(temp);
 				temp = NULL;
 			}
 			
@@ -1070,7 +1057,6 @@ char *sread(int size)
 	
 	if(temp != NULL)
 	{
-		free(temp);
 		temp = NULL;
 	}
 	
@@ -1265,22 +1251,18 @@ void changepass(User currentUser)
 							}
 							if(buff != NULL)
 							{
-								free(buff);
 								buff = NULL;
 							}
 							if(string != NULL)
 							{
-								free(string);
 								string = NULL;
 							}
 							if(pass != NULL)
 							{
-								free(pass);
 								pass = NULL;
 							}
 							if(pass2 != NULL)
 							{
-								free(pass2);
 								pass2 = NULL;
 							}
 						}
@@ -1296,13 +1278,11 @@ void changepass(User currentUser)
 
 		if(line != NULL)
 		{
-			free(line);
 			line = NULL;
 		}
 
 		if(temp != NULL)
 		{
-			free(temp);
 			temp = NULL;
 		}
 
@@ -1335,7 +1315,6 @@ void pressEnterKey()
 	strcpy(null, sread(2));
 	if(null != NULL)
 	{
-		free(null);
 		null = NULL;
 	}
 }
@@ -1531,7 +1510,6 @@ void deleteUser(User currentAdmin)
 									
 									if(string != NULL)
 									{
-										free(string);
 										string = NULL;
 									}
 								}
@@ -1630,7 +1608,6 @@ char *createPassword()
 		{
 			if(password != NULL)
 			{
-				free(password);
 				password = NULL;
 			}
 			
@@ -1642,7 +1619,6 @@ char *createPassword()
 		printf("Password is not between 8 and 16 characters!\n");
 		if(password != NULL)
 		{
-			free(password);
 			password = NULL;
 		}
 		return 0;
@@ -1913,43 +1889,36 @@ void addNewPatient()
 
 		if(c != NULL)
 		{
-			free(c);
 			c = NULL;
 		}
 
 		if(social != NULL)
 		{
-			free(social);
 			social = NULL;
 		}
 		
 		if(dob != NULL)
 		{
-			free(dob);
 			dob = NULL;
 		}
 
 		if(fname != NULL)
 		{
-			free(fname);
 			fname = NULL;
 		}
 		
 		if(lname != NULL)
 		{
-			free(lname);
 			lname = NULL;
 		}
 
 		if(buffer != NULL)
 		{
-			free(buffer);
 			buffer = NULL;
 		}
 
 		if(string != NULL)
 		{
-			free(string);
 			string = NULL;
 		}
    }
@@ -2001,13 +1970,11 @@ void setAllergyInfo(int ssnhash)
 		
 		if(string != NULL)
 		{
-			free(string);
 			string = NULL;
 		}
 		
 		if(allergies != NULL)
 		{
-			free(allergies);
 			allergies = NULL;
 		}
 	}
@@ -2129,13 +2096,11 @@ void setPrescriptionInfo(int ssnhash)
 		
 		if(string != NULL)
 		{
-			free(string);
 			string = NULL;
 		}
 		
 		if(prescriptions != NULL)
 		{
-			free(prescriptions);
 			prescriptions = NULL;
 		}
 	}
@@ -2209,7 +2174,6 @@ void getPrescriptionInfo(int ssnhash)
 			
 			if(temp != NULL)
 			{
-				free(temp);
 				temp = NULL;
 			}
 		}
@@ -2317,7 +2281,6 @@ void findPatient()
 
 				if(temp != NULL)
 				{
-					free(temp);
 					temp = NULL;
 				}
 			}
@@ -2584,7 +2547,6 @@ void deletePatient(User currentDoctor)
 		
 		if(social != NULL)
 		{
-			free(social);
 			social = NULL;
 		}
 		
@@ -2657,7 +2619,6 @@ void deletePatient(User currentDoctor)
 
 							if(c != NULL)
 							{
-								free(c);
 								c = NULL;
 							}
 							
@@ -2687,7 +2648,6 @@ void deletePatient(User currentDoctor)
 									
 									if(string != NULL)
 									{
-										free(string);
 										string = NULL;
 									}
 								}
@@ -2819,13 +2779,11 @@ void writeLogs(User currentUser, char *purpose)
 	
 	if(string != NULL)
 	{
-		free(string);
 		string = NULL;
 	}
 	
 	if(userType != NULL)
 	{
-		free(userType);
 		userType = NULL;
 	}
 }
@@ -2973,35 +2931,30 @@ void createAppointment()
 	strcpy(string, wspace(strlen(string)));
 	if(string != NULL)
 	{
-		free(string);
 		string = NULL;
 	}
 	
 	strcpy(fname, wspace(strlen(fname)));
 	if(fname != NULL)
 	{
-		free(fname);
 		fname = NULL;
 	}
 	
 	strcpy(lname, wspace(strlen(lname)));
 	if(lname != NULL)
 	{
-		free(lname);
 		lname = NULL;
 	}
 	
 	strcpy(date, wspace(strlen(date)));
 	if(date != NULL)
 	{
-		free(date);
 		date = NULL;
 	}
 	
 	strcpy(purpose, wspace(strlen(purpose)));
 	if(purpose != NULL)
 	{
-		free(purpose);
 		purpose = NULL;
 	}
 	
