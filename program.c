@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdint.h>
 
 /* printf("\033[2J\033[;H"); <------------------ ANSI sequence for clear screen, reset cursor */
 
