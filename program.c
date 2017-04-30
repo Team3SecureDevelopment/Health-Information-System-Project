@@ -716,7 +716,7 @@ char *decrypt(char *string)
 int getUserCount(FILE *fp)
 {
 	int i = 0;
-	char c = ' ';
+	signed int c = 0;
 
 	/* make sure we are at the beginning of the file */
 	if(fseek(fp, 0, SEEK_SET) == 0)
@@ -765,33 +765,34 @@ char *getLine(FILE *fp, int line)
 		while(i <= line)
 		{
 			/* get the line */
-			fgets(buffer, MAX_CHAR, fp);
-		
-			if(i == line)
+			if(fgets(buffer, MAX_CHAR, fp) == 0)
 			{
-				/* double check not the end */
-				if(*buffer == EOF)
+				if(i == line)
 				{
-					break;
+					/* double check not the end */
+					if(*buffer == EOF)
+					{
+						break;
+					}
+
+					buffer[strnlen(buffer, MAX_CHAR)] = '\0';
+					strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
+					
+					if(buffer != NULL)
+					{
+						strncpy(buffer, wspace(MAX_CHAR), strlen(buffer));
+						free(buffer);
+						buffer = NULL;
+					}
+					
+					if(string != NULL)
+					{
+						return (char*)string;
+					}
 				}
 
-				buffer[strnlen(buffer, MAX_CHAR)] = '\0';
-				strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
-				
-				if(buffer != NULL)
-				{
-					strncpy(buffer, wspace(MAX_CHAR), strlen(buffer));
-					free(buffer);
-					buffer = NULL;
-				}
-				
-				if(string != NULL)
-				{
-					return (char*)string;
-				}
+				i++;
 			}
-
-			i++;
 		}
 	}
 	
@@ -983,17 +984,18 @@ void viewUsers()
 			
 			while(1)
 			{
-				fgets(buff, 255, (FILE*)fp);
-				
-				if(feof(fp)) break;
-				
-				temp = strtok(decrypt(buff), ",");
-				strcpy(username, temp);
-				temp = strtok(NULL, ",");
-				temp = strtok(NULL, ",");
-				strncpy(type, temp, strlen(temp)-1);
-				printf("%3d.) %s (%s)\n", i, username, type);
-				i++;
+				if(fgets(buff, 255, (FILE*)fp) == 0)
+				{
+					if(feof(fp)) break;
+					
+					temp = strtok(decrypt(buff), ",");
+					strcpy(username, temp);
+					temp = strtok(NULL, ",");
+					temp = strtok(NULL, ",");
+					strncpy(type, temp, strlen(temp)-1);
+					printf("%3d.) %s (%s)\n", i, username, type);
+					i++;
+				}
 			}
 			
 			temp = strtok(NULL, ",");
@@ -1026,7 +1028,7 @@ void viewUsers()
 char *sread(int size)
 {
 	int i = 0;
-	char ch;
+	signed int ch = 0;
 	
 	char *temp = malloc(sizeof(char*) * size+1);
 	char *string = malloc(sizeof(char*) * size+1);
@@ -1146,149 +1148,149 @@ void changepass(User currentUser)
 			{
 				for(i = 0; i < length; i++)
 				{
-					fgets(line, MAX_CHAR, fp);
-					strncpy(buffer, decrypt(line), strlen(line));
-
-					/* tokenize the line */
-					temp = strtok(buffer, ",");
-					
-					/* check if the username matches */
-					if(strncmp(temp, userGetName(currentUser), MAX_CHAR) == 0)
+					if(fgets(line, MAX_CHAR, fp) == 0)
 					{
-						temp = strtok(NULL, ",");
-						
-						char *string = malloc(sizeof(char*) * 256);
-						if(NULL == string)
-						{
-							free(string);
-							string = NULL;
-							printf("memory allocation error\n");
-							exit(1);
-						}
-						
-						char *pass = malloc(sizeof(char*) * 16);
-						if(NULL == pass)
-						{
-							free(pass);
-							pass = NULL;
-							printf("memory allocation error\n");
-							exit(1);
-						}
-						
-						char *pass2 = malloc(sizeof(char*) * 16);
-						if(NULL == pass2)
-						{
-							free(pass2);
-							pass2 = NULL;
-							printf("memory allocation error\n");
-							exit(1);
-						}
-						
-						char *buff = malloc(sizeof(char*) * 10);
-						if(NULL == buff)
-						{
-							free(buff);
-							buff = NULL;
-							printf("memory allocation error\n");
-							exit(1);
-						}
-						
-						/* type in old password for verification */
-						printf("Old Password: ");
-						strcpy(pass, sread(16));
+						strncpy(buffer, decrypt(line), strlen(line));
 
-						/* does it match? */
-						if(hash(pass) == (int)strtol(temp, NULL, 10))
+						/* tokenize the line */
+						temp = strtok(buffer, ",");
+						
+						/* check if the username matches */
+						if(strncmp(temp, userGetName(currentUser), MAX_CHAR) == 0)
 						{
-							printf("New Password: ");
-							strcpy(pass, wspace(16));
-							strcpy(pass, createPassword());
-							printf("DONE\n");
-							printf("pass = [%s]\n", pass);
-							if(pass != NULL)
-							{
-								/* verify it was valid */
-								printf("Reenter New Password: ");
-								strcpy(pass2, createPassword());
-								
-								if(strcmp(pass, pass2) == 0)
-								{
-									/* get the type again */
-									temp = strtok(NULL, ",");
-
-									strcpy(string, userGetName(currentUser));
-									strcat(string, ",");
-								
-									snprintf(buff, 10, "%d", hash(pass));
-									strcat(string, buff);
-								
-									strcat(string, ",");
-									strncat(string, temp, 1);
-								
-									strcpy(string, encrypt(string));
-									strcat(string, "\n");
+							temp = strtok(NULL, ",");
 							
-									strcpy(pass, wspace(strlen(pass)));
-									strcpy(pass2, wspace(strlen(pass2)));
-									strcpy(buffer, wspace(strlen(buffer)));
-								
-									fprintf(nfp, "%s", string);
-								
-									strcpy(string, wspace(strlen(string)));
+							char *string = malloc(sizeof(char*) * 256);
+							if(NULL == string)
+							{
+								free(string);
+								string = NULL;
+								printf("memory allocation error\n");
+								exit(1);
+							}
+							
+							char *pass = malloc(sizeof(char*) * 16);
+							if(NULL == pass)
+							{
+								free(pass);
+								pass = NULL;
+								printf("memory allocation error\n");
+								exit(1);
+							}
+							
+							char *pass2 = malloc(sizeof(char*) * 16);
+							if(NULL == pass2)
+							{
+								free(pass2);
+								pass2 = NULL;
+								printf("memory allocation error\n");
+								exit(1);
+							}
+							
+							char *buff = malloc(sizeof(char*) * 10);
+							if(NULL == buff)
+							{
+								free(buff);
+								buff = NULL;
+								printf("memory allocation error\n");
+								exit(1);
+							}
+							
+							/* type in old password for verification */
+							printf("Old Password: ");
+							strcpy(pass, sread(16));
+
+							/* does it match? */
+							if(hash(pass) == (int)strtol(temp, NULL, 10))
+							{
+								printf("New Password: ");
+								strcpy(pass, wspace(16));
+								strcpy(pass, createPassword());
+								printf("DONE\n");
+								printf("pass = [%s]\n", pass);
+								if(pass != NULL)
+								{
+									/* verify it was valid */
+									printf("Reenter New Password: ");
+									strcpy(pass2, createPassword());
 									
-									writeLogs(currentUser, "Password change success");
+									if(strcmp(pass, pass2) == 0)
+									{
+										/* get the type again */
+										temp = strtok(NULL, ",");
+
+										strcpy(string, userGetName(currentUser));
+										strcat(string, ",");
+									
+										snprintf(buff, 10, "%d", hash(pass));
+										strcat(string, buff);
+									
+										strcat(string, ",");
+										strncat(string, temp, 1);
+									
+										strcpy(string, encrypt(string));
+										strcat(string, "\n");
+								
+										strcpy(pass, wspace(strlen(pass)));
+										strcpy(pass2, wspace(strlen(pass2)));
+										strcpy(buffer, wspace(strlen(buffer)));
+									
+										fprintf(nfp, "%s", string);
+									
+										strcpy(string, wspace(strlen(string)));
+										
+										writeLogs(currentUser, "Password change success");
+									}
+									else
+									{
+										printf("\nNew password mismatch! Password was not changed.\n");
+										writeLogs(currentUser, "Password change failure - password mismatch");
+										pressEnterKey();
+										fprintf(nfp, "%s", line);
+									}						
 								}
 								else
 								{
-									printf("\nNew password mismatch! Password was not changed.\n");
-									writeLogs(currentUser, "Password change failure - password mismatch");
-									pressEnterKey();
-									fprintf(nfp, "%s", line);
-								}						
+									printf("New password does not meet requirements!\n");
+								}
+
 							}
 							else
 							{
-								printf("New password does not meet requirements!\n");
+								printf("\nOld password is incorrect!\n");
+								writeLogs(currentUser, "Password change failure - incorrect password");
+								pressEnterKey();
+								fprintf(nfp, "%s", line);
 							}
-
+							if(buff != NULL)
+							{
+								free(buff);
+								buff = NULL;
+							}
+							if(string != NULL)
+							{
+								free(string);
+								string = NULL;
+							}
+							if(pass != NULL)
+							{
+								free(pass);
+								pass = NULL;
+							}
+							if(pass2 != NULL)
+							{
+								free(pass2);
+								pass2 = NULL;
+							}
 						}
 						else
 						{
-							printf("\nOld password is incorrect!\n");
-							writeLogs(currentUser, "Password change failure - incorrect password");
-							pressEnterKey();
+							/* not the one we need to change, so add to temp */
 							fprintf(nfp, "%s", line);
 						}
-						if(buff != NULL)
-						{
-							free(buff);
-							buff = NULL;
-						}
-						if(string != NULL)
-						{
-							free(string);
-							string = NULL;
-						}
-						if(pass != NULL)
-						{
-							free(pass);
-							pass = NULL;
-						}
-						if(pass2 != NULL)
-						{
-							free(pass2);
-							pass2 = NULL;
-						}
-					}
-					else
-					{
-						/* not the one we need to change, so add to temp */
-						fprintf(nfp, "%s", line);
 					}
 				}
 			}
-			
-			
 		}
 
 		if(line != NULL)
@@ -1305,11 +1307,15 @@ void changepass(User currentUser)
 
 		
 		fclose(fp);
-		remove("./userdata.bin");
-		rename("./temp", "./userdata.bin");
 		fclose(nfp);
 		
-		return;
+		if(remove("./userdata.bin") == 0)
+		{
+			if(rename("./temp", "./userdata.bin") == 0)
+			{
+				printf("Password changed successfully!\n");
+			}
+		}
 	}
 }
 
@@ -1321,8 +1327,8 @@ void pressEnterKey()
 	char *null = malloc(sizeof(char)*3);
 	if(NULL == null)
 	{
-		printf("memory allocation error\n");
-		exit(1);
+		free(null);
+		null = NULL;
 	}
 	strcpy(null, wspace(3));
 	strcpy(null, sread(2));
@@ -2739,8 +2745,7 @@ void readLogs()
 		{
 			if(fgets(buff, 255, (FILE*)fp) == 0)
 			{
-				if(feof(fp))
-						break;
+				if(feof(fp)) break;
 				strcpy(buff, decrypt(buff));
 				strcat(buff, "\n");
 				printf("%s", buff);
@@ -2762,16 +2767,46 @@ void createAppointment()
 	fflush(stdin);
 	drawAppointment();
 
-	int i = 0;
 	char *string = malloc(sizeof(char) * 1025);
+	if(NULL == string)
+	{
+		free(string);
+		string = NULL;
+	}
+	
 	char *fname = malloc(sizeof(char*) * 256);
+	if(NULL == fname)
+	{
+		free(fname);
+		fname = NULL;
+	}
+	
 	char *lname = malloc(sizeof(char*) * 256);
+	if(NULL == lname)
+	{
+		free(lname);
+		lname = NULL;
+	}
+	
 	char *purpose = malloc(sizeof(char*) * 256);
+	if(NULL == purpose)
+	{
+		free(purpose);
+		purpose = NULL;
+	}
+	
 	char *date = malloc(sizeof(char*) * 10);
-
+	if(NULL == date)
+	{
+		free(date);
+		date = NULL;
+	}
+	
+	signed int i = 0;
 	
 	printf("Patient's First Name: ");
 	strcpy(fname, sread(256));
+	
 	if(strlen(fname) > 255)
 	{
 		printf("Invalid length!\n");
@@ -2832,19 +2867,39 @@ void createAppointment()
 	fprintf(fp, "%s", string);
 	
 	strcpy(string, wspace(strlen(string)));
-	free(string);
+	if(string != NULL)
+	{
+		free(string);
+		string = NULL;
+	}
 	
 	strcpy(fname, wspace(strlen(fname)));
-	free(fname);
+	if(fname != NULL)
+	{
+		free(fname);
+		fname = NULL;
+	}
 	
 	strcpy(lname, wspace(strlen(lname)));
-	free(lname);
+	if(lname != NULL)
+	{
+		free(lname);
+		lname = NULL;
+	}
 	
 	strcpy(date, wspace(strlen(date)));
-	free(date);
+	if(date != NULL)
+	{
+		free(date);
+		date = NULL;
+	}
 	
 	strcpy(purpose, wspace(strlen(purpose)));
-	free(purpose);
+	if(purpose != NULL)
+	{
+		free(purpose);
+		purpose = NULL;
+	}
 	
 	fclose(fp);
 }
@@ -2868,9 +2923,11 @@ void viewAppointments()
 
 		while(1)
 		{
-			fgets(buff, 255, (FILE*)fp);
-			if(feof(fp)) break;
-			printf("%s\n", decrypt(buff));
+			if(fgets(buff, 255, (FILE*)fp) == 0)
+			{
+				if(feof(fp)) break;
+				printf("%s\n", decrypt(buff));
+			}
 		}
 		
 		fclose(fp);
@@ -2968,7 +3025,7 @@ void drawMenu(User currentUser)
 
 void drawPatientSearch(FILE *fp)
 {
-	int count = getUserCount(fp);
+	const int count = getUserCount(fp);
 	printf("\033[2J\033[;H");
 	printf("\n-------------[ PATIENT SEARCH ]-------------\n");
 	printf("Please enter the social security number of the patient.\n");
@@ -2978,7 +3035,7 @@ void drawPatientSearch(FILE *fp)
 
 void drawFilteredSearch(FILE *fp)
 {
-	int count = getUserCount(fp);
+	const int count = getUserCount(fp);
 	printf("\033[2J\033[;H");
 	printf("\n-------------[ FILTERED SEARCH ]-------------\n");
 	printf("Here you can view all patients that meet a specific criteria.\n");
