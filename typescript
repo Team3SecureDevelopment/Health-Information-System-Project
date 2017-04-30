@@ -1,83 +1,83 @@
-Script started on Sat 29 Apr 2017 11:20:38 PM EDT
+Script started on Sat 29 Apr 2017 11:28:36 PM EDT
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers program.c
-program.c:159: error: MEM34-C: Only free memory allocated dynamically
-program.c:394: error: MEM34-C: Only free memory allocated dynamically
-program.c:400: error: MEM34-C: Only free memory allocated dynamically
-program.c:406: error: MEM34-C: Only free memory allocated dynamically
-program.c:486: error: MEM34-C: Only free memory allocated dynamically
-program.c:578: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:784: error: MEM34-C: Only free memory allocated dynamically
-program.c:883: error: MEM34-C: Only free memory allocated dynamically
-program.c:894: error: MEM34-C: Only free memory allocated dynamically
-program.c:919: error: MEM34-C: Only free memory allocated dynamically
-program.c:925: error: MEM34-C: Only free memory allocated dynamically
-program.c:931: error: MEM34-C: Only free memory allocated dynamically
-program.c:1005: error: MEM34-C: Only free memory allocated dynamically
-program.c:1011: error: MEM34-C: Only free memory allocated dynamically
-program.c:1017: error: MEM34-C: Only free memory allocated dynamically
-program.c:1072: error: MEM34-C: Only free memory allocated dynamically
-program.c:1267: error: MEM34-C: Only free memory allocated dynamically
-program.c:1272: error: MEM34-C: Only free memory allocated dynamically
-program.c:1277: error: MEM34-C: Only free memory allocated dynamically
-program.c:1282: error: MEM34-C: Only free memory allocated dynamically
-program.c:1298: error: MEM34-C: Only free memory allocated dynamically
-program.c:1304: error: MEM34-C: Only free memory allocated dynamically
-program.c:1337: error: MEM34-C: Only free memory allocated dynamically
-program.c:1452: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1453: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:161: error: MEM34-C: Only free memory allocated dynamically
+program.c:396: error: MEM34-C: Only free memory allocated dynamically
+program.c:402: error: MEM34-C: Only free memory allocated dynamically
+program.c:408: error: MEM34-C: Only free memory allocated dynamically
+program.c:488: error: MEM34-C: Only free memory allocated dynamically
+program.c:580: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:786: error: MEM34-C: Only free memory allocated dynamically
+program.c:885: error: MEM34-C: Only free memory allocated dynamically
+program.c:896: error: MEM34-C: Only free memory allocated dynamically
+program.c:921: error: MEM34-C: Only free memory allocated dynamically
+program.c:927: error: MEM34-C: Only free memory allocated dynamically
+program.c:933: error: MEM34-C: Only free memory allocated dynamically
+program.c:1007: error: MEM34-C: Only free memory allocated dynamically
+program.c:1013: error: MEM34-C: Only free memory allocated dynamically
+program.c:1019: error: MEM34-C: Only free memory allocated dynamically
+program.c:1074: error: MEM34-C: Only free memory allocated dynamically
+program.c:1269: error: MEM34-C: Only free memory allocated dynamically
+program.c:1274: error: MEM34-C: Only free memory allocated dynamically
+program.c:1279: error: MEM34-C: Only free memory allocated dynamically
+program.c:1284: error: MEM34-C: Only free memory allocated dynamically
+program.c:1300: error: MEM34-C: Only free memory allocated dynamically
+program.c:1306: error: MEM34-C: Only free memory allocated dynamically
+program.c:1339: error: MEM34-C: Only free memory allocated dynamically
 program.c:1454: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1497: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1521: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1546: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:1604: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1632: error: MEM34-C: Only free memory allocated dynamically
-program.c:1644: error: MEM34-C: Only free memory allocated dynamically
-program.c:1731: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1739: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1915: error: MEM34-C: Only free memory allocated dynamically
-program.c:1921: error: MEM34-C: Only free memory allocated dynamically
-program.c:1927: error: MEM34-C: Only free memory allocated dynamically
-program.c:1933: error: MEM34-C: Only free memory allocated dynamically
-program.c:1939: error: MEM34-C: Only free memory allocated dynamically
-program.c:1945: error: MEM34-C: Only free memory allocated dynamically
-program.c:1951: error: MEM34-C: Only free memory allocated dynamically
-program.c:2003: error: MEM34-C: Only free memory allocated dynamically
-program.c:2009: error: MEM34-C: Only free memory allocated dynamically
-program.c:2028: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:2030: warning: DCL00-C: Const-qualify immutable objects: found
-program.c:2034: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1455: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1456: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1499: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1523: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1548: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1606: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1634: error: MEM34-C: Only free memory allocated dynamically
+program.c:1646: error: MEM34-C: Only free memory allocated dynamically
+program.c:1733: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1741: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1917: error: MEM34-C: Only free memory allocated dynamically
+program.c:1923: error: MEM34-C: Only free memory allocated dynamically
+program.c:1929: error: MEM34-C: Only free memory allocated dynamically
+program.c:1935: error: MEM34-C: Only free memory allocated dynamically
+program.c:1941: error: MEM34-C: Only free memory allocated dynamically
+program.c:1947: error: MEM34-C: Only free memory allocated dynamically
+program.c:1953: error: MEM34-C: Only free memory allocated dynamically
+program.c:2005: error: MEM34-C: Only free memory allocated dynamically
+program.c:2011: error: MEM34-C: Only free memory allocated dynamically
+program.c:2030: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:2032: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:2036: error: EXP34-C: Ensure pointer is valid before dereferencing it
 compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2051: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:2131: error: MEM34-C: Only free memory allocated dynamically
-program.c:2137: error: MEM34-C: Only free memory allocated dynamically
-program.c:2158: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:2053: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:2133: error: MEM34-C: Only free memory allocated dynamically
+program.c:2139: error: MEM34-C: Only free memory allocated dynamically
+program.c:2160: warning: DCL00-C: Const-qualify immutable objects: found
 compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2185: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:2211: error: MEM34-C: Only free memory allocated dynamically
-program.c:2298: warning: EXP12-C: Do not ignore values returned by functions: getchar
-program.c:2307: warning: EXP12-C: Do not ignore values returned by functions: getchar
-program.c:2319: error: MEM34-C: Only free memory allocated dynamically
-program.c:2380: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2380: error: MEM34-C: Only free memory allocated dynamically
-program.c:2440: warning: EXP12-C: Do not ignore values returned by functions: strtok
-program.c:2441: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2187: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:2213: error: MEM34-C: Only free memory allocated dynamically
+program.c:2300: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2309: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2321: error: MEM34-C: Only free memory allocated dynamically
+program.c:2382: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2382: error: MEM34-C: Only free memory allocated dynamically
 program.c:2442: warning: EXP12-C: Do not ignore values returned by functions: strtok
-program.c:2494: error: MEM34-C: Only free memory allocated dynamically
-program.c:2513: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2581: warning: DCL00-C: Const-qualify immutable objects: hashsocial
-program.c:2586: error: MEM34-C: Only free memory allocated dynamically
-program.c:2659: error: MEM34-C: Only free memory allocated dynamically
-program.c:2689: error: MEM34-C: Only free memory allocated dynamically
-program.c:2821: error: MEM34-C: Only free memory allocated dynamically
-program.c:2827: error: MEM34-C: Only free memory allocated dynamically
-program.c:2852: error: STR31-C: String copy destination must contain sufficient storage
-program.c:2975: error: MEM34-C: Only free memory allocated dynamically
-program.c:2982: error: MEM34-C: Only free memory allocated dynamically
-program.c:2989: error: MEM34-C: Only free memory allocated dynamically
-program.c:2996: error: MEM34-C: Only free memory allocated dynamically
-program.c:3003: error: MEM34-C: Only free memory allocated dynamically
-program.c:3171: warning: DCL13-C: Declare function parameters that are pointers to values not changed by the function as const: fp
+program.c:2443: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2444: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2496: error: MEM34-C: Only free memory allocated dynamically
+program.c:2515: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2583: warning: DCL00-C: Const-qualify immutable objects: hashsocial
+program.c:2588: error: MEM34-C: Only free memory allocated dynamically
+program.c:2661: error: MEM34-C: Only free memory allocated dynamically
+program.c:2691: error: MEM34-C: Only free memory allocated dynamically
+program.c:2823: error: MEM34-C: Only free memory allocated dynamically
+program.c:2829: error: MEM34-C: Only free memory allocated dynamically
+program.c:2854: error: STR31-C: String copy destination must contain sufficient storage
+program.c:2977: error: MEM34-C: Only free memory allocated dynamically
+program.c:2984: error: MEM34-C: Only free memory allocated dynamically
+program.c:2991: error: MEM34-C: Only free memory allocated dynamically
+program.c:2998: error: MEM34-C: Only free memory allocated dynamically
+program.c:3005: error: MEM34-C: Only free memory allocated dynamically
+program.c:3173: warning: DCL13-C: Declare function parameters that are pointers to values not changed by the function as const: fp
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exit
 exit
 
-Script done on Sat 29 Apr 2017 11:21:07 PM EDT
+Script done on Sat 29 Apr 2017 11:28:53 PM EDT
