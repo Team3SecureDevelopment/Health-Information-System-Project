@@ -362,7 +362,7 @@ int main()
 		
 		/* get departure time and format user's duration */
 		char *string = malloc(sizeof(char*) * 256);
-		char *timetotal = malloc(sizeof(char*) * 128);;
+		char *timetotal = malloc(sizeof(char*) * 128);
 		
 		if(NULL == string)
 		{
@@ -408,7 +408,7 @@ int main()
 		}
 	}
 
-	int n = sleep(2);
+	const int n = sleep(2);
 	if(n != 0)
 	{
 		printf("Sleep interrupted\n");
@@ -488,11 +488,11 @@ Session authenticate()
 		}
 	}
 	
-	User newUser = getUser(username, hashvalue);
+	const User newUser = getUser(username, hashvalue);
 		
 	if(newUser != NULL)
 	{
-		Session newSession = createNewSession(newUser, logintime);
+		const Session newSession = createNewSession(newUser, logintime);
 		
 		if(newSession != NULL)
 		{
@@ -528,7 +528,7 @@ User getUser(char *username, int password)
 		
 		char buffer[MAX_CHAR];
 
-		int length = getUserCount(fp);
+		const int length = getUserCount(fp);
 		int i;
 		
 		for(i = 0; i < length; i++)
@@ -547,9 +547,9 @@ User getUser(char *username, int password)
 				if(password == (int)strtol(temp, NULL, 10))
 				{
 					temp = strtok(NULL, ",");
-					long int type = strtol(temp, NULL, 10);
+					const long int type = strtol(temp, NULL, 10);
 
-					User newUser = createNewUser(username, type);
+					const User newUser = createNewUser(username, type);
 					
 					fclose(fp);
 
@@ -647,7 +647,7 @@ char *encrypt(char *string)
 	
 	unsigned char c;
 	unsigned char new;
-	int length = strnlen(string, MAX_CHAR);
+	const int length = strnlen(string, MAX_CHAR);
 	int i;
 
 	for(i = 0; i < length; ++i)
@@ -686,7 +686,7 @@ char *decrypt(char *string)
 	}
 	unsigned char c;
 	unsigned char new;
-	int length = strnlen(string, MAX_CHAR);
+	const int length = strnlen(string, MAX_CHAR);
 	int i;
 
 	for(i = 0; i < length; ++i)
@@ -1137,7 +1137,7 @@ void changepass(User currentUser)
 		
 		char buffer[MAX_CHAR];
 
-		int length = getUserCount(fp);
+		const int length = getUserCount(fp);
 		int i;
 		
 		if(fseek(fp, 0, SEEK_SET) == 0)
@@ -1378,7 +1378,7 @@ int verify(User currentUser)
 		int hashpass;
 		char buffer[MAX_CHAR];
 
-		int length = getUserCount(fp);
+		const int length = getUserCount(fp);
 		int i;
 		
 		/* get the username */
@@ -1462,90 +1462,95 @@ void deleteUser(User currentAdmin)
 			return;
 		}
 		
-		int length = getUserCount(fp);
+		const int length = getUserCount(fp);
 		int i;
 		int flag = 0;
 		int found = 0;
 		
-		fseek(fp, 0, SEEK_SET);
-		fseek(nfp, 0, SEEK_SET);
-		
-		/* go through userdata.bin until we find the user */
-		for(i = 0; i < length; i++)
+		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
-			fgets(line, MAX_CHAR, fp);
-			strncpy(buffer, decrypt(line), strlen(line));
-
-			/* tokenize the line */
-			temp = strtok(buffer, ",");
-			
-			/* check if the username matches */
-			if(strncmp(temp, username, MAX_CHAR) == 0)
+			if(fseek(nfp, 0, SEEK_SET) == 0)
 			{
-				found = 1;
-				printf("You are about to delete user %s from the system. This action cannot be undone.\n", username);
-				printf("Proceed? (Y\\N) ");
-
-				char *c = malloc(sizeof(char*) * 3);
-				strcpy(c, sread(3));
-				if(c[0] == 'y' || c[0] == 'Y')
+				/* go through userdata.bin until we find the user */
+				for(i = 0; i < length; i++)
 				{
-					flag = 1;
-				}
-				else if(c[0] == 'n' || c[0] == 'N')
-				{
-					flag = 0;
-				}
-				else
-				{
-					printf("Invalid character!\n");
-					pressEnterKey();
-					return;
-				}
-
-				/* if admin says yes, then proceed */
-				if(flag == 1)
-				{
-					/* verify admin's password */
-					if(verify(currentAdmin))
+					if(fgets(line, MAX_CHAR, fp) == 0)
 					{
-						/* we aren't going to edit the data as much as we won't copy, so continue */
-						char *string = malloc(sizeof(char*) * MAX_CHAR);
+						strncpy(buffer, decrypt(line), strlen(line));
+
+						/* tokenize the line */
+						temp = strtok(buffer, ",");
 						
-						strcpy(string, "Administrator deleted user ");
-						strcat(string, username);
-						strcat(string, " from the system");
-						
-						printf("\nUser %s successfully deleted from the system.\n", username);
-						pressEnterKey();
-						writeLogs(currentAdmin, string);
-						
-						if(string != NULL)
+						/* check if the username matches */
+						if(strncmp(temp, username, MAX_CHAR) == 0)
 						{
-							free(string);
-							string = NULL;
+							found = 1;
+							printf("You are about to delete user %s from the system. This action cannot be undone.\n", username);
+							printf("Proceed? (Y\\N) ");
+
+							char *c = malloc(sizeof(char*) * 3);
+							strcpy(c, sread(3));
+							if(c[0] == 'y' || c[0] == 'Y')
+							{
+								flag = 1;
+							}
+							else if(c[0] == 'n' || c[0] == 'N')
+							{
+								flag = 0;
+							}
+							else
+							{
+								printf("Invalid character!\n");
+								pressEnterKey();
+								return;
+							}
+
+							/* if admin says yes, then proceed */
+							if(flag == 1)
+							{
+								/* verify admin's password */
+								if(verify(currentAdmin))
+								{
+									/* we aren't going to edit the data as much as we won't copy, so continue */
+									char *string = malloc(sizeof(char*) * MAX_CHAR);
+									
+									strcpy(string, "Administrator deleted user ");
+									strcat(string, username);
+									strcat(string, " from the system");
+									
+									printf("\nUser %s successfully deleted from the system.\n", username);
+									pressEnterKey();
+									writeLogs(currentAdmin, string);
+									
+									if(string != NULL)
+									{
+										free(string);
+										string = NULL;
+									}
+								}
+							}
+							else if(flag == 0)
+							{
+								printf("\nUser deletion cancelled. The file has not been changed.\n");
+								pressEnterKey();
+								
+								writeLogs(currentAdmin, "User delete cancelled");
+								fclose(fp);
+								fclose(nfp);
+								remove("./temp");
+								return;
+							}
 						}
 					}
+					else
+					{
+						/* copy over the users who are not affected */
+						fprintf(nfp, "%s", line);
+					}
 				}
-				else if(flag == 0)
-				{
-					printf("\nUser deletion cancelled. The file has not been changed.\n");
-					pressEnterKey();
-					
-					writeLogs(currentAdmin, "User delete cancelled");
-					fclose(fp);
-					fclose(nfp);
-					remove("./temp");
-					return;
-				}
-			}
-			else
-			{
-				/* copy over the users who are not affected */
-				fprintf(nfp, "%s", line);
 			}
 		}
-
+		
 		fclose(fp);
 		fclose(nfp);
 		
@@ -1556,8 +1561,13 @@ void deleteUser(User currentAdmin)
 		}
 		else
 		{		
-			remove("./userdata.bin");
-			rename("./temp", "./userdata.bin");		
+			if(remove("./userdata.bin") == 0)
+			{
+				if(rename("./temp", "./userdata.bin") == 0)
+				{
+					printf("User deleted successfully!\n");
+				}					
+			}	
 		}
 
 	}
@@ -1617,11 +1627,8 @@ char *createPassword()
 void addNewPatient()
 { 
    // open file
-   FILE *fp;
-   fp = fopen("./patients.bin","a");
-   
-   fseek(fp, 0, SEEK_SET);
-   
+   FILE *fp = fopen("./patients.bin","a");
+
    if(fp == NULL)
    {
      	printf("Error: File \"patients.bin\" could not be opened!\n");
@@ -1852,7 +1859,18 @@ void setAllergyInfo(int ssnhash)
 	else
 	{
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
+		if(NULL == string)
+		{
+			free(string);
+			string = NULL;
+		}
+		
 		char *allergies = malloc(sizeof(char*) * MAX_CHAR * 10);
+		if(NULL == allergies)
+		{
+			free(allergies);
+			allergies = NULL;
+		}
 		
 		printf("Please type in an allergy and then hit ENTER to save.\nFor multiple allergies, please separate each one by a comma:\n");
 		printf("--> ");
@@ -1870,6 +1888,18 @@ void setAllergyInfo(int ssnhash)
 		/* write to file */
 		fprintf(fp, "%s", string);
 		fclose(fp);
+		
+		if(string != NULL)
+		{
+			free(string);
+			string = NULL;
+		}
+		
+		if(allergies != NULL)
+		{
+			free(allergies);
+			allergies = NULL;
+		}
 	}
 }
 
@@ -1958,7 +1988,17 @@ void setPrescriptionInfo(int ssnhash)
 	else
 	{
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
+		if(NULL == string)
+		{
+			free(string);
+			string = NULL;
+		}
 		char *prescriptions = malloc(sizeof(char*) * MAX_CHAR * 10);
+		if(NULL == prescriptions)
+		{
+			free(prescriptions);
+			prescriptions = NULL;
+		}
 		
 		printf("Please type in a prescription and then hit ENTER to finish. For multiple prescriptions, please separate each one by a comma:\n");
 		printf("--> ");
@@ -1976,6 +2016,18 @@ void setPrescriptionInfo(int ssnhash)
 		/* write to file */
 		fprintf(fp, "%s", string);
 		fclose(fp);
+		
+		if(string != NULL)
+		{
+			free(string);
+			string = NULL;
+		}
+		
+		if(prescriptions != NULL)
+		{
+			free(prescriptions);
+			prescriptions = NULL;
+		}
 	}
 }
 
@@ -1992,13 +2044,19 @@ void getPrescriptionInfo(int ssnhash)
 	}
 	else
 	{
-		int count = getUserCount(fp); //number of patients in file
+		const int count = getUserCount(fp); //number of patients in file
 		int i;
 		int found = 0;
 
 		for(i = 0; i < count; ++i)
 		{
 			char *temp = malloc(sizeof(char*) * MAX_CHAR*11);
+			if(NULL == temp)
+			{
+				free(temp);
+				temp = NULL;
+			}
+			
 			char buffer[MAX_CHAR*11];
 		
 			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR*11);
@@ -2038,6 +2096,12 @@ void getPrescriptionInfo(int ssnhash)
 				fclose(fp);
 				return;
 			}
+			
+			if(temp != NULL)
+			{
+				free(temp);
+				temp = NULL;
+			}
 		}
 		
 		if(found == 0)
@@ -2062,80 +2126,92 @@ void findPatient()
 	}
 	else
 	{
-		int hashvalue;
-		int count = getUserCount(fp); //number of patients in file
+		const int count = getUserCount(fp); //number of patients in file
 		int i;
 		int found = 0;
-		//char *
-		/* draw the tui */
+
 		drawPatientSearch(fp);
 		
 		printf("SSN to search: ");
-		hashvalue = hash(sread(9));
+		const int hashvalue = hash(sread(9));
 
 		for(i = 0; i < count; ++i)
 		{
-			char *temp = malloc(sizeof(char*) * MAX_CHAR);
-			char buffer[MAX_CHAR];
-		
-			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
-			
-			/* tokenize the line */
-			temp = strtok(buffer, ",");
-			
-			/* hash match? */
-			if(hashvalue == (int)strtol(temp, NULL, 10))
+			if(found == 0)
 			{
-				found = 1;
-				char *lname = strtok(NULL, ",");
-				char *fname = strtok(NULL, ",");
-				char *dob = strtok(NULL, ",");
-				int h = (int)strtol((strtok(NULL,",")), NULL, 10);
-				int w = (int)strtol((strtok(NULL,",")), NULL, 10);
-				int a = (int)strtol((strtok(NULL,",")), NULL, 10);
-				int su = (int)strtol((strtok(NULL,",")), NULL, 10);
-				int sm = (int)strtol((strtok(NULL,",")), NULL, 10);
-				int m = (int)strtol((strtok(NULL,",")), NULL, 10);
-				int dr = (int)strtol((strtok(NULL,",")), NULL, 10);
-				
-				Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
-				drawPatientInfo();
-				
-				printf("         First Name: %s\n", patientGetFirstName(newPatient));
-				printf("          Last Name: %s\n", patientGetLastName(newPatient));
-				printf("      Date of Birth: %s\n", patientGetDOB(newPatient));
-				printf("        Height (cm): %d\n", patientGetHeight(newPatient));
-				printf("        Weight (lb): %d\n", patientGetWeight(newPatient));
-				printf("      Has allergies? %d\n", patientHasAllergies(newPatient));
-				printf("   On Prescriptions? %d\n", patientOnPrescriptions(newPatient));				
-				printf("    Is/was a smoker? %d\n", patientIsSmoker(newPatient));
-				printf(" Previous surgeries? %d\n", patientHadSurgeries(newPatient));
-				printf(" Has mental illness? %d\n", patientMentalIllness(newPatient));
-				printf("\n");
-				
-				/* if they have allergies, list them */
-				if(a == 1)
+				char *temp = malloc(sizeof(char*) * MAX_CHAR);
+				if(NULL == temp)
 				{
-					printf("\nPress [ENTER] to view allergy information\n");
-					getchar();
-					getAllergyInfo(hashvalue);
-					printf("\n");
+					free(temp);
+					temp = NULL;
 				}
 				
-				/* if they have allergies, list them */
-				if(dr == 1)
+				char buffer[MAX_CHAR];
+			
+				strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+				
+				/* tokenize the line */
+				temp = strtok(buffer, ",");
+				
+				/* hash match? */
+				if(hashvalue == (int)strtol(temp, NULL, 10))
 				{
-					printf("\nPress [ENTER] to view prescription information\n");
-					getchar();
-					getPrescriptionInfo(hashvalue);
+					found = 1;
+					const char *lname = strtok(NULL, ",");
+					const char *fname = strtok(NULL, ",");
+					const char *dob = strtok(NULL, ",");
+					const int h = (int)strtol((strtok(NULL,",")), NULL, 10);
+					const int w = (int)strtol((strtok(NULL,",")), NULL, 10);
+					const int a = (int)strtol((strtok(NULL,",")), NULL, 10);
+					const int su = (int)strtol((strtok(NULL,",")), NULL, 10);
+					const int sm = (int)strtol((strtok(NULL,",")), NULL, 10);
+					const int m = (int)strtol((strtok(NULL,",")), NULL, 10);
+					const int dr = (int)strtol((strtok(NULL,",")), NULL, 10);
+					
+					drawPatientInfo();
+					
+					printf("         First Name: %s\n", fname);
+					printf("          Last Name: %s\n", lname);
+					printf("      Date of Birth: %s\n", dob);
+					printf("        Height (cm): %d\n", h);
+					printf("        Weight (lb): %d\n", w);
+					printf("      Has allergies? %d\n", a);
+					printf("   On Prescriptions? %d\n", dr);				
+					printf("    Is/was a smoker? %d\n", sm);
+					printf(" Previous surgeries? %d\n", su);
+					printf(" Has mental illness? %d\n", m);
 					printf("\n");
+					
+					/* if they have allergies, list them */
+					if(a == 1)
+					{
+						printf("\nPress [ENTER] to view allergy information\n");
+						getchar();
+						getAllergyInfo(hashvalue);
+						printf("\n");
+					}
+					
+					/* if they have allergies, list them */
+					if(dr == 1)
+					{
+						printf("\nPress [ENTER] to view prescription information\n");
+						getchar();
+						getPrescriptionInfo(hashvalue);
+						printf("\n");
+					}
+					
+					pressEnterKey();
+					
+					fclose(fp);
 				}
-				
-				pressEnterKey();
-				
-				fclose(fp);
-				return;
+
+				if(temp != NULL)
+				{
+					free(temp);
+					temp = NULL;
+				}
 			}
+			else break;
 		}
 		
 		if(found == 0)
@@ -2162,8 +2238,8 @@ void filteredSearch()
 	}
 	else
 	{
+		const int count = getUserCount(fp); //number of patients in file
 		int value;
-		int count = getUserCount(fp); //number of patients in file
 		int i;
 		
 		char *input = malloc(sizeof(char*) * MAX_CHAR);
@@ -2172,7 +2248,6 @@ void filteredSearch()
 		{
 			free(input);
 			input = NULL;
-			return;
 		}
 		else
 		{
@@ -2369,8 +2444,23 @@ void deletePatient(User currentDoctor)
 		printf("\n-------------[ DELETE PATIENT ]-------------\n");
 		
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == temp)
+		{
+			free(temp);
+			temp = NULL;
+		}
 		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == line)
+		{
+			free(line);
+			line = NULL;
+		}
 		char *social = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == social)
+		{
+			free(social);
+			social = NULL;
+		}
 		
 		char buffer[MAX_CHAR];
 
@@ -2381,104 +2471,141 @@ void deletePatient(User currentDoctor)
 		/* go ahead and get the hash value, overwrite the string from memory */
 		int hashsocial = hash(social);
 		strncpy(social, wspace(strlen(social)), strlen(social));
-		free(social);
 		
-		int length = getUserCount(fp);
+		if(social != NULL)
+		{
+			free(social);
+			social = NULL;
+		}
+		
+		const int length = getUserCount(fp);
 		int i;
 		int flag = 0;
 		int found = 0;
 		
-		fseek(fp, 0, SEEK_SET);
-		fseek(nfp, 0, SEEK_SET);
-		
-		/* go through userdata.bin until we find the user */
-		for(i = 0; i < length; i++)
+		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
-			fgets(line, MAX_CHAR, fp);
-			strncpy(buffer, decrypt(line), strlen(line));
-
-			/* tokenize the line */
-			temp = strtok(buffer, ",");
-			
-			/* check if the social security hash matches */
-			if((int)strtol(temp, NULL, 10) == hashsocial && found == 0)
+			if(fseek(nfp, 0, SEEK_SET) == 0)
 			{
-				found = 1;
-				
-				/* temporary holder for first, last name */
-				char *fname = malloc(sizeof(char*) * MAX_CHAR);
-				char *lname = malloc(sizeof(char*) * MAX_CHAR);
-				temp = strtok(NULL, ",");
-				strcpy(lname, temp);
-				temp = strtok(NULL, ",");
-				strcpy(fname, temp);
-				
-				printf("You are about to delete patient: %s, %s from the system. This action cannot be undone.\n", lname, fname);
-				printf("Proceed? (Y\\N) ");
-
-				char *c = malloc(sizeof(char*) * 3);
-				strcpy(c, sread(1));
-				if(c[0] == 'y' || c[0] == 'Y')
+				/* go through userdata.bin until we find the user */
+				for(i = 0; i < length; i++)
 				{
-					flag = 1;
-				}
-				else if(c[0] == 'n' || c[0] == 'N')
-				{
-					flag = 0;
-				}
-				else
-				{
-					printf("Invalid character!\n");
-					return;
-				}
-
-				/* if admin says yes, then proceed */
-				if(flag == 1)
-				{
-					/* verify admin's password */
-					if(verify(currentDoctor))
+					if(fgets(line, MAX_CHAR, fp) == 0)
 					{
-						/* we aren't going to edit the data as much as we won't copy, so continue */
-						char *string = malloc(sizeof(char*) * MAX_CHAR);
+						strncpy(buffer, decrypt(line), strlen(line));
+
+						/* tokenize the line */
+						temp = strtok(buffer, ",");
 						
-						strcpy(string, "Deleted patient: ");
-						strcat(string, lname);
-						strcat(string, ", ");
-						strcat(string, fname);
-						strcat(string, " from the system");
-						
-						printf("\nPatient: %s, %s (%d) successfully deleted from the system.\n", lname, fname, hashsocial);
-						pressEnterKey();
-						writeLogs(currentDoctor, string);
-						free(string);
-						free(lname);
-						free(fname);
-					}
-					else
-					{
-						printf("Invalid password!\n");
-						pressEnterKey();
+						/* check if the social security hash matches */
+						if((int)strtol(temp, NULL, 10) == hashsocial && found == 0)
+						{
+							found = 1;
+							
+							/* temporary holder for first, last name */
+							char *fname = malloc(sizeof(char*) * MAX_CHAR);
+							if(NULL == fname)
+							{
+								free(fname);
+								fname = NULL;
+							}
+							char *lname = malloc(sizeof(char*) * MAX_CHAR);
+							if(NULL == lname)
+							{
+								free(lname);
+								lname = NULL;
+							}
+							
+							temp = strtok(NULL, ",");
+							strcpy(lname, temp);
+							temp = strtok(NULL, ",");
+							strcpy(fname, temp);
+							
+							printf("You are about to delete patient: %s, %s from the system. This action cannot be undone.\n", lname, fname);
+							printf("Proceed? (Y\\N) ");
+
+							char *c = malloc(sizeof(char*) * 1);
+							if(NULL == c)
+							{
+								free(c);
+								c = NULL;
+							}
+							
+							strcpy(c, sread(1));
+							if(c[0] == 'y' || c[0] == 'Y')
+							{
+								flag = 1;
+							}
+							else if(c[0] == 'n' || c[0] == 'N')
+							{
+								flag = 0;
+							}
+							else
+							{
+								printf("Invalid character!\n");
+							}
+
+							if(c != NULL)
+							{
+								free(c);
+								c = NULL;
+							}
+							
+							/* if admin says yes, then proceed */
+							if(flag == 1)
+							{
+								/* verify admin's password */
+								if(verify(currentDoctor))
+								{
+									/* we aren't going to edit the data as much as we won't copy, so continue */
+									char *string = malloc(sizeof(char*) * MAX_CHAR);
+									if(NULL == string)
+									{
+										free(string);
+										string = NULL;
+									}
+									
+									strcpy(string, "Deleted patient: ");
+									strcat(string, lname);
+									strcat(string, ", ");
+									strcat(string, fname);
+									strcat(string, " from the system");
+									
+									printf("\nPatient: %s, %s (%d) successfully deleted from the system.\n", lname, fname, hashsocial);
+									pressEnterKey();
+									writeLogs(currentDoctor, string);
+									
+									if(string != NULL)
+									{
+										free(string);
+										string = NULL;
+									}
+								}
+								else
+								{
+									printf("Invalid password!\n");
+									fprintf(nfp, "%s", line);
+									pressEnterKey();
+								}
+							}
+							else if(flag == 0)
+							{
+								printf("\nPatient deletion cancelled. The file has not been changed.\n");
+								fprintf(nfp, "%s", line);
+								pressEnterKey();
+								writeLogs(currentDoctor, "Patient delete cancelled");
+							}
+						}
+						else
+						{
+							/* copy over the users who are not affected */
+							fprintf(nfp, "%s", line);
+						}
 					}
 				}
-				else if(flag == 0)
-				{
-					printf("\nPatient deletion cancelled. The file has not been changed.\n");
-					pressEnterKey();
-					
-					writeLogs(currentDoctor, "Patient delete cancelled");
-					fclose(fp);
-					fclose(nfp);
-					remove("./temp2");
-					return;
-				}
-			}
-			else
-			{
-				/* copy over the users who are not affected */
-				fprintf(nfp, "%s", line);
 			}
 		}
-
+		
 		fclose(fp);
 		fclose(nfp);
 		
@@ -2489,66 +2616,17 @@ void deletePatient(User currentDoctor)
 		}
 		else
 		{		
-			remove("./patients.bin");
-			rename("./temp2", "./patients.bin");		
+			if(remove("./patients.bin") == 0)
+			{
+				if(rename("./temp2", "./patients.bin") == 0)
+				{
+					printf("Patient deleted successfully!\n");
+				}
+			}
+
 		}
 
 	}
-}
-
-char *patientGetFirstName(Patient currentPatient)
-{
-	return currentPatient->fname;
-}
-
-char *patientGetLastName(Patient currentPatient)
-{
-	return currentPatient->lname;
-}
-
-char *patientGetDOB(Patient currentPatient)
-{
-	return currentPatient->dob;
-}
-
-char *patientGetSocial(Patient currentPatient)
-{
-	return currentPatient->social;
-}
-
-int patientGetHeight(Patient currentPatient)
-{
-	return currentPatient->height;
-}
-
-int patientGetWeight(Patient currentPatient)
-{
-	return currentPatient->weight;
-}
-
-int patientHasAllergies(Patient currentPatient)
-{
-	return currentPatient->allergies;
-}
-
-int patientHadSurgeries(Patient currentPatient)
-{
-	return currentPatient->surgeries;
-}
-
-int patientIsSmoker(Patient currentPatient)
-{
-	return currentPatient->smoker;
-}
-
-int patientMentalIllness(Patient currentPatient)
-{
-	return currentPatient->mental;
-}
-
-int patientOnPrescriptions(Patient currentPatient)
-{
-	return currentPatient->drugs;
 }
 ///////////////////////////////////////
 
@@ -2562,7 +2640,18 @@ void writeLogs(User currentUser, char *purpose)
 	int i = 0;
 	
 	char *string = malloc(sizeof(char) * 256);
+	if(NULL == string)
+	{
+		free(string);
+		string = NULL;
+	}
+	
 	char *userType = malloc(sizeof(char) * 128);
+	if(NULL == userType)
+	{
+		free(userType);
+		userType = NULL;
+	}
 	
 	strcpy(string, "");
 	
@@ -2617,7 +2706,18 @@ void writeLogs(User currentUser, char *purpose)
 	
 	fprintf(fp, "%s", string);
 	fclose(fp);
-	free(string);
+	
+	if(string != NULL)
+	{
+		free(string);
+		string = NULL;
+	}
+	
+	if(userType != NULL)
+	{
+		free(userType);
+		userType = NULL;
+	}
 }
 
 void readLogs()
@@ -2625,22 +2725,30 @@ void readLogs()
 	
 	FILE *fp = fopen("logs.bin", "r");
 	
-	char buff[255];
-	
-	printf("\033[2J\033[;H");
-
-	drawLogs();
-
-	while(1)
+	if(fp == NULL)
 	{
-		fgets(buff, 255, (FILE*)fp);
-		if(feof(fp))
-			break;
-		strcpy(buff, decrypt(buff));
-		strcat(buff, "\n");
-		printf("%s", buff);
+		printf("Error: Could not open logs.bin!\n");
 	}
+	else
+	{
+		char buff[255];
+		printf("\033[2J\033[;H");
+		drawLogs();
 
+		while(1)
+		{
+			if(fgets(buff, 255, (FILE*)fp) == 0)
+			{
+				if(feof(fp))
+						break;
+				strcpy(buff, decrypt(buff));
+				strcat(buff, "\n");
+				printf("%s", buff);
+			}
+
+		}
+	}
+	
 	fclose(fp);
 	pressEnterKey();
 }
