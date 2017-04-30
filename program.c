@@ -9,10 +9,7 @@
 
 int MAX_CHAR = 256;
 
-typedef struct patient* Patient;
-
 typedef struct user* User;
-
 typedef struct session* Session;
 
 struct session
@@ -27,44 +24,15 @@ struct user
 	int type;
 };
 
-struct patient
-{
-	char *fname;
-	char *lname;
-	char *dob;
-	char *social;
-	
-	int height;
-	int weight;
-	
-	int allergies;
-	int surgeries;
-	int smoker;
-	int mental;
-	int drugs;
-};
-
 /* PROTOTYPES */
 void writeLogs(User currentUser, char *purpose);
 void readLogs();
 void addNewPatient();
 void findPatient();
-Patient createPatient(char*, char*, char*, char*, int, int, char, char, char, char, char);
 void setAllergyInfo(int);
 void getAllergyInfo(int);
 void setPrescriptionInfo(int);
 void getPrescriptionInfo(int);
-char *patientGetFirstName(Patient);
-char *patientGetLastName(Patient);
-char *patientGetDOB(Patient);
-char *patientGetSocial(Patient);
-int patientGetHeight(Patient);
-int patientGetWeight(Patient);
-int patientIsSmoker(Patient);
-int patientHadSurgeries(Patient);
-int patientMentalIllness(Patient);
-int patientHasAllergies(Patient);
-int patientOnPrescriptions(Patient);
 void filteredSearch();
 void deletePatient(User currentDoctor);
 void drawMenu(User);
@@ -453,6 +421,7 @@ Session authenticate()
 	
 	printf("Username: ");
 	strcpy(username, sread(MAX_CHAR));
+	printf("username = [%s]\n", username);
 	
 	if(strlen(username) > 256)
 	{
@@ -462,7 +431,8 @@ Session authenticate()
 	
 	printf("Password: ");
 	strcpy(password, sread(MAX_CHAR));
-
+	printf("password = [%s]\n", password);
+	
 	if(password != NULL)
 	{
 		if(strlen(password) > 256)
@@ -528,40 +498,52 @@ User getUser(char *username, int password)
 		const int length = getUserCount(fp);
 		int i;
 		
-		for(i = 0; i < length; i++)
+		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
-			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
-
-			/* tokenize the line */
-			temp = strtok(buffer, ",");
-
-			/* check if the username matches */
-			if(strncmp(temp, username, MAX_CHAR) == 0)
+			for(i = 0; i < length; i++)
 			{
-				temp = strtok(NULL, ",");
-			
-				/* password match? */
-				if(password == (int)strtol(temp, NULL, 10))
+				if(fgets(buffer, MAX_CHAR, fp) != NULL)
 				{
-					temp = strtok(NULL, ",");
-					const long int type = strtol(temp, NULL, 10);
-
-					const User newUser = createNewUser(username, type);
+					strncpy(buffer, decrypt(buffer), MAX_CHAR);
+					printf("buffer = [%s]\n", buffer);
 					
-					fclose(fp);
+					/* tokenize the line */
+					temp = strtok(buffer, ",");
+					printf("temp = [%s]\n", temp);
+					printf("we\'re looking for [%s]\n", username);
+					
+					/* check if the username matches */
+					if(strncmp(temp, username, MAX_CHAR) == 0)
+					{
+						printf("matching username\n");
+						
+						temp = strtok(NULL, ",");
+					
+						printf("temp is now [%s]\n", temp);
+						
+						/* password match? */
+						if(password == (int)strtol(temp, NULL, 10))
+						{
+							temp = strtok(NULL, ",");
+							const long int type = strtol(temp, NULL, 10);
 
-					return newUser;
-				}
-				else
-				{
-					printf("\nInvalid username or password!\n");
-					writeLogs(createNewUser(username, -1), "Authentication failure - Invalid username/password");
-					fclose(fp);
-					return NULL;
+							const User newUser = createNewUser(username, type);
+							
+							fclose(fp);
+
+							return newUser;
+						}
+						else
+						{
+							printf("\nInvalid username or password!\n");
+							writeLogs(createNewUser(username, -1), "Authentication failure - Invalid username/password");
+							fclose(fp);
+							return NULL;
+						}
+					}
 				}
 			}
 		}
-		
 		printf("\nInvalid username or password!\n");
 		pressEnterKey();
 		fclose(fp);
@@ -573,7 +555,12 @@ User getUser(char *username, int password)
 Session createNewSession(User currentUser, unsigned long int logintime)
 {
 	Session new = malloc(sizeof(*new));
-
+	if(NULL == new)
+	{
+		free(new);
+		new = NULL;
+	}
+	
 	new->currentUser = currentUser;
 	new->loginTime = logintime;
 
@@ -762,7 +749,7 @@ char *getLine(FILE *fp, int line)
 		while(i <= line)
 		{
 			/* get the line */
-			if(fgets(buffer, MAX_CHAR, fp) == 0)
+			if(fgets(buffer, MAX_CHAR, fp) != NULL)
 			{
 				if(i == line)
 				{
@@ -876,8 +863,6 @@ void addUser()
 		if(password == NULL)
 		{
 			printf("\nPassword entered does not meet the requirements!\n");
-			free(password);
-			password = NULL;
 			pressEnterKey();
 			return;
 		}
@@ -942,6 +927,8 @@ void viewUsers()
 	{
 		if(fseek(fp, 0, SEEK_SET) == 0);
 		{
+			printf("we're at the beginning of the file\n");
+			
 			char *username = malloc(sizeof(char*) * MAX_CHAR);
 			char *type = malloc(sizeof(char*) * MAX_CHAR);
 			char *temp = malloc(sizeof(char*) * MAX_CHAR);
@@ -968,7 +955,8 @@ void viewUsers()
 				temp = NULL;
 				printf("Memory allocation error\n");
 				exit(1);
-			}		
+			}
+			
 			char buff[256];
 			int i = 1;
 			
@@ -976,18 +964,21 @@ void viewUsers()
 			
 			while(1)
 			{
-				if(fgets(buff, 255, (FILE*)fp) == 0)
+				if(fgets(buff, 255, (FILE*)fp) != NULL)
 				{
 					if(feof(fp)) break;
-					
-					temp = strtok(decrypt(buff), ",");
-					strcpy(username, temp);
-					temp = strtok(NULL, ",");
-					temp = strtok(NULL, ",");
-					strncpy(type, temp, strlen(temp)-1);
-					printf("%3d.) %s (%s)\n", i, username, type);
-					i++;
+					else
+					{
+						temp = strtok(decrypt(buff), ",");
+						strcpy(username, temp);
+						temp = strtok(NULL, ",");
+						temp = strtok(NULL, ",");
+						strncpy(type, temp, strlen(temp)-1);
+						printf("%3d.) %s (%s)\n", i, username, type);
+						i++;
+					}
 				}
+				else break;
 			}
 			
 			temp = strtok(NULL, ",");
@@ -1017,9 +1008,8 @@ void viewUsers()
 char *sread(int size)
 {
 	int i = 0;
-	signed int ch = 0;
-	
-	signed int *temp = malloc(sizeof(char*) * size+1);
+	unsigned int ch = ' ';
+	char *temp = malloc(sizeof(char*) * size+1);
 	char *string = malloc(sizeof(char*) * size+1);
 	
 	if(NULL == temp)
@@ -1049,23 +1039,21 @@ char *sread(int size)
 
 	if(i <= size)
 	{
-		strncpy(string, (char*)temp, i);
+		strncpy(string, temp, i);
 	}
 	else
 	{
-		strncpy(string, (char*)temp, size);
+		strncpy(string, temp, size);
 	}
 	
 	if(temp != NULL)
 	{
 		temp = NULL;
 	}
-	
-	string[size] = '\0';
 
 	fflush(stdin);
 
-	return string;
+	return (char*)string;
 }
 
 char *wspace(int size)
@@ -1136,7 +1124,7 @@ void changepass(User currentUser)
 			{
 				for(i = 0; i < length; i++)
 				{
-					if(fgets(line, MAX_CHAR, fp) == 0)
+					if(fgets(line, MAX_CHAR, fp) != NULL)
 					{
 						strncpy(buffer, decrypt(line), strlen(line));
 
@@ -1431,8 +1419,25 @@ void deleteUser(User currentAdmin)
 		printf("\n-------------[ DELETE USER ]-------------\n");
 		
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == temp)
+		{
+			free(temp);
+			temp = NULL;
+		}
+		
 		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == line)
+		{
+			free(line);
+			line = NULL;
+		}
+		
 		char *username = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == username)
+		{
+			free(username);
+			username = NULL;
+		}
 		
 		char buffer[MAX_CHAR];
 
@@ -1461,7 +1466,7 @@ void deleteUser(User currentAdmin)
 				/* go through userdata.bin until we find the user */
 				for(i = 0; i < length; i++)
 				{
-					if(fgets(line, MAX_CHAR, fp) == 0)
+					if(fgets(line, MAX_CHAR, fp) != NULL)
 					{
 						strncpy(buffer, decrypt(line), strlen(line));
 
@@ -1500,6 +1505,11 @@ void deleteUser(User currentAdmin)
 								{
 									/* we aren't going to edit the data as much as we won't copy, so continue */
 									char *string = malloc(sizeof(char*) * MAX_CHAR);
+									if(NULL == string)
+									{
+										free(string);
+										string = NULL;
+									}
 									
 									strcpy(string, "Administrator deleted user ");
 									strcat(string, username);
@@ -2003,12 +2013,18 @@ void getAllergyInfo(int ssnhash)
 	else
 	{
 		const int count = getUserCount(fp); //number of patients in file
-		int i;
 		const int found = 0;
-
+		int i;
+		
 		for(i = 0; i < count; ++i)
 		{
 			char *temp = malloc(sizeof(char*) * MAX_CHAR*11);
+			if(NULL == temp)
+			{
+				free(temp);
+				temp = NULL;
+			}
+			
 			char buffer[MAX_CHAR*11];
 		
 			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR*11);
@@ -2025,7 +2041,7 @@ void getAllergyInfo(int ssnhash)
 				/* get the number of commas for counting purposes */
 				int comma = 0;
 				int j = 0;
-				unsigned char c = ' ';
+				signed int c = 0;
 				
 				while(c != '\n')
 				{
@@ -2047,6 +2063,11 @@ void getAllergyInfo(int ssnhash)
 				
 				fclose(fp);
 				return;
+			}
+			
+			if(temp != NULL)
+			{
+				temp = NULL;
 			}
 		}
 		
@@ -2129,9 +2150,9 @@ void getPrescriptionInfo(int ssnhash)
 	else
 	{
 		const int count = getUserCount(fp); //number of patients in file
-		int i;
 		const int found = 0;
-
+		int i;
+		
 		for(i = 0; i < count; ++i)
 		{
 			char *temp = malloc(sizeof(char*) * MAX_CHAR*11);
@@ -2157,7 +2178,7 @@ void getPrescriptionInfo(int ssnhash)
 				/* get the number of commas for counting purposes */
 				int comma = 0;
 				int j = 0;
-				unsigned char c = ' ';
+				signed int c = ' ';
 				
 				while(c != '\n')
 				{
@@ -2325,7 +2346,6 @@ void filteredSearch()
 		int i;
 		
 		char *input = malloc(sizeof(char*) * MAX_CHAR);
-		
 		if(NULL == input)
 		{
 			free(input);
@@ -2351,6 +2371,7 @@ void filteredSearch()
 			{
 				value = (int)strtol(input, NULL, 10);
 				free(input);
+				input = NULL;
 			}
 			else
 			{
@@ -2395,7 +2416,6 @@ void filteredSearch()
 			for(i = 0; i < count; ++i)
 			{
 				char *temp = malloc(sizeof(char*) * MAX_CHAR);
-				
 				if(NULL == temp)
 				{
 					free(temp);
@@ -2464,8 +2484,10 @@ void filteredSearch()
 					}
 				}
 				
-				free(temp);
-				temp = NULL;
+				if(temp != NULL)
+				{
+					temp = NULL;
+				}
 			}
 			
 			j--;
@@ -2479,34 +2501,6 @@ void filteredSearch()
 
 	}
 	pressEnterKey();
-}
-
-Patient createPatient(char *social, char *lastname, char *firstname, char *dob, int height, int weight, char allergies, char surgeries, char smoker, char mental, char drugs)
-{
-	Patient newPatient = malloc(sizeof(*newPatient));
-	
-	newPatient->fname = malloc(sizeof(char) * 256);
-	newPatient->fname = firstname;
-	
-	newPatient->lname = malloc(sizeof(char)*256);
-	newPatient->lname = lastname;
-	
-	newPatient->dob = malloc(sizeof(char)*10);
-	newPatient->dob = dob;
-	
-	newPatient->social = malloc(sizeof(char)*9);
-	newPatient->social = social;
-	
-	newPatient->height = height;
-	newPatient->weight = weight;
-	
-	newPatient->allergies = allergies;
-	newPatient->smoker = smoker;
-	newPatient->surgeries = surgeries;
-	newPatient->mental = mental;
-	newPatient->drugs = drugs;
-	
-	return newPatient;
 }
 
 void deletePatient(User currentDoctor)
@@ -2571,7 +2565,7 @@ void deletePatient(User currentDoctor)
 				/* go through userdata.bin until we find the user */
 				for(i = 0; i < length; i++)
 				{
-					if(fgets(line, MAX_CHAR, fp) == 0)
+					if(fgets(line, MAX_CHAR, fp) != NULL)
 					{
 						strncpy(buffer, decrypt(line), strlen(line));
 
@@ -2814,10 +2808,10 @@ void readLogs()
 
 		while(1)
 		{
-			if(fgets(buff, 255, (FILE*)fp) == 0)
+			if(fgets(buff, 255, (FILE*)fp) != NULL)
 			{
 				if(feof(fp)) break;
-				strcpy_s(buff, decrypt(buff));
+				strncpy(buff, decrypt(buff), 255);
 				strcat(buff, "\n");
 				printf("%s", buff);
 			}
@@ -2989,7 +2983,7 @@ void viewAppointments()
 
 		while(1)
 		{
-			if(fgets(buff, 255, (FILE*)fp) == 0)
+			if(fgets(buff, 255, (FILE*)fp) != NULL)
 			{
 				if(feof(fp)) break;
 				printf("%s\n", decrypt(buff));
@@ -3136,6 +3130,7 @@ void drawAppointmentList(FILE * fp)
 	const int count = getUserCount(fp);
 	printf("\033[2J\033[;H");
 	printf("\n------------[ APPOINTMENT LIST ]------------\n");
+	printf("\nThere are currently %d active appointments:\n", count);
 	printf("\n");
 }
 
