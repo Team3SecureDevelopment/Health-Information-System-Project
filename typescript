@@ -1,182 +1,206 @@
-Script started on Sat 29 Apr 2017 08:23:02 PM EDT
+Script started on Sat 29 Apr 2017 09:36:43 PM EDT
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers program.c
-"/home/rose/SSD/Health-Information-System-Project/program.c", line 640: warning: 
-          variable "c" is used before its value is set
-  	while(c != EOF)
-  	      ^
-
-"/home/rose/SSD/Health-Information-System-Project/program.c", line 2615: warning: 
-          last line of file ends without a newline
-  /////////////////////////////////////////////
-                                               ^
-
-program.c:139: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:358: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:359: warning: DCL01-C: Do not reuse variable names in subscopes: time
-program.c:359: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:384: error: MEM34-C: Only free memory allocated dynamically
-program.c:389: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:389: error: MEM34-C: Only free memory allocated dynamically
-program.c:392: warning: EXP12-C: Do not ignore values returned by functions: sleep
-program.c:405: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:406: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:449: warning: DCL00-C: Const-qualify immutable objects: newUser
-program.c:453: warning: DCL00-C: Const-qualify immutable objects: newSession
-program.c:477: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:480: warning: DCL00-C: Const-qualify immutable objects: length
-program.c:499: warning: DCL00-C: Const-qualify immutable objects: type
-program.c:501: warning: DCL00-C: Const-qualify immutable objects: newUser
-program.c:527: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:558: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:571: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:574: warning: DCL00-C: Const-qualify immutable objects: length
-program.c:602: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:605: warning: DCL00-C: Const-qualify immutable objects: length
-program.c:638: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:642: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:642: error: FIO34-C: Use int to capture the return value of character I/O functions
-program.c:656: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:657: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:660: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:665: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:728: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:729: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:730: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:731: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:752: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:773: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:774: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:793: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:795: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:796: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:797: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:806: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:835: error: MEM34-C: Only free memory allocated dynamically
-program.c:860: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:860: error: FIO34-C: Use int to capture the return value of character I/O functions
-program.c:928: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:929: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:932: warning: DCL00-C: Const-qualify immutable objects: length
-program.c:935: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:936: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:940: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:951: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:952: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:953: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:954: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:992: error: STR31-C: String copy destination must contain sufficient storage
-program.c:1030: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:1031: warning: EXP12-C: Do not ignore values returned by functions: rename
-program.c:1043: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1065: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1068: warning: DCL00-C: Const-qualify immutable objects: length
-program.c:1071: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1072: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1137: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1138: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1139: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1156: warning: DCL00-C: Const-qualify immutable objects: length
-program.c:1161: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:1162: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:1167: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:1180: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1204: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1213: error: MEM30-C: Do not access freed memory
-program.c:1224: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:1245: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:1246: warning: EXP12-C: Do not ignore values returned by functions: rename
-program.c:1258: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1268: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1309: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:1329: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1331: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1332: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1333: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1334: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1335: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1336: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1343: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1351: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1540: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1541: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1575: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:1577: warning: DCL00-C: Const-qualify immutable objects: found
-program.c:1581: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:142: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:142: error: MEM30-C: Do not access freed memory
+program.c:142: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:368: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:368: error: MEM30-C: Do not access freed memory
+program.c:368: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:375: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:375: error: MEM30-C: Do not access freed memory
+program.c:375: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:403: error: MEM34-C: Only free memory allocated dynamically
+program.c:408: warning: DCL00-C: Const-qualify immutable objects: n
+program.c:431: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:431: error: MEM30-C: Do not access freed memory
+program.c:438: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:438: error: MEM30-C: Do not access freed memory
+program.c:486: warning: DCL00-C: Const-qualify immutable objects: newUser
+program.c:490: warning: DCL00-C: Const-qualify immutable objects: newSession
+program.c:518: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:525: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:544: warning: DCL00-C: Const-qualify immutable objects: type
+program.c:546: warning: DCL00-C: Const-qualify immutable objects: newUser
+program.c:572: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:608: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:608: error: MEM30-C: Do not access freed memory
+program.c:634: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:634: error: MEM30-C: Do not access freed memory
+program.c:641: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:673: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:673: error: MEM30-C: Do not access freed memory
+program.c:679: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:709: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:716: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:716: error: FIO34-C: Use int to capture the return value of character I/O functions
+program.c:737: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:737: error: MEM30-C: Do not access freed memory
+program.c:737: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:744: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:744: error: MEM30-C: Do not access freed memory
+program.c:756: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:827: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:827: error: MEM30-C: Do not access freed memory
+program.c:834: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:834: error: MEM30-C: Do not access freed memory
+program.c:834: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:841: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:841: error: MEM30-C: Do not access freed memory
+program.c:848: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:848: error: MEM30-C: Do not access freed memory
+program.c:866: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:873: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:936: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:936: error: MEM30-C: Do not access freed memory
+program.c:936: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:943: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:943: error: MEM30-C: Do not access freed memory
+program.c:943: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:950: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:961: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:990: error: MEM34-C: Only free memory allocated dynamically
+program.c:1011: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1011: error: MEM30-C: Do not access freed memory
+program.c:1011: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:1018: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1018: error: MEM30-C: Do not access freed memory
+program.c:1023: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:1023: error: FIO34-C: Use int to capture the return value of character I/O functions
+program.c:1061: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1061: error: MEM30-C: Do not access freed memory
+program.c:1096: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1103: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1103: error: MEM30-C: Do not access freed memory
+program.c:1103: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:1110: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:1119: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:1133: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1133: error: MEM30-C: Do not access freed memory
+program.c:1133: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:1141: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1141: error: MEM30-C: Do not access freed memory
+program.c:1141: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:1149: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1149: error: MEM30-C: Do not access freed memory
+program.c:1149: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:1157: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1157: error: MEM30-C: Do not access freed memory
+program.c:1157: error: MEM31-C: Free dynamically allocated memory exactly once.
+program.c:1199: error: STR31-C: String copy destination must contain sufficient storage
+program.c:1268: error: MEM34-C: Only free memory allocated dynamically
+program.c:1274: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1275: warning: EXP12-C: Do not ignore values returned by functions: rename
+program.c:1321: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1329: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1329: error: MEM30-C: Do not access freed memory
+program.c:1336: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1336: error: MEM30-C: Do not access freed memory
+program.c:1344: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:1409: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1410: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1411: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1428: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:1433: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1434: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1439: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:1452: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1476: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1485: error: MEM30-C: Do not access freed memory
+program.c:1496: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1517: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1518: warning: EXP12-C: Do not ignore values returned by functions: rename
+program.c:1530: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1540: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1581: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:1601: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1603: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1604: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1605: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1606: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1607: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1608: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1615: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1623: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1812: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1813: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1847: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:1849: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:1853: error: EXP34-C: Ensure pointer is valid before dereferencing it
 compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:1598: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:1646: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1647: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1681: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:1683: warning: DCL00-C: Const-qualify immutable objects: found
-program.c:1687: error: EXP34-C: Ensure pointer is valid before dereferencing it
-compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:1704: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:1752: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:1764: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1779: warning: DCL00-C: Const-qualify immutable objects: h
-program.c:1780: warning: DCL00-C: Const-qualify immutable objects: w
-program.c:1781: warning: DCL00-C: Const-qualify immutable objects: a
-program.c:1782: warning: DCL00-C: Const-qualify immutable objects: su
-program.c:1783: warning: DCL00-C: Const-qualify immutable objects: sm
-program.c:1784: warning: DCL00-C: Const-qualify immutable objects: m
-program.c:1785: warning: DCL00-C: Const-qualify immutable objects: dr
-program.c:1787: warning: DCL00-C: Const-qualify immutable objects: newPatient
-program.c:1806: warning: EXP12-C: Do not ignore values returned by functions: getchar
-program.c:1815: warning: EXP12-C: Do not ignore values returned by functions: getchar
-program.c:1852: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:1855: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1874: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1870: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
 program.c:1918: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1929: warning: DCL00-C: Const-qualify immutable objects: h
-program.c:1930: warning: DCL00-C: Const-qualify immutable objects: w
-program.c:1931: warning: DCL00-C: Const-qualify immutable objects: a
-program.c:1932: warning: DCL00-C: Const-qualify immutable objects: su
-program.c:1933: warning: DCL00-C: Const-qualify immutable objects: sm
-program.c:1934: warning: DCL00-C: Const-qualify immutable objects: m
-program.c:1935: warning: DCL00-C: Const-qualify immutable objects: dr
-program.c:1937: warning: DCL00-C: Const-qualify immutable objects: newPatient
-program.c:1999: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2041: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2042: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2043: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2052: warning: DCL00-C: Const-qualify immutable objects: hashsocial
-program.c:2054: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2056: warning: DCL00-C: Const-qualify immutable objects: length
-program.c:2061: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:2062: warning: EXP12-C: Do not ignore values returned by functions: fseek
-program.c:2067: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:2079: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2080: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2089: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2112: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2123: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2123: error: MEM30-C: Do not access freed memory
-program.c:2124: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2124: error: MEM30-C: Do not access freed memory
-program.c:2125: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2125: error: MEM30-C: Do not access freed memory
-program.c:2141: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:2162: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:2163: warning: EXP12-C: Do not ignore values returned by functions: rename
-program.c:2234: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2235: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2306: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:2309: error: STR31-C: String copy destination must contain sufficient storage
-program.c:2328: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2329: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2330: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2331: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2332: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1919: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1953: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:1955: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:1959: error: EXP34-C: Ensure pointer is valid before dereferencing it
+compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:1976: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:2024: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:2036: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2051: warning: DCL00-C: Const-qualify immutable objects: h
+program.c:2052: warning: DCL00-C: Const-qualify immutable objects: w
+program.c:2053: warning: DCL00-C: Const-qualify immutable objects: a
+program.c:2054: warning: DCL00-C: Const-qualify immutable objects: su
+program.c:2055: warning: DCL00-C: Const-qualify immutable objects: sm
+program.c:2056: warning: DCL00-C: Const-qualify immutable objects: m
+program.c:2057: warning: DCL00-C: Const-qualify immutable objects: dr
+program.c:2059: warning: DCL00-C: Const-qualify immutable objects: newPatient
+program.c:2078: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2087: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2124: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:2127: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2146: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2190: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2201: warning: DCL00-C: Const-qualify immutable objects: h
+program.c:2202: warning: DCL00-C: Const-qualify immutable objects: w
+program.c:2203: warning: DCL00-C: Const-qualify immutable objects: a
+program.c:2204: warning: DCL00-C: Const-qualify immutable objects: su
+program.c:2205: warning: DCL00-C: Const-qualify immutable objects: sm
+program.c:2206: warning: DCL00-C: Const-qualify immutable objects: m
+program.c:2207: warning: DCL00-C: Const-qualify immutable objects: dr
+program.c:2209: warning: DCL00-C: Const-qualify immutable objects: newPatient
+program.c:2271: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2313: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2314: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2315: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2324: warning: DCL00-C: Const-qualify immutable objects: hashsocial
+program.c:2326: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2328: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:2333: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:2334: warning: EXP12-C: Do not ignore values returned by functions: fseek
+program.c:2339: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:2351: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2352: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2361: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2384: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2395: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2395: error: MEM30-C: Do not access freed memory
+program.c:2396: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2396: error: MEM30-C: Do not access freed memory
 program.c:2397: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2400: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2403: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2406: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2409: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2433: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:2533: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:2543: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:2573: warning: DCL13-C: Declare function parameters that are pointers to values not changed by the function as const: fp
+program.c:2397: error: MEM30-C: Do not access freed memory
+program.c:2413: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:2434: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:2435: warning: EXP12-C: Do not ignore values returned by functions: rename
+program.c:2506: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2507: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2578: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:2581: error: STR31-C: String copy destination must contain sufficient storage
+program.c:2600: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2601: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2602: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2603: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2604: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2669: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2672: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2675: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2678: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2681: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2705: warning: EXP12-C: Do not ignore values returned by functions: fgets
+program.c:2805: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:2815: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:2845: warning: DCL13-C: Declare function parameters that are pointers to values not changed by the function as const: fp
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exit
 exit
 
-Script done on Sat 29 Apr 2017 08:23:19 PM EDT
+Script done on Sat 29 Apr 2017 09:37:03 PM EDT
