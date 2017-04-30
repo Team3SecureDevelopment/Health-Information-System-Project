@@ -1,51 +1,12 @@
-Script started on Sun 30 Apr 2017 12:07:25 PM EDT
+Script started on Sun 30 Apr 2017 12:34:01 PM EDT
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers program.c
-program.c:333: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:334: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:395: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:396: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:486: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:622: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:662: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:726: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:727: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:932: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:933: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:934: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1033: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:1056: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:1056: error: MEM34-C: Only free memory allocated dynamically
-program.c:1066: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1101: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1102: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1143: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1324: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1333: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1341: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1418: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1425: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1432: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1516: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1703: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1710: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:1717: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
+program.c:1131: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:1154: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:1154: error: MEM34-C: Only free memory allocated dynamically
+program.c:1170: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
 compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
 compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2259: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2359: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2428: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2532: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2538: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2544: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2591: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2597: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2645: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2725: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2732: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2852: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2859: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
-program.c:2866: warning: MEM07-C: Ensure that the arguments to calloc() when multiplied can be represented as a size_t
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exit
 exit
 
-Script done on Sun 30 Apr 2017 12:07:46 PM EDT
+Script done on Sun 30 Apr 2017 12:34:21 PM EDT
