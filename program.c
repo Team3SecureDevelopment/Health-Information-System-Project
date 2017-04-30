@@ -136,7 +136,7 @@ int main()
 
 		while(active == 0)
 		{
-			char *menustring = (char*)malloc(sizeof(menustring));
+			char *menustring = malloc(sizeof(char) * 2);
 			
 			if(NULL == menustring)
 			{
@@ -157,7 +157,7 @@ int main()
 				if(menustring != NULL)
 				{
 					menuchoice = strtol(menustring, NULL, 10);
-					free(menustring);
+					//free(menustring);
 					menustring = NULL;
 				}
 				else
