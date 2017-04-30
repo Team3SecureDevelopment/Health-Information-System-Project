@@ -105,7 +105,7 @@ int main()
 
 		while(active == 0)
 		{
-			char *menustring = malloc(sizeof(char) * 2);
+			char *menustring = (char*)calloc(2, sizeof(char));
 			
 			if(NULL == menustring)
 			{
@@ -330,8 +330,8 @@ int main()
 		drawExit();
 		
 		/* get departure time and format user's duration */
-		char *string = malloc(sizeof(char*) * 256);
-		char *timetotal = malloc(sizeof(char*) * 128);
+		char *string = (char*)calloc(MAX_CHAR, sizeof(char));
+		char *timetotal = (char*)calloc(MAX_CHAR, sizeof(char));
 		
 		if(NULL == string)
 		{
@@ -392,8 +392,8 @@ int main()
  */
 Session authenticate()
 {
-	char *username = malloc(sizeof(char*) * MAX_CHAR);
-	char *password = malloc(sizeof(char*) * MAX_CHAR);
+	char *username = (char*)calloc(MAX_CHAR, sizeof(char));
+	char *password = (char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == username)
 	{
@@ -483,7 +483,7 @@ User getUser(char *username, int password)
 	}
 	else
 	{
-		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		
 		if(NULL == temp)
 		{
@@ -619,7 +619,7 @@ User createNewUser(char *name, int type)
 /* takes in a string and returns it encrypted */
 char *encrypt(char *string)
 {
-	unsigned char *encryptBuff = malloc(sizeof(char*) * MAX_CHAR);
+	unsigned char *encryptBuff = (unsigned char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == encryptBuff)
 	{
@@ -659,7 +659,7 @@ char *encrypt(char *string)
 /* takes in an encrypted string and returns it decrypted */
 char *decrypt(char *string)
 {
-	unsigned char *decryptBuff = malloc(sizeof(char*) * MAX_CHAR);
+	unsigned char *decryptBuff = (unsigned char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == decryptBuff)
 	{
@@ -723,8 +723,8 @@ int getUserCount(FILE *fp)
 /* returns the full line as a string */
 char *getLine(FILE *fp, int line)
 {
-	char *buffer = malloc(sizeof(char*) * MAX_CHAR);
-	char *string = malloc(sizeof(char*) * MAX_CHAR);
+	char *buffer = (char*)calloc(MAX_CHAR, sizeof(char));
+	char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == buffer)
 	{
@@ -813,10 +813,10 @@ void addUser()
 		int hashvalue;
 		int type;
 		
-		char *username = malloc(sizeof(char) * 64);
-		char *password = malloc(sizeof(char) * 16);	
-		char *string = malloc(sizeof(char*) * MAX_CHAR * 2);
-		char *buffer = malloc(sizeof(char*) * MAX_CHAR);
+		char *username = (char*)calloc(64, sizeof(char));
+		char *password = (char*)calloc(16, sizeof(char));
+		char *string = (char*)calloc(MAX_CHAR*2, sizeof(char));
+		char *buffer = (char*)calloc(MAX_CHAR*2, sizeof(char));
 		
 		if(NULL == username)
 		{
@@ -929,9 +929,9 @@ void viewUsers()
 		{
 			printf("we're at the beginning of the file\n");
 			
-			char *username = malloc(sizeof(char*) * MAX_CHAR);
-			char *type = malloc(sizeof(char*) * MAX_CHAR);
-			char *temp = malloc(sizeof(char*) * MAX_CHAR);
+			char *username = (char*)calloc(MAX_CHAR, sizeof(char));
+			char *type = (char*)calloc(MAX_CHAR, sizeof(char));
+			char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 
 			if(NULL == username)
 			{
@@ -1007,11 +1007,10 @@ void viewUsers()
 /* reads a string with whitespace until ENTER key */
 char *sread(int size)
 {
+	fflush(stdin);
 	int i = 0;
-	unsigned int ch = ' ';
-	char *temp = malloc(sizeof(char*) * size+1);
-	char *string = malloc(sizeof(char*) * size+1);
-	
+	signed int ch = ' ';
+	char *temp = (char*)calloc(size+1, sizeof(char));
 	if(NULL == temp)
 	{
 		free(temp);
@@ -1019,7 +1018,8 @@ char *sread(int size)
 		printf("Memory allocation error\n");
 		exit(1);
 	}
-
+	
+	char *string = (char*)calloc(size+1, sizeof(char));
 	if(NULL == string)
 	{
 		free(string);
@@ -1037,29 +1037,33 @@ char *sread(int size)
 		}
 	}
 
-	if(i <= size)
-	{
-		strncpy(string, temp, i);
-	}
-	else
+	printf("max size of %d - i = %d\n", size, i);
+	
+	if(i > size)
 	{
 		strncpy(string, temp, size);
 	}
+	else
+	{
+		strncpy(string, temp, i);
+	}
+	
+	printf("temp string [%s]\n", temp);
 	
 	if(temp != NULL)
 	{
 		temp = NULL;
+		free(temp);
 	}
 
-	fflush(stdin);
-
-	return (char*)string;
+	printf("returning string [%s]\n", string);
+	return string;
 }
 
 char *wspace(int size)
 {
 	int i = 0;
-	char *string = malloc(sizeof(char*) * size);
+	char *string = (char*)calloc(size, sizeof(char));
 
 	if(NULL == string)
 	{
@@ -1094,8 +1098,8 @@ void changepass(User currentUser)
 	{
 		drawPassword();
 		
-		char *temp = malloc(sizeof(char*) * MAX_CHAR);
-		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
+		char *line = (char*)calloc(MAX_CHAR, sizeof(char));
 		
 		if(NULL == temp)
 		{
@@ -1136,7 +1140,7 @@ void changepass(User currentUser)
 						{
 							temp = strtok(NULL, ",");
 							
-							char *string = malloc(sizeof(char*) * 256);
+							char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 							if(NULL == string)
 							{
 								free(string);
@@ -1145,7 +1149,7 @@ void changepass(User currentUser)
 								exit(1);
 							}
 							
-							char *pass = malloc(sizeof(char*) * 16);
+							char *pass = (char*)calloc(16, sizeof(char));
 							if(NULL == pass)
 							{
 								free(pass);
@@ -1154,7 +1158,7 @@ void changepass(User currentUser)
 								exit(1);
 							}
 							
-							char *pass2 = malloc(sizeof(char*) * 16);
+							char *pass2 = (char*)calloc(16, sizeof(char));
 							if(NULL == pass2)
 							{
 								free(pass2);
@@ -1163,7 +1167,7 @@ void changepass(User currentUser)
 								exit(1);
 							}
 							
-							char *buff = malloc(sizeof(char*) * 10);
+							char *buff = (char*)calloc(10, sizeof(char));
 							if(NULL == buff)
 							{
 								free(buff);
@@ -1294,17 +1298,10 @@ void pressEnterKey()
 {
 	fflush(stdin);
 	printf("\nPress [ENTER] To Continue...");
-	char *null = malloc(sizeof(char)*3);
-	if(NULL == null)
+	unsigned int ch = getchar();
+	while((ch != '\n') && (ch != '\r'))
 	{
-		free(null);
-		null = NULL;
-	}
-	strcpy(null, wspace(3));
-	strcpy(null, sread(2));
-	if(null != NULL)
-	{
-		null = NULL;
+		ch = getchar();
 	}
 }
 
@@ -1324,7 +1321,7 @@ int verify(User currentUser)
 	}
 	else
 	{
-		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == temp)
 		{
 			free(temp);
@@ -1333,7 +1330,7 @@ int verify(User currentUser)
 			exit(1);
 		}
 
-		char *username = malloc(sizeof(char*) * MAX_CHAR);
+		char *username = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == username)
 		{
 			free(username);
@@ -1341,7 +1338,7 @@ int verify(User currentUser)
 			printf("memory allocation error\n");
 			exit(1);
 		}
-		char *password = malloc(sizeof(char*) * MAX_CHAR);
+		char *password = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == password)
 		{
 			free(password);
@@ -1418,21 +1415,21 @@ void deleteUser(User currentAdmin)
 		printf("\033[2J\033[;H");
 		printf("\n-------------[ DELETE USER ]-------------\n");
 		
-		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == temp)
 		{
 			free(temp);
 			temp = NULL;
 		}
 		
-		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		char *line = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == line)
 		{
 			free(line);
 			line = NULL;
 		}
 		
-		char *username = malloc(sizeof(char*) * MAX_CHAR);
+		char *username = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == username)
 		{
 			free(username);
@@ -1480,7 +1477,13 @@ void deleteUser(User currentAdmin)
 							printf("You are about to delete user %s from the system. This action cannot be undone.\n", username);
 							printf("Proceed? (Y\\N) ");
 
-							char *c = malloc(sizeof(char*) * 3);
+							char *c = (char*)calloc(3, sizeof(char));
+							if(NULL == c)
+							{
+								free(c);
+								c = NULL;
+							}
+							
 							strcpy(c, sread(3));
 							if(c[0] == 'y' || c[0] == 'Y')
 							{
@@ -1494,9 +1497,15 @@ void deleteUser(User currentAdmin)
 							{
 								printf("Invalid character!\n");
 								pressEnterKey();
+								c = NULL;
 								return;
 							}
 
+							if(c != NULL)
+							{
+								c = NULL;
+							}
+							
 							/* if admin says yes, then proceed */
 							if(flag == 1)
 							{
@@ -1504,7 +1513,7 @@ void deleteUser(User currentAdmin)
 								if(verify(currentAdmin))
 								{
 									/* we aren't going to edit the data as much as we won't copy, so continue */
-									char *string = malloc(sizeof(char*) * MAX_CHAR);
+									char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 									if(NULL == string)
 									{
 										free(string);
@@ -1527,13 +1536,17 @@ void deleteUser(User currentAdmin)
 							}
 							else if(flag == 0)
 							{
-								printf("\nUser deletion cancelled. The file has not been changed.\n");
+
 								pressEnterKey();
 								
 								writeLogs(currentAdmin, "User delete cancelled");
 								fclose(fp);
 								fclose(nfp);
-								remove("./temp");
+								if(remove("./temp") == 0)
+								{
+									printf("\nUser deletion cancelled. The file has not been changed.\n");
+								}
+								
 								return;
 							}
 						}
@@ -1575,7 +1588,7 @@ char *createPassword()
 	 * must contain at least one CAPITAL, number, and special character
 	 */
 	 
-	char *password = malloc(sizeof(char*) * 16);
+	char *password = (char*)calloc(16, sizeof(char));
 	if(NULL == password)
 	{
 		free(password);
@@ -1666,49 +1679,49 @@ void addNewPatient()
 		int mental;
 		int drugs;
 		
-		char *c = malloc(sizeof(char*) * 3);
+		char *c = (char*)calloc(3, sizeof(char));
 		if(NULL == c)
 		{
 			free(c);
 			c = NULL;
 		}
 		
-		char *social = malloc(sizeof(char*) * 10);
+		char *social = (char*)calloc(3, sizeof(char));
 		if(NULL == social)
 		{
 			free(social);
 			social = NULL;
 		}
 		
-		char *dob = malloc(sizeof(char*) * 11);
+		char *dob = (char*)calloc(11, sizeof(char));
 		if(NULL == dob)
 		{
 			free(dob);
 			dob = NULL;
 		}
 		
-		char *fname = malloc(sizeof(char*) * MAX_CHAR);
+		char *fname = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == fname)
 		{
 			free(fname);
 			fname = NULL;
 		}
 		
-		char *lname = malloc(sizeof(char*) * MAX_CHAR);
+		char *lname = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == lname)
 		{
 			free(lname);
 			lname = NULL;
 		}
 		
-		char *buffer = malloc(sizeof(char*) * (MAX_CHAR));
+		char *buffer = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == buffer)
 		{
 			free(buffer);
 			buffer = NULL;
 		}
 		
-		char *string = malloc(sizeof(char*) * (MAX_CHAR*2 + 10) + sizeof(int) * 6);
+		char *string = (char*)calloc(MAX_CHAR*4, sizeof(char));
 		if(NULL == string)
 		{
 			free(string);
@@ -1956,14 +1969,14 @@ void setAllergyInfo(int ssnhash)
 	}
 	else
 	{
-		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
+		char *string = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == string)
 		{
 			free(string);
 			string = NULL;
 		}
 		
-		char *allergies = malloc(sizeof(char*) * MAX_CHAR * 10);
+		char *allergies = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == allergies)
 		{
 			free(allergies);
@@ -2018,7 +2031,7 @@ void getAllergyInfo(int ssnhash)
 		
 		for(i = 0; i < count; ++i)
 		{
-			char *temp = malloc(sizeof(char*) * MAX_CHAR*11);
+			char *temp = (char*)calloc(MAX_CHAR*10, sizeof(char));
 			if(NULL == temp)
 			{
 				free(temp);
@@ -2094,13 +2107,13 @@ void setPrescriptionInfo(int ssnhash)
 	}
 	else
 	{
-		char *string = malloc(sizeof(char*) * MAX_CHAR * 11);
+		char *string = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == string)
 		{
 			free(string);
 			string = NULL;
 		}
-		char *prescriptions = malloc(sizeof(char*) * MAX_CHAR * 10);
+		char *prescriptions = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == prescriptions)
 		{
 			free(prescriptions);
@@ -2155,7 +2168,7 @@ void getPrescriptionInfo(int ssnhash)
 		
 		for(i = 0; i < count; ++i)
 		{
-			char *temp = malloc(sizeof(char*) * MAX_CHAR*11);
+			char *temp = (char*)calloc(MAX_CHAR*10, sizeof(char));
 			if(NULL == temp)
 			{
 				free(temp);
@@ -2235,15 +2248,15 @@ void findPatient()
 		int found = 0;
 
 		drawPatientSearch(fp);
-		
+		fflush(stdin);
 		printf("SSN to search: ");
 		const int hashvalue = hash(sread(9));
-
+		printf("hashvalue = %d\n", hashvalue);
 		for(i = 0; i < count; ++i)
 		{
 			if(found == 0)
 			{
-				char *temp = malloc(sizeof(char*) * MAX_CHAR);
+				char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 				if(NULL == temp)
 				{
 					free(temp);
@@ -2290,28 +2303,26 @@ void findPatient()
 					if(a == 1)
 					{
 						printf("\nPress [ENTER] to view allergy information\n");
-						getchar();
-						getAllergyInfo(hashvalue);
-						printf("\n");
+						if(getchar())
+						{
+							getAllergyInfo(hashvalue);
+							printf("\n");
+						}
 					}
 					
 					/* if they have allergies, list them */
 					if(dr == 1)
 					{
 						printf("\nPress [ENTER] to view prescription information\n");
-						getchar();
-						getPrescriptionInfo(hashvalue);
-						printf("\n");
+						if(getchar())
+						{
+							getPrescriptionInfo(hashvalue);
+							printf("\n");
+						}
 					}
-					
-					pressEnterKey();
-					
-					fclose(fp);
-				}
 
-				if(temp != NULL)
-				{
-					temp = NULL;
+					pressEnterKey();
+					fclose(fp);
 				}
 			}
 			else break;
@@ -2345,7 +2356,7 @@ void filteredSearch()
 		int value;
 		int i;
 		
-		char *input = malloc(sizeof(char*) * MAX_CHAR);
+		char *input = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == input)
 		{
 			free(input);
@@ -2370,7 +2381,6 @@ void filteredSearch()
 			if((int)strlen(input) < 2)
 			{
 				value = (int)strtol(input, NULL, 10);
-				free(input);
 				input = NULL;
 			}
 			else
@@ -2415,7 +2425,7 @@ void filteredSearch()
 			
 			for(i = 0; i < count; ++i)
 			{
-				char *temp = malloc(sizeof(char*) * MAX_CHAR);
+				char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 				if(NULL == temp)
 				{
 					free(temp);
@@ -2430,9 +2440,9 @@ void filteredSearch()
 				
 				const char *lname = strtok(NULL, ",");
 				const char *fname = strtok(NULL, ",");
-				strtok(NULL, ",");
-				strtok(NULL, ",");
-				strtok(NULL, ",");
+				if(strtok(NULL, ","));
+				if(strtok(NULL, ","));
+				if(strtok(NULL, ","));
 				const int a = (int)strtol((strtok(NULL,",")), NULL, 10); //allergies bool
 				const int su = (int)strtol((strtok(NULL,",")), NULL, 10); //surgeries bool
 				const int sm = (int)strtol((strtok(NULL,",")), NULL, 10); //smoker bool
@@ -2519,19 +2529,19 @@ void deletePatient(User currentDoctor)
 		printf("\033[2J\033[;H");
 		printf("\n-------------[ DELETE PATIENT ]-------------\n");
 		
-		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == temp)
 		{
 			free(temp);
 			temp = NULL;
 		}
-		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		char *line = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == line)
 		{
 			free(line);
 			line = NULL;
 		}
-		char *social = malloc(sizeof(char*) * MAX_CHAR);
+		char *social = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == social)
 		{
 			free(social);
@@ -2578,13 +2588,13 @@ void deletePatient(User currentDoctor)
 							found = 1;
 							
 							/* temporary holder for first, last name */
-							char *fname = malloc(sizeof(char*) * MAX_CHAR);
+							char *fname = (char*)calloc(MAX_CHAR, sizeof(char));
 							if(NULL == fname)
 							{
 								free(fname);
 								fname = NULL;
 							}
-							char *lname = malloc(sizeof(char*) * MAX_CHAR);
+							char *lname = (char*)calloc(MAX_CHAR, sizeof(char));
 							if(NULL == lname)
 							{
 								free(lname);
@@ -2599,7 +2609,7 @@ void deletePatient(User currentDoctor)
 							printf("You are about to delete patient: %s, %s from the system. This action cannot be undone.\n", lname, fname);
 							printf("Proceed? (Y\\N) ");
 
-							char *c = malloc(sizeof(char*) * 1);
+							char *c = (char*)calloc(1, sizeof(char));
 							if(NULL == c)
 							{
 								free(c);
@@ -2632,7 +2642,7 @@ void deletePatient(User currentDoctor)
 								if(verify(currentDoctor))
 								{
 									/* we aren't going to edit the data as much as we won't copy, so continue */
-									char *string = malloc(sizeof(char*) * MAX_CHAR);
+									char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 									if(NULL == string)
 									{
 										free(string);
@@ -2712,14 +2722,14 @@ void writeLogs(User currentUser, char *purpose)
 	char* c_time_string;
 	int i = 0;
 	
-	char *string = malloc(sizeof(char) * 256);
+	char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == string)
 	{
 		free(string);
 		string = NULL;
 	}
 	
-	char *userType = malloc(sizeof(char) * 128);
+	char *userType = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == userType)
 	{
 		free(userType);
@@ -2832,35 +2842,35 @@ void createAppointment()
 	fflush(stdin);
 	drawAppointment();
 
-	char *string = malloc(sizeof(char) * 1025);
+	char *string = (char*)calloc(MAX_CHAR*4, sizeof(char));
 	if(NULL == string)
 	{
 		free(string);
 		string = NULL;
 	}
 	
-	char *fname = malloc(sizeof(char*) * 256);
+	char *fname = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == fname)
 	{
 		free(fname);
 		fname = NULL;
 	}
 	
-	char *lname = malloc(sizeof(char*) * 256);
+	char *lname = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == lname)
 	{
 		free(lname);
 		lname = NULL;
 	}
 	
-	char *purpose = malloc(sizeof(char*) * 256);
+	char *purpose = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == purpose)
 	{
 		free(purpose);
 		purpose = NULL;
 	}
 	
-	char *date = malloc(sizeof(char*) * 10);
+	char *date = (char*)calloc(10, sizeof(char));
 	if(NULL == date)
 	{
 		free(date);
