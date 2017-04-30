@@ -525,6 +525,8 @@ User getUser(char *username, int password)
 		const int length = getUserCount(fp);
 		int i;
 		
+		char *token;
+		
 		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
 			for(i = 0; i < length; i++)
@@ -532,27 +534,22 @@ User getUser(char *username, int password)
 				if(fgets(buffer, MAX_CHAR, fp) != NULL)
 				{
 					strncpy(buffer, decrypt(buffer), MAX_CHAR);
-					printf("buffer = [%s]\n", buffer);
 					
 					/* tokenize the line */
-					temp = strtok(buffer, ",");
-					printf("temp = [%s]\n", temp);
-					printf("we\'re looking for [%s]\n", username);
+					strcpy(temp, buffer);
+					
+					token = strtok(temp, ",");
 					
 					/* check if the username matches */
-					if(strncmp(temp, username, MAX_CHAR) == 0)
+					if(strncmp(token, username, MAX_CHAR) == 0)
 					{
-						printf("matching username\n");
-						
-						temp = strtok(NULL, ",");
-					
-						printf("temp is now [%s]\n", temp);
+						token = strtok(NULL, ",");
 						
 						/* password match? */
-						if(password == (int)strtol(temp, NULL, 10))
+						if(password == (int)strtol(token, NULL, 10))
 						{
-							temp = strtok(NULL, ",");
-							const long int type = strtol(temp, NULL, 10);
+							token = strtok(NULL, ",");
+							const long int type = strtol(token, NULL, 10);
 
 							const User newUser = createNewUser(username, type);
 							
@@ -1047,19 +1044,23 @@ void viewUsers()
 			int i = 1;
 			
 			drawViewUsers();
+			char *token;
 			
 			while(1)
 			{
-				if(fgets(buff, 255, (FILE*)fp) != NULL)
+				if(fgets(buff, 255, fp) != NULL)
 				{
+					strcpy(temp, buff);
+					token = temp;
+					
 					if(feof(fp)) break;
 					else
 					{
-						temp = strtok(decrypt(buff), ",");
-						strcpy(username, temp);
-						temp = strtok(NULL, ",");
-						temp = strtok(NULL, ",");
-						strncpy(type, temp, strlen(temp)-1);
+						token = strtok(temp, ",");
+						strcpy(username, token);
+						token = strtok(NULL, ",");
+						token = strtok(NULL, ",");
+						strncpy(type, token, strlen(token)-1);
 						printf("%3d.) %s (%s)\n", i, username, type);
 						i++;
 					}
@@ -1067,7 +1068,7 @@ void viewUsers()
 				else break;
 			}
 			
-			temp = strtok(NULL, ",");
+			token = strtok(NULL, ",");
 			
 			if(type != NULL)
 			{
@@ -1135,8 +1136,6 @@ char *sread(int size)
 		}
 	}
 
-	printf("max size of %d - i = %d\n", size, i);
-	
 	if(i > size)
 	{
 		strncpy((char*)string, (char*)temp, size);
@@ -1145,15 +1144,12 @@ char *sread(int size)
 	{
 		strncpy((char*)string, (char*)temp, i);
 	}
-	
-	printf("temp string [%s]\n", temp);
-	
+
 	if(temp != NULL)
 	{
 		temp = NULL;
 	}
 
-	printf("returning string [%s]\n", string);
 	return (char*)string;
 }
 
@@ -1232,8 +1228,9 @@ void changepass(User currentUser)
 		}
 		
 		char buffer[MAX_CHAR];
-
+		char *token;
 		const int length = getUserCount(fp);
+		int change_flag = 0;
 		int i;
 		
 		if(fseek(fp, 0, SEEK_SET) == 0)
@@ -1245,14 +1242,15 @@ void changepass(User currentUser)
 					if(fgets(line, MAX_CHAR, fp) != NULL)
 					{
 						strncpy(buffer, decrypt(line), strlen(line));
-
+						strcpy(temp, buffer);
+						
 						/* tokenize the line */
-						temp = strtok(buffer, ",");
+						token = strtok(temp, ",");
 						
 						/* check if the username matches */
-						if(strncmp(temp, userGetName(currentUser), MAX_CHAR) == 0)
+						if(strncmp(token, userGetName(currentUser), MAX_CHAR) == 0)
 						{
-							temp = strtok(NULL, ",");
+							token = strtok(NULL, ",");
 
 							if(MAX_CHAR > SIZE_MAX/sizeof(char))
 							{
@@ -1323,8 +1321,6 @@ void changepass(User currentUser)
 								printf("New Password: ");
 								strcpy(pass, wspace(16));
 								strcpy(pass, createPassword());
-								printf("DONE\n");
-								printf("pass = [%s]\n", pass);
 								if(pass != NULL)
 								{
 									/* verify it was valid */
@@ -1334,7 +1330,7 @@ void changepass(User currentUser)
 									if(strcmp(pass, pass2) == 0)
 									{
 										/* get the type again */
-										temp = strtok(NULL, ",");
+										token = strtok(NULL, ",");
 
 										strcpy(string, userGetName(currentUser));
 										strcat(string, ",");
@@ -1343,7 +1339,7 @@ void changepass(User currentUser)
 										strcat(string, buff);
 									
 										strcat(string, ",");
-										strncat(string, temp, 1);
+										strncat(string, token, 1);
 									
 										strcpy(string, encrypt(string));
 										strcat(string, "\n");
@@ -1357,6 +1353,7 @@ void changepass(User currentUser)
 										strcpy(string, wspace(strlen(string)));
 										
 										writeLogs(currentUser, "Password change success");
+										change_flag = 1;
 									}
 									else
 									{
@@ -1369,6 +1366,7 @@ void changepass(User currentUser)
 								else
 								{
 									printf("New password does not meet requirements!\n");
+									fprintf(nfp, "%s", line);
 								}
 
 							}
@@ -1420,11 +1418,15 @@ void changepass(User currentUser)
 		fclose(fp);
 		fclose(nfp);
 		
-		if(remove("./userdata.bin") == 0)
+		/* if we made changes, we need to remove the old file */
+		if(change_flag == 1)
 		{
-			if(rename("./temp", "./userdata.bin") == 0)
+			if(remove("./userdata.bin") == 0)
 			{
-				printf("Password changed successfully!\n");
+				if(rename("./temp", "./userdata.bin") == 0)
+				{
+					printf("Password changed successfully!\n");
+				}
 			}
 		}
 	}
@@ -1502,7 +1504,7 @@ int verify(User currentUser)
 		
 		int hashpass;
 		char buffer[MAX_CHAR];
-
+		char *token;
 		const int length = getUserCount(fp);
 		int i;
 		
@@ -1516,25 +1518,25 @@ int verify(User currentUser)
 				if(fgets(buffer, 255, fp) != NULL)
 				{
 					strncpy(buffer, decrypt(buffer), MAX_CHAR);
-
+					strcpy(temp, buffer);
+					
 					/* tokenize the line */
-					temp = strtok(buffer, ",");
-					printf("temp = [%s]\n", temp);
-					printf("username looking for is [%s]\n", username);
+					token = strtok(temp, ",");
+					
 					/* check if the username matches */
-					if(strncmp(temp, username, MAX_CHAR) == 0)
+					if(strncmp(token, username, MAX_CHAR) == 0)
 					{
 						/* prompt for the password */
 						printf("\nPassword Verification: ");
 						strcpy(password, sread(MAX_CHAR));
 						
-						temp = strtok(NULL, ",");
+						token = strtok(NULL, ",");
 					
 						hashpass = hash(password);
 						strcpy(password, wspace(MAX_CHAR));
 						
 						/* password match? */
-						if(hashpass == (int)strtol(temp, NULL, 10))
+						if(hashpass == (int)strtol(token, NULL, 10))
 						{
 							fclose(fp);
 							return 1;
@@ -1614,25 +1616,28 @@ void deleteUser(User currentAdmin)
 		
 		fflush(stdin);
 		char buffer[MAX_CHAR];
-		printf("username input is [%s]\n", username);
+
 		/* get the user to delete */
-		printf("\nUsername to delete: ");
 		strcpy(username, sread(MAX_CHAR));
-		printf("username input is [%s]\n", username);
 		
 		if(strncmp(username, userGetName(currentAdmin), MAX_CHAR) == 0)
 		{
 			printf("\nCannot delete self! Deletion halted.\n");
 			fclose(fp);
 			fclose(nfp);
-			pressEnterKey();
-			return;
+			if(remove("./temp") == 0)
+			{
+				pressEnterKey();
+				return;
+			}
 		}
 		
 		const int length = getUserCount(fp);
 		int i;
 		int flag = 0;
 		int found = 0;
+		int delete = 0;
+		char *token;
 		
 		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
@@ -1645,12 +1650,13 @@ void deleteUser(User currentAdmin)
 					if(fgets(line, MAX_CHAR, fp) != NULL)
 					{
 						strncpy(buffer, decrypt(line), strlen(line));
-
+						strcpy(temp, buffer);
+						
 						/* tokenize the line */
-						temp = strtok(buffer, ",");
+						token = strtok(temp, ",");
 						
 						/* check if the username matches */
-						if(strncmp(temp, username, MAX_CHAR) == 0)
+						if(strncmp(token, username, MAX_CHAR) == 0)
 						{
 							found = 1;
 							printf("You are about to delete user %s from the system. This action cannot be undone.\n", username);
@@ -1717,6 +1723,7 @@ void deleteUser(User currentAdmin)
 									pressEnterKey();
 									writeLogs(currentAdmin, string);
 									
+									delete = 1;
 									if(string != NULL)
 									{
 										string = NULL;
@@ -1726,18 +1733,14 @@ void deleteUser(User currentAdmin)
 							else if(flag == 0)
 							{
 
+								printf("User deletion cancelled\n");
 								pressEnterKey();
-								
 								writeLogs(currentAdmin, "User delete cancelled");
-								fclose(fp);
-								fclose(nfp);
-								if(remove("./temp") == 0)
-								{
-									printf("\nUser deletion cancelled. The file has not been changed.\n");
-								}
-								
-								return;
 							}
+						}
+						else
+						{
+							fprintf(nfp, "%s", line);
 						}
 					}
 					else
@@ -1761,7 +1764,7 @@ void deleteUser(User currentAdmin)
 				return;
 			}
 		}
-		else
+		else if(delete == 1)
 		{		
 			if(remove("./userdata.bin") == 0)
 			{
@@ -1770,6 +1773,13 @@ void deleteUser(User currentAdmin)
 					printf("User deleted successfully!\n");
 				}					
 			}	
+		}
+		else
+		{
+			if(remove("./temp") == 0)
+			{
+				printf("Removed temp file\n");
+			}
 		}
 
 	}
@@ -1832,6 +1842,8 @@ char *createPassword()
 		}
 		else
 		{
+			printf("Password does not contain a capital, number, or special character!\n");
+			
 			if(password != NULL)
 			{
 				password = NULL;
@@ -1994,7 +2006,8 @@ void addNewPatient()
 	  
 		printf("Social Security: ");
 		strcpy(social, sread(9));
-		if(strlen(social) > 9)
+		const size_t socialLength = strlen(social);
+		if(socialLength > 9)
 		{
 			printf("Invalid input length!\n");
 			return;
@@ -2270,6 +2283,7 @@ void getAllergyInfo(int ssnhash)
 		const int count = getUserCount(fp); //number of patients in file
 		const int found = 0;
 		int i;
+		char *token;
 		
 		for(i = 0; i < count; ++i)
 		{
@@ -2288,12 +2302,13 @@ void getAllergyInfo(int ssnhash)
 			char buffer[MAX_CHAR*11];
 		
 			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR*11);
-
+			strcpy(temp, buffer);
+			
 			/* tokenize the line */
-			temp = strtok(buffer, "|");
+			token = strtok(temp, "|");
 			
 			/* hash match? */
-			if(ssnhash == (int)strtol(temp, NULL, 10))
+			if(ssnhash == (int)strtol(token, NULL, 10))
 			{
 				printf("Patient Allergies\n");
 				printf("-----------------\n");
@@ -2317,8 +2332,8 @@ void getAllergyInfo(int ssnhash)
 
 				for(i = 0; i < comma+1; i++)
 				{
-					temp = strtok(NULL, ",");
-					printf("%d.) %s\n", i+1, temp);
+					token = strtok(NULL, ",");
+					printf("%d.) %s\n", i+1, token);
 				}
 				
 				fclose(fp);
@@ -2423,6 +2438,7 @@ void getPrescriptionInfo(int ssnhash)
 		const int count = getUserCount(fp); //number of patients in file
 		const int found = 0;
 		int i;
+		char *token;
 		
 		for(i = 0; i < count; ++i)
 		{
@@ -2441,12 +2457,13 @@ void getPrescriptionInfo(int ssnhash)
 			char buffer[MAX_CHAR*11];
 		
 			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR*11);
-
+			strcpy(temp, buffer);
+			
 			/* tokenize the line */
-			temp = strtok(buffer, "|");
+			token = strtok(temp, "|");
 			
 			/* hash match? */
-			if(ssnhash == (int)strtol(temp, NULL, 10))
+			if(ssnhash == (int)strtol(token, NULL, 10))
 			{
 				printf("Patient Prescriptions\n");
 				printf("---------------------\n");
@@ -2470,8 +2487,8 @@ void getPrescriptionInfo(int ssnhash)
 
 				for(i = 0; i < comma+1; i++)
 				{
-					temp = strtok(NULL, ",");
-					printf("%d.) %s\n", i+1, temp);
+					token = strtok(NULL, ",");
+					printf("%d.) %s\n", i+1, token);
 				}
 				
 				fclose(fp);
@@ -2514,88 +2531,95 @@ void findPatient()
 		fflush(stdin);
 		printf("SSN to search: ");
 		const int hashvalue = hash(sread(9));
-		printf("hashvalue = %d\n", hashvalue);
-		for(i = 0; i < count; ++i)
-		{
-			if(found == 0)
-			{
-				if(MAX_CHAR > SIZE_MAX/sizeof(char))
-				{
-					printf("Not enough memory!\n");
-					exit(1);
-				}
-				char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
-				if(NULL == temp)
-				{
-					free(temp);
-					temp = NULL;
-				}
-				
-				char buffer[MAX_CHAR];
-			
-				strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
-				
-				/* tokenize the line */
-				temp = strtok(buffer, ",");
-				
-				/* hash match? */
-				if(hashvalue == (int)strtol(temp, NULL, 10))
-				{
-					found = 1;
-					const char *lname = strtok(NULL, ",");
-					const char *fname = strtok(NULL, ",");
-					const char *dob = strtok(NULL, ",");
-					const int h = (int)strtol((strtok(NULL,",")), NULL, 10);
-					const int w = (int)strtol((strtok(NULL,",")), NULL, 10);
-					const int a = (int)strtol((strtok(NULL,",")), NULL, 10);
-					const int su = (int)strtol((strtok(NULL,",")), NULL, 10);
-					const int sm = (int)strtol((strtok(NULL,",")), NULL, 10);
-					const int m = (int)strtol((strtok(NULL,",")), NULL, 10);
-					const int dr = (int)strtol((strtok(NULL,",")), NULL, 10);
-					
-					drawPatientInfo();
-					
-					printf("         First Name: %s\n", fname);
-					printf("          Last Name: %s\n", lname);
-					printf("      Date of Birth: %s\n", dob);
-					printf("        Height (cm): %d\n", h);
-					printf("        Weight (lb): %d\n", w);
-					printf("      Has allergies? %d\n", a);
-					printf("   On Prescriptions? %d\n", dr);				
-					printf("    Is/was a smoker? %d\n", sm);
-					printf(" Previous surgeries? %d\n", su);
-					printf(" Has mental illness? %d\n", m);
-					printf("\n");
-					
-					/* if they have allergies, list them */
-					if(a == 1)
-					{
-						printf("\nPress [ENTER] to view allergy information\n");
-						if(getchar())
-						{
-							getAllergyInfo(hashvalue);
-							printf("\n");
-						}
-					}
-					
-					/* if they have allergies, list them */
-					if(dr == 1)
-					{
-						printf("\nPress [ENTER] to view prescription information\n");
-						if(getchar())
-						{
-							getPrescriptionInfo(hashvalue);
-							printf("\n");
-						}
-					}
 
-					pressEnterKey();
-					fclose(fp);
+		if(fseek(fp, 0, SEEK_SET) == 0)
+		{
+			for(i = 0; i < count; ++i)
+			{
+				if(found == 0)
+				{
+					if(MAX_CHAR > SIZE_MAX/sizeof(char))
+					{
+						printf("Not enough memory!\n");
+						exit(1);
+					}
+					char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
+					if(NULL == temp)
+					{
+						free(temp);
+						temp = NULL;
+					}
+					
+					char buffer[MAX_CHAR];
+					char *token;
+					
+					if(fgets(buffer, 0, fp) != NULL)
+					{
+						strncpy(buffer, decrypt(buffer), MAX_CHAR);
+						strcpy(temp, buffer);
+						
+						/* tokenize the line */
+						token = strtok(temp, ",");
+						
+						/* hash match? */
+						if(hashvalue == (int)strtol(token, NULL, 10))
+						{
+							found = 1;
+							const char *lname = token = strtok(NULL, ",");
+							const char *fname = token = strtok(NULL, ",");
+							const char *dob = token = strtok(NULL, ",");
+							const int h = (int)strtol( token = (strtok(NULL,",")), NULL, 10);
+							const int w = (int)strtol( token = (strtok(NULL,",")), NULL, 10);
+							const int a = (int)strtol( token = (strtok(NULL,",")), NULL, 10);
+							const int su = (int)strtol( token = (strtok(NULL,",")), NULL, 10);
+							const int sm = (int)strtol( token = (strtok(NULL,",")), NULL, 10);
+							const int m = (int)strtol( token = (strtok(NULL,",")), NULL, 10);
+							const int dr = (int)strtol( token = (strtok(NULL,",")), NULL, 10);
+							
+							drawPatientInfo();
+							
+							printf("         First Name: %s\n", fname);
+							printf("          Last Name: %s\n", lname);
+							printf("      Date of Birth: %s\n", dob);
+							printf("        Height (cm): %d\n", h);
+							printf("        Weight (lb): %d\n", w);
+							printf("      Has allergies? %d\n", a);
+							printf("   On Prescriptions? %d\n", dr);				
+							printf("    Is/was a smoker? %d\n", sm);
+							printf(" Previous surgeries? %d\n", su);
+							printf(" Has mental illness? %d\n", m);
+							printf("\n");
+							
+							/* if they have allergies, list them */
+							if(a == 1)
+							{
+								printf("\nPress [ENTER] to view allergy information\n");
+								if(getchar())
+								{
+									getAllergyInfo(hashvalue);
+									printf("\n");
+								}
+							}
+							
+							/* if they have allergies, list them */
+							if(dr == 1)
+							{
+								printf("\nPress [ENTER] to view prescription information\n");
+								if(getchar())
+								{
+									getPrescriptionInfo(hashvalue);
+									printf("\n");
+								}
+							}
+
+							pressEnterKey();
+							fclose(fp);
+						}
+					}
 				}
+				else break;
 			}
-			else break;
 		}
-		
 		if(found == 0)
 		{
 			printf("\nCould not find patient under the social security number.\n");
@@ -2696,85 +2720,94 @@ void filteredSearch()
 				return;
 			}
 			
-			for(i = 0; i < count; ++i)
-			{
-				if(MAX_CHAR > SIZE_MAX/sizeof(char))
-				{
-					printf("Not enough memory!\n");
-					exit(1);
-				}
-				char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
-				if(NULL == temp)
-				{
-					free(temp);
-					temp = NULL;
-				}
-				char buffer[MAX_CHAR];
+			char *token;
 			
-				strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+			if(fseek(fp, 0, SEEK_SET) == 0)
+			{
+				for(i = 0; i < count; ++i)
+				{
+					if(MAX_CHAR > SIZE_MAX/sizeof(char))
+					{
+						printf("Not enough memory!\n");
+						exit(1);
+					}
+					char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
+					if(NULL == temp)
+					{
+						free(temp);
+						temp = NULL;
+					}
+					char buffer[MAX_CHAR];
 				
-				/* tokenize the line */
-				temp = strtok(buffer, ",");
-				
-				const char *lname = strtok(NULL, ",");
-				const char *fname = strtok(NULL, ",");
-				if(strtok(NULL, ","));
-				if(strtok(NULL, ","));
-				if(strtok(NULL, ","));
-				const int a = (int)strtol((strtok(NULL,",")), NULL, 10); //allergies bool
-				const int su = (int)strtol((strtok(NULL,",")), NULL, 10); //surgeries bool
-				const int sm = (int)strtol((strtok(NULL,",")), NULL, 10); //smoker bool
-				const int m = (int)strtol((strtok(NULL,",")), NULL, 10); //mental bool
-				const int dr = (int)strtol((strtok(NULL,",")), NULL, 10); //prescriptions bool
+					if(fgets(buffer, MAX_CHAR, fp) == 0)
+					{
+						strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+						strcpy(temp, buffer);
+						
+						/* tokenize the line */
+						token = strtok(temp, ",");
+						
+						const char *lname = token = strtok(NULL, ",");
+						const char *fname = token = strtok(NULL, ",");
+						if((token = strtok(NULL, ",")));
+						if((token = strtok(NULL, ",")));
+						if((token = strtok(NULL, ",")));
+						const int a = (int)strtol( token = (strtok(NULL,",")), NULL, 10); //allergies bool
+						const int su = (int)strtol( token = (strtok(NULL,",")), NULL, 10); //surgeries bool
+						const int sm = (int)strtol( token = (strtok(NULL,",")), NULL, 10); //smoker bool
+						const int m = (int)strtol( token = (strtok(NULL,",")), NULL, 10); //mental bool
+						const int dr = (int)strtol( token = (strtok(NULL,",")), NULL, 10); //prescriptions bool
 
-				if(value == 1)
-				{
-					if(a)
-					{
-						printf("%3d.) %s, %s\n", j, lname, fname);
-						j++;
+						if(value == 1)
+						{
+							if(a)
+							{
+								printf("%3d.) %s, %s\n", j, lname, fname);
+								j++;
+							}
+						}
+						
+						if(value == 2)
+						{
+							if(su)
+							{
+								printf("%3d.) %s, %s\n", j, lname, fname);
+								j++;
+							}
+						}
+						
+						if(value == 3)
+						{
+							if(sm)
+							{
+								printf("%3d.) %s, %s\n", j, lname, fname);
+								j++;
+							}
+						}
+						
+						if(value == 4)
+						{
+							if(m)
+							{
+								printf("%3d.) %s, %s\n", j, lname, fname);
+								j++;
+							}
+						}
+						
+						if(value == 5)
+						{
+							if(dr)
+							{
+								printf("%3d.) %s, %s\n", j, lname, fname);
+								j++;
+							}
+						}
+						
+						if(temp != NULL)
+						{
+							temp = NULL;
+						}
 					}
-				}
-				
-				if(value == 2)
-				{
-					if(su)
-					{
-						printf("%3d.) %s, %s\n", j, lname, fname);
-						j++;
-					}
-				}
-				
-				if(value == 3)
-				{
-					if(sm)
-					{
-						printf("%3d.) %s, %s\n", j, lname, fname);
-						j++;
-					}
-				}
-				
-				if(value == 4)
-				{
-					if(m)
-					{
-						printf("%3d.) %s, %s\n", j, lname, fname);
-						j++;
-					}
-				}
-				
-				if(value == 5)
-				{
-					if(dr)
-					{
-						printf("%3d.) %s, %s\n", j, lname, fname);
-						j++;
-					}
-				}
-				
-				if(temp != NULL)
-				{
-					temp = NULL;
 				}
 			}
 			
@@ -2862,6 +2895,8 @@ void deletePatient(User currentDoctor)
 		int i;
 		int flag = 0;
 		int found = 0;
+		int delete = 0;
+		char *token;
 		
 		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
@@ -2873,9 +2908,10 @@ void deletePatient(User currentDoctor)
 					if(fgets(line, MAX_CHAR, fp) != NULL)
 					{
 						strncpy(buffer, decrypt(line), strlen(line));
-
+						strcpy(temp, buffer);
+						
 						/* tokenize the line */
-						temp = strtok(buffer, ",");
+						token = strtok(temp, ",");
 						
 						/* check if the social security hash matches */
 						if((int)strtol(temp, NULL, 10) == hashsocial && found == 0)
@@ -2907,10 +2943,10 @@ void deletePatient(User currentDoctor)
 								lname = NULL;
 							}
 							
-							temp = strtok(NULL, ",");
-							strcpy(lname, temp);
-							temp = strtok(NULL, ",");
-							strcpy(fname, temp);
+							token = strtok(NULL, ",");
+							strcpy(lname, token);
+							token = strtok(NULL, ",");
+							strcpy(fname, token);
 							
 							printf("You are about to delete patient: %s, %s from the system. This action cannot be undone.\n", lname, fname);
 							printf("Proceed? (Y\\N) ");
@@ -2975,6 +3011,8 @@ void deletePatient(User currentDoctor)
 									pressEnterKey();
 									writeLogs(currentDoctor, string);
 									
+									delete = 1;
+									
 									if(string != NULL)
 									{
 										string = NULL;
@@ -3013,7 +3051,7 @@ void deletePatient(User currentDoctor)
 			printf("\nCould not find the specified patient in the file.\n");
 			pressEnterKey();
 		}
-		else
+		else if(delete == 1)
 		{		
 			if(remove("./patients.bin") == 0)
 			{
@@ -3022,7 +3060,13 @@ void deletePatient(User currentDoctor)
 					printf("Patient deleted successfully!\n");
 				}
 			}
-
+		}
+		else
+		{
+			if(remove("./temp2.bin") == 0)
+			{
+				printf("Patient deletion cancelled\n");
+			}
 		}
 
 	}
@@ -3144,7 +3188,7 @@ void readLogs()
 
 		while(1)
 		{
-			if(fgets(buff, 255, (FILE*)fp) != NULL)
+			if(fgets(buff, 255, fp) != NULL)
 			{
 				if(feof(fp)) break;
 				strncpy(buff, decrypt(buff), 255);
@@ -3342,15 +3386,17 @@ void viewAppointments()
 
 		char buff[255];
 
-		while(1)
+		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
-			if(fgets(buff, 255, (FILE*)fp) != NULL)
+			while(1)
 			{
-				if(feof(fp)) break;
-				printf("%s\n", decrypt(buff));
+				if(fgets(buff, 255, fp) != NULL)
+				{
+					if(feof(fp)) break;
+					printf("%s\n", decrypt(buff));
+				}
 			}
 		}
-		
 		fclose(fp);
 	}
 }
