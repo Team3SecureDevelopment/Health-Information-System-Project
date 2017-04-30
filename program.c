@@ -137,7 +137,12 @@ int main()
 		while(active == 0)
 		{
 			char *menustring = malloc(sizeof(char) * 2);
-			
+			if(NULL == menustring)
+			{
+				free(menustring);
+				printf("Unable to allocate memory\n");
+				exit(1);
+			}
 			/* user authenticated, draw the menu */
 			drawMenu(currentUser);
 		
@@ -357,6 +362,14 @@ int main()
 		/* get departure time and format user's duration */
 		char *string = malloc(sizeof(char*) * 256);
 		char *time = malloc(sizeof(char*) * 128);;
+		
+		if(NULL == string)
+		{
+			free(string);
+			printf("Unable to allocate memory\n");
+			exit(1);
+		}
+		
 		
 		snprintf(time, 128, "%.2f", ((float )departure - (float )sessionGetLoginTime(newSession)));
 		strcpy(string, "Log Off -> Time duration of ");
@@ -632,7 +645,7 @@ char *decrypt(char *string)
 int getUserCount(FILE *fp)
 {
 	int i = 0;
-	char c;
+	char c = ' ';
 
 	/* make sure we are at the beginning of the file */
 	fseek(fp, 0, SEEK_SET);
