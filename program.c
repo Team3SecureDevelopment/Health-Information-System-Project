@@ -330,7 +330,18 @@ int main()
 		drawExit();
 		
 		/* get departure time and format user's duration */
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *string = (char*)calloc(MAX_CHAR, sizeof(char));
+
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *timetotal = (char*)calloc(MAX_CHAR, sizeof(char));
 		
 		if(NULL == string)
@@ -392,7 +403,18 @@ int main()
  */
 Session authenticate()
 {
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *username = (char*)calloc(MAX_CHAR, sizeof(char));
+
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *password = (char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == username)
@@ -483,6 +505,11 @@ User getUser(char *username, int password)
 	}
 	else
 	{
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		
 		if(NULL == temp)
@@ -619,6 +646,11 @@ User createNewUser(char *name, int type)
 /* takes in a string and returns it encrypted */
 char *encrypt(char *string)
 {
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	unsigned char *encryptBuff = (unsigned char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == encryptBuff)
@@ -659,6 +691,11 @@ char *encrypt(char *string)
 /* takes in an encrypted string and returns it decrypted */
 char *decrypt(char *string)
 {
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}	
 	unsigned char *decryptBuff = (unsigned char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == decryptBuff)
@@ -723,7 +760,18 @@ int getUserCount(FILE *fp)
 /* returns the full line as a string */
 char *getLine(FILE *fp, int line)
 {
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *buffer = (char*)calloc(MAX_CHAR, sizeof(char));
+	
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 	
 	if(NULL == buffer)
@@ -813,9 +861,32 @@ void addUser()
 		int hashvalue;
 		int type;
 		
+		if(64 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *username = (char*)calloc(64, sizeof(char));
+		
+		if(16 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *password = (char*)calloc(16, sizeof(char));
+		
+		if(MAX_CHAR*2 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *string = (char*)calloc(MAX_CHAR*2, sizeof(char));
+		
+		if(MAX_CHAR*2 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *buffer = (char*)calloc(MAX_CHAR*2, sizeof(char));
 		
 		if(NULL == username)
@@ -927,10 +998,25 @@ void viewUsers()
 	{
 		if(fseek(fp, 0, SEEK_SET) == 0);
 		{
-			printf("we're at the beginning of the file\n");
-			
+			if(MAX_CHAR > SIZE_MAX/sizeof(char))
+			{
+				printf("Not enough memory!\n");
+				exit(1);
+			}
 			char *username = (char*)calloc(MAX_CHAR, sizeof(char));
+			
+			if(MAX_CHAR > SIZE_MAX/sizeof(char))
+			{
+				printf("Not enough memory!\n");
+				exit(1);
+			}
 			char *type = (char*)calloc(MAX_CHAR, sizeof(char));
+			
+			if(MAX_CHAR > SIZE_MAX/sizeof(char))
+			{
+				printf("Not enough memory!\n");
+				exit(1);
+			}
 			char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 
 			if(NULL == username)
@@ -1010,7 +1096,14 @@ char *sread(int size)
 	fflush(stdin);
 	int i = 0;
 	signed int ch = ' ';
+	
+	if(size+1 > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *temp = (char*)calloc(size+1, sizeof(char));
+	
 	if(NULL == temp)
 	{
 		free(temp);
@@ -1018,7 +1111,12 @@ char *sread(int size)
 		printf("Memory allocation error\n");
 		exit(1);
 	}
-	
+
+	if(size+1 > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *string = (char*)calloc(size+1, sizeof(char));
 	if(NULL == string)
 	{
@@ -1063,6 +1161,12 @@ char *sread(int size)
 char *wspace(int size)
 {
 	int i = 0;
+	
+	if(size > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *string = (char*)calloc(size, sizeof(char));
 
 	if(NULL == string)
@@ -1098,7 +1202,18 @@ void changepass(User currentUser)
 	{
 		drawPassword();
 		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
+		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *line = (char*)calloc(MAX_CHAR, sizeof(char));
 		
 		if(NULL == temp)
@@ -1139,8 +1254,14 @@ void changepass(User currentUser)
 						if(strncmp(temp, userGetName(currentUser), MAX_CHAR) == 0)
 						{
 							temp = strtok(NULL, ",");
-							
+
+							if(MAX_CHAR > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
+							}
 							char *string = (char*)calloc(MAX_CHAR, sizeof(char));
+							
 							if(NULL == string)
 							{
 								free(string);
@@ -1148,8 +1269,14 @@ void changepass(User currentUser)
 								printf("memory allocation error\n");
 								exit(1);
 							}
-							
+
+							if(16 > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
+							}
 							char *pass = (char*)calloc(16, sizeof(char));
+							
 							if(NULL == pass)
 							{
 								free(pass);
@@ -1158,6 +1285,12 @@ void changepass(User currentUser)
 								exit(1);
 							}
 							
+							if(16 > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
+							}
+
 							char *pass2 = (char*)calloc(16, sizeof(char));
 							if(NULL == pass2)
 							{
@@ -1166,7 +1299,12 @@ void changepass(User currentUser)
 								printf("memory allocation error\n");
 								exit(1);
 							}
-							
+
+							if(10 > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
+							}
 							char *buff = (char*)calloc(10, sizeof(char));
 							if(NULL == buff)
 							{
@@ -1321,6 +1459,11 @@ int verify(User currentUser)
 	}
 	else
 	{
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == temp)
 		{
@@ -1329,13 +1472,23 @@ int verify(User currentUser)
 			printf("memory allocation error\n");
 			exit(1);
 		}
-
+		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *username = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == username)
 		{
 			free(username);
 			username = NULL;
 			printf("memory allocation error\n");
+			exit(1);
+		}
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
 			exit(1);
 		}
 		char *password = (char*)calloc(MAX_CHAR, sizeof(char));
@@ -1414,7 +1567,11 @@ void deleteUser(User currentAdmin)
 	{
 		printf("\033[2J\033[;H");
 		printf("\n-------------[ DELETE USER ]-------------\n");
-		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == temp)
 		{
@@ -1422,13 +1579,23 @@ void deleteUser(User currentAdmin)
 			temp = NULL;
 		}
 		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *line = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == line)
 		{
 			free(line);
 			line = NULL;
 		}
-		
+
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}		
 		char *username = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == username)
 		{
@@ -1477,6 +1644,11 @@ void deleteUser(User currentAdmin)
 							printf("You are about to delete user %s from the system. This action cannot be undone.\n", username);
 							printf("Proceed? (Y\\N) ");
 
+							if(3 > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
+							}
 							char *c = (char*)calloc(3, sizeof(char));
 							if(NULL == c)
 							{
@@ -1513,6 +1685,11 @@ void deleteUser(User currentAdmin)
 								if(verify(currentAdmin))
 								{
 									/* we aren't going to edit the data as much as we won't copy, so continue */
+									if(MAX_CHAR > SIZE_MAX/sizeof(char))
+									{
+										printf("Not enough memory!\n");
+										exit(1);
+									}
 									char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 									if(NULL == string)
 									{
@@ -1587,7 +1764,11 @@ char *createPassword()
 	/* passwords must be between 8-16 characters,
 	 * must contain at least one CAPITAL, number, and special character
 	 */
-	 
+	if(16 > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *password = (char*)calloc(16, sizeof(char));
 	if(NULL == password)
 	{
@@ -1678,21 +1859,36 @@ void addNewPatient()
 		int surgeries;
 		int mental;
 		int drugs;
-		
+
+		if(3 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *c = (char*)calloc(3, sizeof(char));
 		if(NULL == c)
 		{
 			free(c);
 			c = NULL;
 		}
-		
-		char *social = (char*)calloc(3, sizeof(char));
+
+		if(10 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
+		char *social = (char*)calloc(10, sizeof(char));
 		if(NULL == social)
 		{
 			free(social);
 			social = NULL;
 		}
-		
+
+		if(11 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *dob = (char*)calloc(11, sizeof(char));
 		if(NULL == dob)
 		{
@@ -1700,27 +1896,47 @@ void addNewPatient()
 			dob = NULL;
 		}
 		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *fname = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == fname)
 		{
 			free(fname);
 			fname = NULL;
 		}
-		
+
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}		
 		char *lname = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == lname)
 		{
 			free(lname);
 			lname = NULL;
 		}
-		
+
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}		
 		char *buffer = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == buffer)
 		{
 			free(buffer);
 			buffer = NULL;
 		}
-		
+
+		if(MAX_CHAR*4 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}		
 		char *string = (char*)calloc(MAX_CHAR*4, sizeof(char));
 		if(NULL == string)
 		{
@@ -1968,14 +2184,24 @@ void setAllergyInfo(int ssnhash)
 		return;
 	}
 	else
-	{
+	{	
+		if(MAX_CHAR*10 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *string = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == string)
 		{
 			free(string);
 			string = NULL;
 		}
-		
+
+		if(MAX_CHAR*10 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}		
 		char *allergies = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == allergies)
 		{
@@ -2031,6 +2257,11 @@ void getAllergyInfo(int ssnhash)
 		
 		for(i = 0; i < count; ++i)
 		{
+			if(MAX_CHAR*10 > SIZE_MAX/sizeof(char))
+			{
+				printf("Not enough memory!\n");
+				exit(1);
+			}
 			char *temp = (char*)calloc(MAX_CHAR*10, sizeof(char));
 			if(NULL == temp)
 			{
@@ -2107,11 +2338,22 @@ void setPrescriptionInfo(int ssnhash)
 	}
 	else
 	{
+		if(MAX_CHAR*10 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *string = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == string)
 		{
 			free(string);
 			string = NULL;
+		}
+		
+		if(MAX_CHAR*10 > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
 		}
 		char *prescriptions = (char*)calloc(MAX_CHAR*10, sizeof(char));
 		if(NULL == prescriptions)
@@ -2168,6 +2410,11 @@ void getPrescriptionInfo(int ssnhash)
 		
 		for(i = 0; i < count; ++i)
 		{
+			if(MAX_CHAR*10 > SIZE_MAX/sizeof(char))
+			{
+				printf("Not enough memory!\n");
+				exit(1);
+			}
 			char *temp = (char*)calloc(MAX_CHAR*10, sizeof(char));
 			if(NULL == temp)
 			{
@@ -2256,6 +2503,11 @@ void findPatient()
 		{
 			if(found == 0)
 			{
+				if(MAX_CHAR > SIZE_MAX/sizeof(char))
+				{
+					printf("Not enough memory!\n");
+					exit(1);
+				}
 				char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 				if(NULL == temp)
 				{
@@ -2356,6 +2608,11 @@ void filteredSearch()
 		int value;
 		int i;
 		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *input = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == input)
 		{
@@ -2425,6 +2682,11 @@ void filteredSearch()
 			
 			for(i = 0; i < count; ++i)
 			{
+				if(MAX_CHAR > SIZE_MAX/sizeof(char))
+				{
+					printf("Not enough memory!\n");
+					exit(1);
+				}
 				char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 				if(NULL == temp)
 				{
@@ -2528,18 +2790,35 @@ void deletePatient(User currentDoctor)
 	{
 		printf("\033[2J\033[;H");
 		printf("\n-------------[ DELETE PATIENT ]-------------\n");
-		
+
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == temp)
 		{
 			free(temp);
 			temp = NULL;
 		}
+		
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
+		}
 		char *line = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == line)
 		{
 			free(line);
 			line = NULL;
+		}
+
+		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		{
+			printf("Not enough memory!\n");
+			exit(1);
 		}
 		char *social = (char*)calloc(MAX_CHAR, sizeof(char));
 		if(NULL == social)
@@ -2588,11 +2867,22 @@ void deletePatient(User currentDoctor)
 							found = 1;
 							
 							/* temporary holder for first, last name */
+							if(MAX_CHAR > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
+							}
 							char *fname = (char*)calloc(MAX_CHAR, sizeof(char));
 							if(NULL == fname)
 							{
 								free(fname);
 								fname = NULL;
+							}
+							
+							if(MAX_CHAR > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
 							}
 							char *lname = (char*)calloc(MAX_CHAR, sizeof(char));
 							if(NULL == lname)
@@ -2608,7 +2898,12 @@ void deletePatient(User currentDoctor)
 							
 							printf("You are about to delete patient: %s, %s from the system. This action cannot be undone.\n", lname, fname);
 							printf("Proceed? (Y\\N) ");
-
+							
+							if(1 > SIZE_MAX/sizeof(char))
+							{
+								printf("Not enough memory!\n");
+								exit(1);
+							}
 							char *c = (char*)calloc(1, sizeof(char));
 							if(NULL == c)
 							{
@@ -2642,6 +2937,11 @@ void deletePatient(User currentDoctor)
 								if(verify(currentDoctor))
 								{
 									/* we aren't going to edit the data as much as we won't copy, so continue */
+									if(MAX_CHAR > SIZE_MAX/sizeof(char))
+									{
+										printf("Not enough memory!\n");
+										exit(1);
+									}
 									char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 									if(NULL == string)
 									{
@@ -2721,14 +3021,24 @@ void writeLogs(User currentUser, char *purpose)
 	time_t current_time;
 	char* c_time_string;
 	int i = 0;
-	
+
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *string = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == string)
 	{
 		free(string);
 		string = NULL;
 	}
-	
+
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *userType = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == userType)
 	{
@@ -2842,13 +3152,23 @@ void createAppointment()
 	fflush(stdin);
 	drawAppointment();
 
+	if(MAX_CHAR*4 > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *string = (char*)calloc(MAX_CHAR*4, sizeof(char));
 	if(NULL == string)
 	{
 		free(string);
 		string = NULL;
 	}
-	
+
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *fname = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == fname)
 	{
@@ -2856,20 +3176,35 @@ void createAppointment()
 		fname = NULL;
 	}
 	
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *lname = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == lname)
 	{
 		free(lname);
 		lname = NULL;
 	}
-	
+
+	if(MAX_CHAR > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *purpose = (char*)calloc(MAX_CHAR, sizeof(char));
 	if(NULL == purpose)
 	{
 		free(purpose);
 		purpose = NULL;
 	}
-	
+
+	if(10 > SIZE_MAX/sizeof(char))
+	{
+		printf("Not enough memory!\n");
+		exit(1);
+	}
 	char *date = (char*)calloc(10, sizeof(char));
 	if(NULL == date)
 	{
