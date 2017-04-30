@@ -1578,10 +1578,12 @@ char *createPassword()
 		int capflag = 0;
 		int numflag = 0;
 		int spcflag = 0;
-		int i;
+		//int i;
+		size_t i;
 		
 		//size_t returns an int value for the size of the object
 		const size_t passLength = strlen(password);
+		
 		
 		for(i = 0; i < passLength; i++)
 		{
@@ -2022,7 +2024,7 @@ void getAllergyInfo(int ssnhash)
 				/* get the number of commas for counting purposes */
 				int comma = 0;
 				int j = 0;
-				unsigned char c = ' ';
+				char c = ' ';
 				
 				while(c != '\n')
 				{
@@ -2154,7 +2156,7 @@ void getPrescriptionInfo(int ssnhash)
 				/* get the number of commas for counting purposes */
 				int comma = 0;
 				int j = 0;
-				unsigned char c = ' ';
+				char c = ' ';
 				
 				while(c != '\n')
 				{
