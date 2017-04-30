@@ -1,8 +1,17 @@
-Script started on Sun 30 Apr 2017 01:05:56 PM EDT
-]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ sc[K[Krosecheckers program.c
-compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+Script started on Sun 30 Apr 2017 07:33:12 PM EDT
+]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers program.c
+"/home/rose/SSD/Health-Information-System-Project/program.c", line 2723: warning: 
+          variable "token" was set but never used
+  			char *token;
+  			      ^
+
+program.c:1083: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:1319: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2343: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2498: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2806: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2917: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exit
 exit
 
-Script done on Sun 30 Apr 2017 01:06:15 PM EDT
+Script done on Sun 30 Apr 2017 07:33:38 PM EDT
