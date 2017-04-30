@@ -1708,7 +1708,7 @@ void addNewPatient()
 		printf("Patient First Name: ");
 		strcpy(fname, sread(MAX_CHAR));
 		
-		const size_t fnameLength = strlen(fname);
+		const rsize_t fnameLength = strlen(fname);
 		
 		if(fnameLength > MAX_CHAR)
 		{
