@@ -1993,9 +1993,9 @@ void getAllergyInfo(int ssnhash)
 	}
 	else
 	{
-		int count = getUserCount(fp); //number of patients in file
+		const int count = getUserCount(fp); //number of patients in file
 		int i;
-		int found = 0;
+		const int found = 0;
 
 		for(i = 0; i < count; ++i)
 		{
@@ -2542,7 +2542,7 @@ void deletePatient(User currentDoctor)
 		strcpy(social, sread(9));
 
 		/* go ahead and get the hash value, overwrite the string from memory */
-		int hashsocial = hash(social);
+		const int hashsocial = hash(social);
 		strncpy(social, wspace(strlen(social)), strlen(social));
 		
 		if(social != NULL)
