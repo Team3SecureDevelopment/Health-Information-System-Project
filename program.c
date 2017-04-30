@@ -1095,14 +1095,14 @@ char *sread(int size)
 {
 	fflush(stdin);
 	int i = 0;
-	signed int ch = ' ';
+	unsigned int ch = ' ';
 	
 	if(size+1 > SIZE_MAX/sizeof(char))
 	{
 		printf("Not enough memory!\n");
 		exit(1);
 	}
-	char *temp = (char*)calloc(size+1, sizeof(char));
+	unsigned char *temp = (unsigned char*)calloc(size+1, sizeof(char));
 	
 	if(NULL == temp)
 	{
@@ -1117,7 +1117,7 @@ char *sread(int size)
 		printf("Not enough memory!\n");
 		exit(1);
 	}
-	char *string = (char*)calloc(size+1, sizeof(char));
+	unsigned char *string = (unsigned char*)calloc(size+1, sizeof(char));
 	if(NULL == string)
 	{
 		free(string);
@@ -1139,11 +1139,11 @@ char *sread(int size)
 	
 	if(i > size)
 	{
-		strncpy(string, temp, size);
+		strncpy((char*)string, (char*)temp, size);
 	}
 	else
 	{
-		strncpy(string, temp, i);
+		strncpy((char*)string, (char*)temp, i);
 	}
 	
 	printf("temp string [%s]\n", temp);
@@ -1151,23 +1151,22 @@ char *sread(int size)
 	if(temp != NULL)
 	{
 		temp = NULL;
-		free(temp);
 	}
 
 	printf("returning string [%s]\n", string);
-	return string;
+	return (char*)string;
 }
 
 char *wspace(int size)
 {
 	int i = 0;
 	
-	if(size > SIZE_MAX/sizeof(char))
+	if(size+1 > SIZE_MAX/sizeof(char))
 	{
 		printf("Not enough memory!\n");
 		exit(1);
 	}
-	char *string = (char*)calloc(size, sizeof(char));
+	char *string = (char*)calloc(size+1, sizeof(char));
 
 	if(NULL == string)
 	{
@@ -1441,6 +1440,7 @@ void pressEnterKey()
 	{
 		ch = getchar();
 	}
+	fflush(stdin);
 }
 
 /* before executing some function, verify the user's password for confirmation
@@ -1509,47 +1509,56 @@ int verify(User currentUser)
 		/* get the username */
 		strcpy(username, userGetName(currentUser));
 		
-		for(i = 0; i < length; i++)
+		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
-			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
-
-			/* tokenize the line */
-			temp = strtok(buffer, ",");
-			
-			/* check if the username matches */
-			if(strncmp(temp, username, MAX_CHAR) == 0)
+			for(i = 0; i < length; i++)
 			{
-				/* prompt for the password */
-				printf("\nPassword Verification: ");
-				strcpy(password, sread(MAX_CHAR));
-				
-				temp = strtok(NULL, ",");
-			
-				hashpass = hash(password);
-				strcpy(password, wspace(MAX_CHAR));
-				
-				/* password match? */
-				if(hashpass == (int)strtol(temp, NULL, 10))
+				if(fgets(buffer, 255, fp) != NULL)
 				{
-					fclose(fp);
-					return 1;
-				}
-				else
-				{
-					printf("Invalid password!\n");
-					writeLogs(currentUser, "Password verification failure");
-					pressEnterKey();
-					fclose(fp);
-					return 0;
+					strncpy(buffer, decrypt(buffer), MAX_CHAR);
+
+					/* tokenize the line */
+					temp = strtok(buffer, ",");
+					printf("temp = [%s]\n", temp);
+					printf("username looking for is [%s]\n", username);
+					/* check if the username matches */
+					if(strncmp(temp, username, MAX_CHAR) == 0)
+					{
+						/* prompt for the password */
+						printf("\nPassword Verification: ");
+						strcpy(password, sread(MAX_CHAR));
+						
+						temp = strtok(NULL, ",");
+					
+						hashpass = hash(password);
+						strcpy(password, wspace(MAX_CHAR));
+						
+						/* password match? */
+						if(hashpass == (int)strtol(temp, NULL, 10))
+						{
+							fclose(fp);
+							return 1;
+						}
+						else
+						{
+							printf("Invalid password!\n");
+							writeLogs(currentUser, "Password verification failure");
+							pressEnterKey();
+							fclose(fp);
+							return 0;
+						}
+					}
 				}
 			}
+			
+			printf("Could not find user in the data file.\n");
+			pressEnterKey();
+			fclose(fp);
+			return 0;
 		}
-		
-		printf("Could not find user in the data file.\n");
-		pressEnterKey();
-		fclose(fp);
-		return 0;
 	}
+	
+	return 0;
 }
 
 void deleteUser(User currentAdmin)
@@ -1603,11 +1612,13 @@ void deleteUser(User currentAdmin)
 			username = NULL;
 		}
 		
+		fflush(stdin);
 		char buffer[MAX_CHAR];
-
+		printf("username input is [%s]\n", username);
 		/* get the user to delete */
 		printf("\nUsername to delete: ");
 		strcpy(username, sread(MAX_CHAR));
+		printf("username input is [%s]\n", username);
 		
 		if(strncmp(username, userGetName(currentAdmin), MAX_CHAR) == 0)
 		{
@@ -1627,7 +1638,8 @@ void deleteUser(User currentAdmin)
 		{
 			if(fseek(nfp, 0, SEEK_SET) == 0)
 			{
-				/* go through userdata.bin until we find the user */
+				/* go through userdata.bin until
+				 * we find the user */
 				for(i = 0; i < length; i++)
 				{
 					if(fgets(line, MAX_CHAR, fp) != NULL)
@@ -1744,6 +1756,10 @@ void deleteUser(User currentAdmin)
 		{
 			printf("\nCould not find the specified user in the file.\n");
 			pressEnterKey();
+			if(remove("./temp") == 0)
+			{
+				return;
+			}
 		}
 		else
 		{		
@@ -2633,7 +2649,7 @@ void filteredSearch()
 			printf("\n");
 			
 			printf("--> ");
-			strncpy(input, sread(1), 1);
+			strncpy(input, sread(1), 3);
 
 			if((int)strlen(input) < 2)
 			{
