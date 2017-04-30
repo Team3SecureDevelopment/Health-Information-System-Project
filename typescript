@@ -1,100 +1,84 @@
-Script started on Sat 29 Apr 2017 10:42:11 PM EDT
-]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers program.c
+Script started on Sat 29 Apr 2017 11:06:32 PM EDT
+]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exi[K[K[Krosecheckers program.c
 program.c:159: error: MEM34-C: Only free memory allocated dynamically
 program.c:394: error: MEM34-C: Only free memory allocated dynamically
 program.c:400: error: MEM34-C: Only free memory allocated dynamically
 program.c:406: error: MEM34-C: Only free memory allocated dynamically
 program.c:486: error: MEM34-C: Only free memory allocated dynamically
 program.c:578: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:719: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:726: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:726: error: FIO34-C: Use int to capture the return value of character I/O functions
-program.c:768: warning: EXP12-C: Do not ignore values returned by functions: fgets
 program.c:784: error: MEM34-C: Only free memory allocated dynamically
-program.c:882: error: MEM34-C: Only free memory allocated dynamically
-program.c:893: error: MEM34-C: Only free memory allocated dynamically
-program.c:918: error: MEM34-C: Only free memory allocated dynamically
-program.c:924: error: MEM34-C: Only free memory allocated dynamically
-program.c:930: error: MEM34-C: Only free memory allocated dynamically
-program.c:986: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:1003: error: MEM34-C: Only free memory allocated dynamically
-program.c:1009: error: MEM34-C: Only free memory allocated dynamically
-program.c:1015: error: MEM34-C: Only free memory allocated dynamically
-program.c:1050: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:1050: error: FIO34-C: Use int to capture the return value of character I/O functions
-program.c:1070: error: MEM34-C: Only free memory allocated dynamically
-program.c:1149: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:1233: error: STR31-C: String copy destination must contain sufficient storage
-program.c:1264: error: MEM34-C: Only free memory allocated dynamically
-program.c:1269: error: MEM34-C: Only free memory allocated dynamically
-program.c:1274: error: MEM34-C: Only free memory allocated dynamically
-program.c:1279: error: MEM34-C: Only free memory allocated dynamically
-program.c:1296: error: MEM34-C: Only free memory allocated dynamically
-program.c:1302: error: MEM34-C: Only free memory allocated dynamically
-program.c:1308: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:1309: warning: EXP12-C: Do not ignore values returned by functions: rename
-program.c:1446: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1447: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1448: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1491: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1515: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1540: warning: EXP12-C: Do not ignore values returned by functions: remove
-program.c:1582: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1592: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1650: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1652: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1653: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1654: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1655: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:883: error: MEM34-C: Only free memory allocated dynamically
+program.c:894: error: MEM34-C: Only free memory allocated dynamically
+program.c:919: error: MEM34-C: Only free memory allocated dynamically
+program.c:925: error: MEM34-C: Only free memory allocated dynamically
+program.c:931: error: MEM34-C: Only free memory allocated dynamically
+program.c:1005: error: MEM34-C: Only free memory allocated dynamically
+program.c:1011: error: MEM34-C: Only free memory allocated dynamically
+program.c:1017: error: MEM34-C: Only free memory allocated dynamically
+program.c:1054: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:1072: error: MEM34-C: Only free memory allocated dynamically
+program.c:1236: error: STR31-C: String copy destination must contain sufficient storage
+program.c:1267: error: MEM34-C: Only free memory allocated dynamically
+program.c:1272: error: MEM34-C: Only free memory allocated dynamically
+program.c:1277: error: MEM34-C: Only free memory allocated dynamically
+program.c:1282: error: MEM34-C: Only free memory allocated dynamically
+program.c:1298: error: MEM34-C: Only free memory allocated dynamically
+program.c:1304: error: MEM34-C: Only free memory allocated dynamically
+program.c:1337: error: MEM34-C: Only free memory allocated dynamically
+program.c:1452: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1453: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1454: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1497: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1521: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1546: warning: EXP12-C: Do not ignore values returned by functions: remove
+program.c:1588: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1598: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
 program.c:1656: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1657: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:1664: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1672: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
-program.c:1894: error: MEM34-C: Only free memory allocated dynamically
+program.c:1658: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1659: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1660: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1661: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1662: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1663: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1670: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
+program.c:1678: warning: INT01-C: Use rsize_t or size_t for all integer values representing the size of an object
 program.c:1900: error: MEM34-C: Only free memory allocated dynamically
-program.c:1919: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:1921: warning: DCL00-C: Const-qualify immutable objects: found
-program.c:1925: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1906: error: MEM34-C: Only free memory allocated dynamically
+program.c:1925: warning: DCL00-C: Const-qualify immutable objects: count
+program.c:1927: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:1931: error: EXP34-C: Ensure pointer is valid before dereferencing it
 compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:1942: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:2022: error: MEM34-C: Only free memory allocated dynamically
+program.c:1948: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
 program.c:2028: error: MEM34-C: Only free memory allocated dynamically
-program.c:2049: warning: DCL00-C: Const-qualify immutable objects: found
+program.c:2034: error: MEM34-C: Only free memory allocated dynamically
+program.c:2055: warning: DCL00-C: Const-qualify immutable objects: found
 compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2076: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
-program.c:2102: error: MEM34-C: Only free memory allocated dynamically
-program.c:2189: warning: EXP12-C: Do not ignore values returned by functions: getchar
-program.c:2198: warning: EXP12-C: Do not ignore values returned by functions: getchar
-program.c:2210: error: MEM34-C: Only free memory allocated dynamically
-program.c:2271: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2271: error: MEM34-C: Only free memory allocated dynamically
-program.c:2331: warning: EXP12-C: Do not ignore values returned by functions: strtok
-program.c:2332: warning: EXP12-C: Do not ignore values returned by functions: strtok
-program.c:2333: warning: EXP12-C: Do not ignore values returned by functions: strtok
-program.c:2385: error: MEM34-C: Only free memory allocated dynamically
-program.c:2404: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2472: warning: DCL00-C: Const-qualify immutable objects: hashsocial
-program.c:2477: error: MEM34-C: Only free memory allocated dynamically
-program.c:2550: error: MEM34-C: Only free memory allocated dynamically
-program.c:2580: error: MEM34-C: Only free memory allocated dynamically
-program.c:2712: error: MEM34-C: Only free memory allocated dynamically
+program.c:2082: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:2108: error: MEM34-C: Only free memory allocated dynamically
+program.c:2195: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2204: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2216: error: MEM34-C: Only free memory allocated dynamically
+program.c:2277: warning: MEM01-C: Store a new value in pointers immediately after free()
+program.c:2277: error: MEM34-C: Only free memory allocated dynamically
+program.c:2337: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2338: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2339: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2391: error: MEM34-C: Only free memory allocated dynamically
+program.c:2410: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:2478: warning: DCL00-C: Const-qualify immutable objects: hashsocial
+program.c:2483: error: MEM34-C: Only free memory allocated dynamically
+program.c:2556: error: MEM34-C: Only free memory allocated dynamically
+program.c:2586: error: MEM34-C: Only free memory allocated dynamically
 program.c:2718: error: MEM34-C: Only free memory allocated dynamically
-program.c:2744: error: STR31-C: String copy destination must contain sufficient storage
-program.c:2766: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2767: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2768: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2769: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2770: error: EXP34-C: Ensure pointer is valid before dereferencing it
-program.c:2835: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2838: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2841: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2844: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2847: warning: MEM01-C: Store a new value in pointers immediately after free()
-program.c:2871: warning: EXP12-C: Do not ignore values returned by functions: fgets
-program.c:2971: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:2981: warning: DCL00-C: Const-qualify immutable objects: count
-program.c:3011: warning: DCL13-C: Declare function parameters that are pointers to values not changed by the function as const: fp
+program.c:2724: error: MEM34-C: Only free memory allocated dynamically
+program.c:2749: error: STR31-C: String copy destination must contain sufficient storage
+program.c:2872: error: MEM34-C: Only free memory allocated dynamically
+program.c:2879: error: MEM34-C: Only free memory allocated dynamically
+program.c:2886: error: MEM34-C: Only free memory allocated dynamically
+program.c:2893: error: MEM34-C: Only free memory allocated dynamically
+program.c:2900: error: MEM34-C: Only free memory allocated dynamically
+program.c:3068: warning: DCL13-C: Declare function parameters that are pointers to values not changed by the function as const: fp
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exit
 exit
 
-Script done on Sat 29 Apr 2017 10:42:42 PM EDT
+Script done on Sat 29 Apr 2017 11:07:02 PM EDT
