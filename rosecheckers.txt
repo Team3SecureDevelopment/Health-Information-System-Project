@@ -1,0 +1,17 @@
+Script started on Sun 30 Apr 2017 11:17:23 AM EDT
+]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers program.c
+program.c:1033: warning: INT07-C: Use only explicitly signed or unsigned char type for numeric values
+program.c:1483: error: EXP34-C: Ensure pointer is valid before dereferencing it
+program.c:1536: warning: EXP12-C: Do not ignore values returned by functions: remove
+compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+compilerGenerated:0: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2293: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2302: warning: EXP12-C: Do not ignore values returned by functions: getchar
+program.c:2373: error: MEM34-C: Only free memory allocated dynamically
+program.c:2433: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2434: warning: EXP12-C: Do not ignore values returned by functions: strtok
+program.c:2435: warning: EXP12-C: Do not ignore values returned by functions: strtok
+]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exit
+exit
+
+Script done on Sun 30 Apr 2017 11:17:45 AM EDT
