@@ -7,7 +7,7 @@
 
 /* printf("\033[2J\033[;H"); <------------------ ANSI sequence for clear screen, reset cursor */
 
-int MAX_CHAR = 256;
+size_t MAX_CHAR = 256;
 
 typedef struct user* User;
 typedef struct session* Session;
