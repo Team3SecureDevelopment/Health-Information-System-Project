@@ -136,7 +136,9 @@ int main()
 
 		while(active == 0)
 		{
-			char *menustring = malloc(sizeof(char) * 2);
+			char *menustring = NULL;
+			menustring = malloc(sizeof(char) * 2);
+			
 			if(NULL == menustring)
 			{
 				free(menustring);
