@@ -361,7 +361,7 @@ int main()
 		
 		/* get departure time and format user's duration */
 		char *string = malloc(sizeof(char*) * 256);
-		char *time = malloc(sizeof(char*) * 128);;
+		char *timetotal = malloc(sizeof(char*) * 128);;
 		
 		if(NULL == string)
 		{
@@ -370,20 +370,26 @@ int main()
 			exit(1);
 		}
 		
+		if(NULL == timetotal)
+		{
+			free(timetotal);
+			printf("Unable to allocate memory\n");
+			exit(1);
+		}
 		
-		snprintf(time, 128, "%.2f", ((float )departure - (float )sessionGetLoginTime(newSession)));
+		snprintf(timetotal, 128, "%.2f", ((float )departure - (float )sessionGetLoginTime(newSession)));
 		strcpy(string, "Log Off -> Time duration of ");
-		strcat(string, time);
+		strcat(string, timetotal);
 		strcat(string, " seconds");
 		
 		/* write to logs */
 		writeLogs(currentUser, string);
 		
 		/* free */
-		if(time != NULL)
+		if(timetotal != NULL)
 		{
-			free(time);
-			time = NULL;
+			free(timetotal);
+			timetotal = NULL;
 		}
 		
 		if(string != NULL)
@@ -399,10 +405,12 @@ int main()
 		}
 	}
 
-	free(newSession);
-	//newSession = NULL;
+	int n = sleep(2);
+	if(n != 0)
+	{
+		printf("Sleep interrupted\n");
+	}
 	
-	sleep(2);
 	printf("\033[2J\033[;H");
 	return 0;
 }
@@ -417,7 +425,23 @@ Session authenticate()
 {
 	char *username = malloc(sizeof(char*) * MAX_CHAR);
 	char *password = malloc(sizeof(char*) * MAX_CHAR);
+	
+	if(NULL == username)
+	{
+		free(username);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
+	
+	if(NULL == password)
+	{
+		free(password);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
+	
 	const time_t logintime = time(NULL);
+	
 	int hashvalue = 0;
 	
 	drawLogin();
@@ -488,6 +512,14 @@ User getUser(char *username, int password)
 	else
 	{
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		
+		if(NULL == temp)
+		{
+			free(temp);
+			printf("Memory allocation error\n");
+			exit(1);
+		}
+		
 		char buffer[MAX_CHAR];
 
 		int length = getUserCount(fp);
@@ -569,11 +601,25 @@ char *userGetName(User currentUser)
 User createNewUser(char *name, int type)
 {
 	User newu = malloc(sizeof(*newu));
-
 	newu->name = malloc(sizeof(char*) * MAX_CHAR);
-	newu->name = name;
+	
+	if(NULL == newu)
+	{
+		free(newu);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
 
+	if(NULL == newu->name)
+	{
+		free(newu->name);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
+	
+	newu->name = name;
 	newu->type = type;
+
 
 	return newu;
 }
@@ -582,6 +628,14 @@ User createNewUser(char *name, int type)
 char *encrypt(char *string)
 {
 	unsigned char *encryptBuff = malloc(sizeof(char*) * MAX_CHAR);
+	
+	if(NULL == encryptBuff)
+	{
+		free(encryptBuff);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
+	
 	unsigned char c;
 	unsigned char new;
 	int length = strnlen(string, MAX_CHAR);
@@ -613,6 +667,13 @@ char *encrypt(char *string)
 char *decrypt(char *string)
 {
 	unsigned char *decryptBuff = malloc(sizeof(char*) * MAX_CHAR);
+	
+	if(NULL == decryptBuff)
+	{
+		free(decryptBuff);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
 	unsigned char c;
 	unsigned char new;
 	int length = strnlen(string, MAX_CHAR);
@@ -648,19 +709,21 @@ int getUserCount(FILE *fp)
 	char c = ' ';
 
 	/* make sure we are at the beginning of the file */
-	fseek(fp, 0, SEEK_SET);
-
-	while(c != EOF)
+	if(fseek(fp, 0, SEEK_SET) == 0)
 	{
-		c = fgetc(fp);
-
-		if(c == '\n')
+		while(c != EOF)
 		{
-			i++;
-		}
-	}
+			c = fgetc(fp);
 
-	return i;
+			if(c == '\n')
+			{
+				i++;
+			}
+		}
+		
+		return i;
+	}
+	else return 0;
 }
 
 /* returns the full line as a string */
@@ -668,42 +731,58 @@ char *getLine(FILE *fp, int line)
 {
 	char *buffer = malloc(sizeof(char*) * MAX_CHAR);
 	char *string = malloc(sizeof(char*) * MAX_CHAR);
+	
+	if(NULL == buffer)
+	{
+		free(buffer);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
+	
+	if(NULL == string)
+	{
+		free(string);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
+	
 	int i = 0;
 
-	fseek(fp, 0, SEEK_SET);
-
-	while(i <= line)
+	if(fseek(fp, 0, SEEK_SET) == 0);
 	{
-		/* get the line */
-		fgets(buffer, MAX_CHAR, fp);
-	
-		if(i == line)
+		while(i <= line)
 		{
-			/* double check not the end */
-			if(*buffer == EOF)
+			/* get the line */
+			fgets(buffer, MAX_CHAR, fp);
+		
+			if(i == line)
 			{
-				break;
+				/* double check not the end */
+				if(*buffer == EOF)
+				{
+					break;
+				}
+
+				buffer[strnlen(buffer, MAX_CHAR)] = '\0';
+				strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
+				
+				if(buffer != NULL)
+				{
+					strncpy(buffer, wspace(MAX_CHAR), strlen(buffer));
+					free(buffer);
+					buffer = NULL;
+				}
+				
+				if(string != NULL)
+				{
+					return (char*)string;
+				}
 			}
 
-			buffer[strnlen(buffer, MAX_CHAR)] = '\0';
-			strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
-			
-			if(buffer != NULL)
-			{
-				strncpy(buffer, wspace(MAX_CHAR), strlen(buffer));
-				free(buffer);
-				buffer = NULL;
-			}
-			
-			if(string != NULL)
-			{
-				return (char*)string;
-			}
+			i++;
 		}
-
-		i++;
 	}
-
+	
 	return NULL;
 }
 
@@ -743,6 +822,34 @@ void addUser()
 		char *string = malloc(sizeof(char*) * MAX_CHAR * 2);
 		char *buffer = malloc(sizeof(char*) * MAX_CHAR);
 		
+		if(NULL == username)
+		{
+			free(username);
+			printf("Memory allocation error\n");
+			exit(1);
+		}
+		
+		if(NULL == password)
+		{
+			free(password);
+			printf("Memory allocation error\n");
+			exit(1);
+		}
+		
+		if(NULL == string)
+		{
+			free(string);
+			printf("Memory allocation error\n");
+			exit(1);
+		}
+		
+		if(NULL == buffer)
+		{
+			free(buffer);
+			printf("Memory allocation error\n");
+			exit(1);
+		}
+		
 		drawAddUser();
 		
 		printf("Username: ");
@@ -756,6 +863,7 @@ void addUser()
 		if(password == NULL)
 		{
 			printf("\nPassword entered does not meet the requirements!\n");
+			free(password);
 			pressEnterKey();
 			return;
 		}
@@ -783,9 +891,23 @@ void addUser()
 		strcat(string, "\n");
 		fprintf(fp, "%s", string);
 		
-		free(string);
-		free(buffer);
-		free(username);
+		if(string != NULL)
+		{
+			free(string);
+			string = NULL;
+		}
+		
+		if(buffer != NULL)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+		
+		if(username != NULL)
+		{
+			free(username);
+			username = NULL;
+		}
 	}
 	
 	fclose(fp);
@@ -803,54 +925,75 @@ void viewUsers()
 	}
 	else
 	{
-		fseek(fp, 0, SEEK_SET);
-		
-		char *username = malloc(sizeof(char*) * MAX_CHAR);
-		char *type = malloc(sizeof(char*) * MAX_CHAR);
-		char *temp = malloc(sizeof(char*) * MAX_CHAR);
-		
-		char buff[256];
-		int i = 1;
-		
-		drawViewUsers();
-		
-		while(1)
+		if(fseek(fp, 0, SEEK_SET) == 0);
 		{
-			fgets(buff, 255, (FILE*)fp);
-			
-			if(feof(fp)) break;
-			
-			temp = strtok(decrypt(buff), ",");
-			strcpy(username, temp);
-			temp = strtok(NULL, ",");
-			temp = strtok(NULL, ",");
-			strncpy(type, temp, strlen(temp)-1);
-			printf("%3d.) %s (%s)\n", i, username, type);
-			i++;
-		}
-		
-		temp = strtok(NULL, ",");
-		
-		if(type != NULL)
-		{
-			free(type);
-			type = NULL;
-		}
-		
-		if(username != NULL)
-		{
-			free(username);
-			username = NULL;
-		}
+			char *username = malloc(sizeof(char*) * MAX_CHAR);
+			char *type = malloc(sizeof(char*) * MAX_CHAR);
+			char *temp = malloc(sizeof(char*) * MAX_CHAR);
 
-		if(temp == NULL)
-		{
-			free(temp);
-			temp = NULL;
+			if(NULL == username)
+			{
+				free(username);
+				printf("Memory allocation error\n");
+				exit(1);
+			}
+
+			if(NULL == type)
+			{
+				free(type);
+				printf("Memory allocation error\n");
+				exit(1);
+			}
+
+			if(NULL == temp)
+			{
+				free(temp);
+				printf("Memory allocation error\n");
+				exit(1);
+			}		
+			char buff[256];
+			int i = 1;
+			
+			drawViewUsers();
+			
+			while(1)
+			{
+				fgets(buff, 255, (FILE*)fp);
+				
+				if(feof(fp)) break;
+				
+				temp = strtok(decrypt(buff), ",");
+				strcpy(username, temp);
+				temp = strtok(NULL, ",");
+				temp = strtok(NULL, ",");
+				strncpy(type, temp, strlen(temp)-1);
+				printf("%3d.) %s (%s)\n", i, username, type);
+				i++;
+			}
+			
+			temp = strtok(NULL, ",");
+			
+			if(type != NULL)
+			{
+				free(type);
+				type = NULL;
+			}
+			
+			if(username != NULL)
+			{
+				free(username);
+				username = NULL;
+			}
+
+			if(temp == NULL)
+			{
+				free(temp);
+				temp = NULL;
+			}
+			
+			fclose(fp);
+			pressEnterKey();
 		}
-		
-		fclose(fp);
-		pressEnterKey();
 	}
 }
 
@@ -862,12 +1005,19 @@ char *sread(int size)
 	
 	char *temp = malloc(sizeof(char*) * size+1);
 	char *string = malloc(sizeof(char*) * size+1);
-
-	if(string == NULL && temp == NULL)
+	
+	if(NULL == temp)
 	{
-		printf("Error: Could not allocate memory\n");
-		pressEnterKey();
-		return NULL;
+		free(temp);
+		printf("Memory allocation error\n");
+		exit(1);
+	}
+
+	if(NULL == string)
+	{
+		free(string);
+		printf("Memory allocation error\n");
+		exit(1);
 	}
 	
 	while((ch = getchar()) != '\n')
@@ -906,11 +1056,11 @@ char *wspace(int size)
 	int i = 0;
 	char *string = malloc(sizeof(char*) * size);
 
-	if(string == NULL)
+	if(NULL == string)
 	{
-		printf("Error: Could not allocate memory\n");
-		pressEnterKey();
-		return NULL;
+		free(string);
+		printf("Memory allocation error\n");
+		exit(1);
 	}
 	
 	for(i = 0; i < size; i++)
@@ -940,105 +1090,186 @@ void changepass(User currentUser)
 		
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
 		char *line = malloc(sizeof(char*) * MAX_CHAR);
+		
+		if(NULL == temp)
+		{
+			free(temp);
+			printf("memory allocation error\n");
+			exit(1);
+		}
+		
+		if(NULL == line)
+		{
+			free(line);
+			printf("memory allocation error\n");
+			exit(1);
+		}
+		
 		char buffer[MAX_CHAR];
 
 		int length = getUserCount(fp);
 		int i;
 		
-		fseek(fp, 0, SEEK_SET);
-		fseek(nfp, 0, SEEK_SET);
-		
-		for(i = 0; i < length; i++)
+		if(fseek(fp, 0, SEEK_SET) == 0)
 		{
-			fgets(line, MAX_CHAR, fp);
-			strncpy(buffer, decrypt(line), strlen(line));
-
-			/* tokenize the line */
-			temp = strtok(buffer, ",");
-			
-			/* check if the username matches */
-			if(strncmp(temp, userGetName(currentUser), MAX_CHAR) == 0)
+			if(fseek(nfp, 0, SEEK_SET) == 0)
 			{
-				temp = strtok(NULL, ",");
-				
-				char *string = malloc(sizeof(char*) * 256);
-				char *pass = malloc(sizeof(char*) * 16);
-				char *pass2 = malloc(sizeof(char*) * 16);
-				char *buff = malloc(sizeof(char*) * 10);
-				/* type in old password for verification */
-				printf("Old Password: ");
-				strcpy(pass, sread(16));
-
-				/* does it match? */
-				if(hash(pass) == (int)strtol(temp, NULL, 10))
+				for(i = 0; i < length; i++)
 				{
-					printf("New Password: ");
-					strcpy(pass, wspace(16));
-					strcpy(pass, createPassword());
-					printf("DONE\n");
-					printf("pass = [%s]\n", pass);
-					if(pass != NULL)
-					{
-						/* verify it was valid */
-						printf("Reenter New Password: ");
-						strcpy(pass2, createPassword());
-						
-						if(strcmp(pass, pass2) == 0)
-						{
-							/* get the type again */
-							temp = strtok(NULL, ",");
+					fgets(line, MAX_CHAR, fp);
+					strncpy(buffer, decrypt(line), strlen(line));
 
-							strcpy(string, userGetName(currentUser));
-							strcat(string, ",");
-						
-							snprintf(buff, 10, "%d", hash(pass));
-							strcat(string, buff);
-						
-							strcat(string, ",");
-							strncat(string, temp, 1);
-						
-							strcpy(string, encrypt(string));
-							strcat(string, "\n");
+					/* tokenize the line */
+					temp = strtok(buffer, ",");
 					
-							strcpy(pass, wspace(strlen(pass)));
-							strcpy(pass2, wspace(strlen(pass2)));
-							strcpy(buffer, wspace(strlen(buffer)));
+					/* check if the username matches */
+					if(strncmp(temp, userGetName(currentUser), MAX_CHAR) == 0)
+					{
+						temp = strtok(NULL, ",");
 						
-							fprintf(nfp, "%s", string);
+						char *string = malloc(sizeof(char*) * 256);
+						if(NULL == string)
+						{
+							free(string);
+							printf("memory allocation error\n");
+							exit(1);
+						}
 						
-							strcpy(string, wspace(strlen(string)));
+						char *pass = malloc(sizeof(char*) * 16);
+						if(NULL == pass)
+						{
+							free(pass);
+							printf("memory allocation error\n");
+							exit(1);
+						}
+						
+						char *pass2 = malloc(sizeof(char*) * 16);
+						if(NULL == pass2)
+						{
+							free(pass2);
+							printf("memory allocation error\n");
+							exit(1);
+						}
+						
+						char *buff = malloc(sizeof(char*) * 10);
+						if(NULL == buff)
+						{
+							free(buff);
+							printf("memory allocation error\n");
+							exit(1);
+						}
+						
+						/* type in old password for verification */
+						printf("Old Password: ");
+						strcpy(pass, sread(16));
+
+						/* does it match? */
+						if(hash(pass) == (int)strtol(temp, NULL, 10))
+						{
+							printf("New Password: ");
+							strcpy(pass, wspace(16));
+							strcpy(pass, createPassword());
+							printf("DONE\n");
+							printf("pass = [%s]\n", pass);
+							if(pass != NULL)
+							{
+								/* verify it was valid */
+								printf("Reenter New Password: ");
+								strcpy(pass2, createPassword());
+								
+								if(strcmp(pass, pass2) == 0)
+								{
+									/* get the type again */
+									temp = strtok(NULL, ",");
+
+									strcpy(string, userGetName(currentUser));
+									strcat(string, ",");
+								
+									snprintf(buff, 10, "%d", hash(pass));
+									strcat(string, buff);
+								
+									strcat(string, ",");
+									strncat(string, temp, 1);
+								
+									strcpy(string, encrypt(string));
+									strcat(string, "\n");
 							
-							writeLogs(currentUser, "Password change success");
+									strcpy(pass, wspace(strlen(pass)));
+									strcpy(pass2, wspace(strlen(pass2)));
+									strcpy(buffer, wspace(strlen(buffer)));
+								
+									fprintf(nfp, "%s", string);
+								
+									strcpy(string, wspace(strlen(string)));
+									
+									writeLogs(currentUser, "Password change success");
+								}
+								else
+								{
+									printf("\nNew password mismatch! Password was not changed.\n");
+									writeLogs(currentUser, "Password change failure - password mismatch");
+									pressEnterKey();
+									fprintf(nfp, "%s", line);
+								}						
+							}
+							else
+							{
+								printf("New password does not meet requirements!\n");
+							}
+
 						}
 						else
 						{
-							printf("\nNew password mismatch! Password was not changed.\n");
-							writeLogs(currentUser, "Password change failure - password mismatch");
+							printf("\nOld password is incorrect!\n");
+							writeLogs(currentUser, "Password change failure - incorrect password");
 							pressEnterKey();
 							fprintf(nfp, "%s", line);
-						}						
+						}
+						if(buff != NULL)
+						{
+							free(buff);
+							buff = NULL;
+						}
+						if(string != NULL)
+						{
+							free(string);
+							string = NULL;
+						}
+						if(pass != NULL)
+						{
+							free(pass);
+							pass = NULL;
+						}
+						if(pass2 != NULL)
+						{
+							free(pass2);
+							pass2 = NULL;
+						}
 					}
 					else
 					{
-						printf("New password does not meet requirements!\n");
+						/* not the one we need to change, so add to temp */
+						fprintf(nfp, "%s", line);
 					}
-
-				}
-				else
-				{
-					printf("\nOld password is incorrect!\n");
-					writeLogs(currentUser, "Password change failure - incorrect password");
-					pressEnterKey();
-					fprintf(nfp, "%s", line);
 				}
 			}
-			else
-			{
-				/* not the one we need to change, so add to temp */
-				fprintf(nfp, "%s", line);
-			}
+			
+			
 		}
 
+		if(line != NULL)
+		{
+			free(line);
+			line = NULL;
+		}
+
+		if(temp != NULL)
+		{
+			free(temp);
+			temp = NULL;
+		}
+
+		
 		fclose(fp);
 		remove("./userdata.bin");
 		rename("./temp", "./userdata.bin");
@@ -1054,9 +1285,18 @@ void pressEnterKey()
 	fflush(stdin);
 	printf("\nPress [ENTER] To Continue...");
 	char *null = malloc(sizeof(char)*3);
+	if(NULL == null)
+	{
+		printf("memory allocation error\n");
+		exit(1);
+	}
 	strcpy(null, wspace(3));
 	strcpy(null, sread(2));
-	free(null);
+	if(null != NULL)
+	{
+		free(null);
+		null = NULL;
+	}
 }
 
 /* before executing some function, verify the user's password for confirmation
@@ -1076,14 +1316,33 @@ int verify(User currentUser)
 	else
 	{
 		char *temp = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == temp)
+		{
+			free(temp);
+			printf("memory allocation error\n");
+			exit(1);
+		}
+
+		char *username = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == username)
+		{
+			free(username);
+			printf("memory allocation error\n");
+			exit(1);
+		}
+		char *password = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == password)
+		{
+			free(password);
+			printf("memory allocation error\n");
+			exit(1);
+		}
+		
+		int hashpass;
 		char buffer[MAX_CHAR];
 
 		int length = getUserCount(fp);
 		int i;
-		
-		char *username = malloc(sizeof(char*) * MAX_CHAR);
-		char *password = malloc(sizeof(char*) * MAX_CHAR);
-		int hashpass;
 		
 		/* get the username */
 		strcpy(username, userGetName(currentUser));
