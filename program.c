@@ -1581,7 +1581,7 @@ char *createPassword()
 		int i;
 		
 		//size_t returns an int value for the size of the object
-		const size_t passLength = strlen(password);
+		rsize_t passLength = strlen(password);
 		
 		for(i = 0; i < passLength; i++)
 		{
@@ -1708,7 +1708,7 @@ void addNewPatient()
 		printf("Patient First Name: ");
 		strcpy(fname, sread(MAX_CHAR));
 		
-		const rsize_t fnameLength = strlen(fname);
+		const size_t fnameLength = strlen(fname);
 		
 		if(fnameLength > MAX_CHAR)
 		{
