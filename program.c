@@ -1580,7 +1580,10 @@ char *createPassword()
 		int spcflag = 0;
 		int i;
 		
-		for(i = 0; i < strlen(password); i++)
+		//size_t returns an int value for the size of the object
+		size_t passLength = strlen(password);
+		
+		for(i = 0; i < passLength; i++)
 		{
 			/* check if it is a CAPITAL */
 			if(password[i] >=65 && password[i] <= 90)
@@ -1705,7 +1708,9 @@ void addNewPatient()
 		printf("Patient First Name: ");
 		strcpy(fname, sread(MAX_CHAR));
 		
-		if(strlen(fname) > MAX_CHAR)
+		size_t fnameLength = strlen(fname);
+		
+		if(fnameLength > MAX_CHAR)
 		{
 			printf("Invalid input length!\n");
 			return;
@@ -1713,7 +1718,8 @@ void addNewPatient()
    
 		printf("Patient Last Name: ");
 		strcpy(lname, sread(MAX_CHAR));
-		if(strlen(lname) > MAX_CHAR)
+		size_t lnameLength = strlen(lname);
+		if(lnameLength > MAX_CHAR)
 		{
 			printf("Invalid input length!\n");
 			return;
@@ -3122,7 +3128,7 @@ void drawAppointment()
 	printf("\n");
 }
 
-void drawAppointmentList(FILE *fp)
+void drawAppointmentList(FILE * fp)
 {
 	const int count = getUserCount(fp);
 	printf("\033[2J\033[;H");

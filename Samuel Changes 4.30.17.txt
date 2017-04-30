@@ -1,0 +1,10 @@
+2811 - added strcpy_s onto the line
+
+1584 - added size_t variable that holds strlen(password)
+1586 - replaced strlen(password) with variable passLength
+
+1711 - added size_t variable that holds strlen(fname)
+1713 - replaced strlen(fname) with variable fnameLength
+
+1721 - added size_t variable that holds strlen(lname)
+1722 - replaced strlen(lname) with variable lnameLength
