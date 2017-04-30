@@ -140,6 +140,7 @@ int main()
 			if(NULL == menustring)
 			{
 				free(menustring);
+				menustring = NULL;
 				printf("Unable to allocate memory\n");
 				exit(1);
 			}
@@ -366,6 +367,7 @@ int main()
 		if(NULL == string)
 		{
 			free(string);
+			string = NULL;
 			printf("Unable to allocate memory\n");
 			exit(1);
 		}
@@ -373,6 +375,7 @@ int main()
 		if(NULL == timetotal)
 		{
 			free(timetotal);
+			timetotal = NULL;
 			printf("Unable to allocate memory\n");
 			exit(1);
 		}
@@ -429,6 +432,7 @@ Session authenticate()
 	if(NULL == username)
 	{
 		free(username);
+		username = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -436,6 +440,7 @@ Session authenticate()
 	if(NULL == password)
 	{
 		free(password);
+		password = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -516,6 +521,7 @@ User getUser(char *username, int password)
 		if(NULL == temp)
 		{
 			free(temp);
+			temp = NULL;
 			printf("Memory allocation error\n");
 			exit(1);
 		}
@@ -606,6 +612,7 @@ User createNewUser(char *name, int type)
 	if(NULL == newu)
 	{
 		free(newu);
+		newu = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -613,6 +620,7 @@ User createNewUser(char *name, int type)
 	if(NULL == newu->name)
 	{
 		free(newu->name);
+		newu->name = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -632,6 +640,7 @@ char *encrypt(char *string)
 	if(NULL == encryptBuff)
 	{
 		free(encryptBuff);
+		encryptBuff = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -671,6 +680,7 @@ char *decrypt(char *string)
 	if(NULL == decryptBuff)
 	{
 		free(decryptBuff);
+		decryptBuff = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -735,6 +745,7 @@ char *getLine(FILE *fp, int line)
 	if(NULL == buffer)
 	{
 		free(buffer);
+		buffer = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -742,6 +753,7 @@ char *getLine(FILE *fp, int line)
 	if(NULL == string)
 	{
 		free(string);
+		string = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -825,6 +837,7 @@ void addUser()
 		if(NULL == username)
 		{
 			free(username);
+			username = NULL;
 			printf("Memory allocation error\n");
 			exit(1);
 		}
@@ -832,6 +845,7 @@ void addUser()
 		if(NULL == password)
 		{
 			free(password);
+			password = NULL;
 			printf("Memory allocation error\n");
 			exit(1);
 		}
@@ -839,6 +853,7 @@ void addUser()
 		if(NULL == string)
 		{
 			free(string);
+			string = NULL;
 			printf("Memory allocation error\n");
 			exit(1);
 		}
@@ -846,6 +861,7 @@ void addUser()
 		if(NULL == buffer)
 		{
 			free(buffer);
+			buffer = NULL;
 			printf("Memory allocation error\n");
 			exit(1);
 		}
@@ -864,13 +880,19 @@ void addUser()
 		{
 			printf("\nPassword entered does not meet the requirements!\n");
 			free(password);
+			password = NULL;
 			pressEnterKey();
 			return;
 		}
 		
 		hashvalue = hash(password);
 		strcpy(password, wspace(strlen(password)));
-		free(password);
+		
+		if(password != NULL)
+		{
+			free(password);
+			password = NULL;
+		}
 		
 		printf("\nPlease select a user type (0 - doctor, 1 - nurse, 2 - helpdesk, 3 - auditor, 4 - administrator\n");
 		printf("User Type: ");
@@ -934,6 +956,7 @@ void viewUsers()
 			if(NULL == username)
 			{
 				free(username);
+				username = NULL;
 				printf("Memory allocation error\n");
 				exit(1);
 			}
@@ -941,6 +964,7 @@ void viewUsers()
 			if(NULL == type)
 			{
 				free(type);
+				type = NULL;
 				printf("Memory allocation error\n");
 				exit(1);
 			}
@@ -948,6 +972,7 @@ void viewUsers()
 			if(NULL == temp)
 			{
 				free(temp);
+				temp = NULL;
 				printf("Memory allocation error\n");
 				exit(1);
 			}		
@@ -1009,6 +1034,7 @@ char *sread(int size)
 	if(NULL == temp)
 	{
 		free(temp);
+		temp = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -1016,6 +1042,7 @@ char *sread(int size)
 	if(NULL == string)
 	{
 		free(string);
+		string = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -1059,6 +1086,7 @@ char *wspace(int size)
 	if(NULL == string)
 	{
 		free(string);
+		string = NULL;
 		printf("Memory allocation error\n");
 		exit(1);
 	}
@@ -1094,6 +1122,7 @@ void changepass(User currentUser)
 		if(NULL == temp)
 		{
 			free(temp);
+			temp = NULL;
 			printf("memory allocation error\n");
 			exit(1);
 		}
@@ -1101,6 +1130,7 @@ void changepass(User currentUser)
 		if(NULL == line)
 		{
 			free(line);
+			line = NULL;
 			printf("memory allocation error\n");
 			exit(1);
 		}
@@ -1131,6 +1161,7 @@ void changepass(User currentUser)
 						if(NULL == string)
 						{
 							free(string);
+							string = NULL;
 							printf("memory allocation error\n");
 							exit(1);
 						}
@@ -1139,6 +1170,7 @@ void changepass(User currentUser)
 						if(NULL == pass)
 						{
 							free(pass);
+							pass = NULL;
 							printf("memory allocation error\n");
 							exit(1);
 						}
@@ -1147,6 +1179,7 @@ void changepass(User currentUser)
 						if(NULL == pass2)
 						{
 							free(pass2);
+							pass2 = NULL;
 							printf("memory allocation error\n");
 							exit(1);
 						}
@@ -1155,6 +1188,7 @@ void changepass(User currentUser)
 						if(NULL == buff)
 						{
 							free(buff);
+							buff = NULL;
 							printf("memory allocation error\n");
 							exit(1);
 						}
@@ -1319,6 +1353,7 @@ int verify(User currentUser)
 		if(NULL == temp)
 		{
 			free(temp);
+			temp = NULL;
 			printf("memory allocation error\n");
 			exit(1);
 		}
@@ -1327,6 +1362,7 @@ int verify(User currentUser)
 		if(NULL == username)
 		{
 			free(username);
+			username = NULL;
 			printf("memory allocation error\n");
 			exit(1);
 		}
@@ -1334,6 +1370,7 @@ int verify(User currentUser)
 		if(NULL == password)
 		{
 			free(password);
+			password = NULL;
 			printf("memory allocation error\n");
 			exit(1);
 		}
@@ -1482,7 +1519,12 @@ void deleteUser(User currentAdmin)
 						printf("\nUser %s successfully deleted from the system.\n", username);
 						pressEnterKey();
 						writeLogs(currentAdmin, string);
-						free(string);
+						
+						if(string != NULL)
+						{
+							free(string);
+							string = NULL;
+						}
 					}
 				}
 				else if(flag == 0)
@@ -2126,143 +2168,159 @@ void filteredSearch()
 		
 		char *input = malloc(sizeof(char*) * MAX_CHAR);
 		
-		/* draw the tui */
-		drawFilteredSearch(fp);
-		
-		printf("Please select search parameter:\n");
-		printf(" 1 | Patients with Allergies\n");
-		printf(" 2 | Patients with Prior Surgeries\n");
-		printf(" 3 | Patients who are Smokers\n");
-		printf(" 4 | Patients with Mental Illnesses\n");
-		printf(" 5 | Patients who are currently on Prescriptions\n");
-		printf("\n");
-		
-		printf("--> ");
-		strncpy(input, sread(1), 1);
-
-		if((int)strlen(input) < 2)
+		if(NULL == input)
 		{
-			value = (int)strtol(input, NULL, 10);
 			free(input);
+			input = NULL;
+			return;
 		}
 		else
 		{
-			printf("\nInvalid search parameter!\n");
-			pressEnterKey();
-			return;
-		}
-		
-		/* drawing elements */
-		if(value == 1)
-		{
-			printf("\033[2J\033[;H");
-			printf("---[ ALLERGIES ]---\n\n");
-		}
-		else if(value == 2)
-		{
-			printf("\033[2J\033[;H");
-			printf("---[ PRIOR SURGERIES ]---\n\n");			
-		}
-		else if(value == 3)
-		{
-			printf("\033[2J\033[;H");
-			printf("---[ SMOKERS ]---\n\n");			
-		}
-		else if(value == 4)
-		{
-			printf("\033[2J\033[;H");
-			printf("---[ MENTAL ILLNESS ]---\n\n");			
-		}
-		else if(value == 5)
-		{
-			printf("\033[2J\033[;H");
-			printf("---[ PRESCRIPTIONS ]---\n\n");			
-		}
-		else
-		{
-			printf("\nInvalid search parameter!\n");
-			pressEnterKey();
-			return;
-		}
-		
-		for(i = 0; i < count; ++i)
-		{
-			char *temp = malloc(sizeof(char*) * MAX_CHAR);
-			char buffer[MAX_CHAR];
-		
-			strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+			/* draw the tui */
+			drawFilteredSearch(fp);
 			
-			/* tokenize the line */
-			temp = strtok(buffer, ",");
+			printf("Please select search parameter:\n");
+			printf(" 1 | Patients with Allergies\n");
+			printf(" 2 | Patients with Prior Surgeries\n");
+			printf(" 3 | Patients who are Smokers\n");
+			printf(" 4 | Patients with Mental Illnesses\n");
+			printf(" 5 | Patients who are currently on Prescriptions\n");
+			printf("\n");
 			
-			char *lname = strtok(NULL, ",");
-			char *fname = strtok(NULL, ",");
-			char *dob = strtok(NULL, ",");
-			int h = (int)strtol((strtok(NULL,",")), NULL, 10);
-			int w = (int)strtol((strtok(NULL,",")), NULL, 10);
-			int a = (int)strtol((strtok(NULL,",")), NULL, 10);
-			int su = (int)strtol((strtok(NULL,",")), NULL, 10);
-			int sm = (int)strtol((strtok(NULL,",")), NULL, 10);
-			int m = (int)strtol((strtok(NULL,",")), NULL, 10);
-			int dr = (int)strtol((strtok(NULL,",")), NULL, 10);
+			printf("--> ");
+			strncpy(input, sread(1), 1);
+
+			if((int)strlen(input) < 2)
+			{
+				value = (int)strtol(input, NULL, 10);
+				free(input);
+			}
+			else
+			{
+				printf("\nInvalid search parameter!\n");
+				pressEnterKey();
+				return;
+			}
 			
-			Patient newPatient = createPatient(temp,lname,fname,dob,h,w,a,su,sm,m,dr);
-			
+			/* drawing elements */
 			if(value == 1)
 			{
-				if(patientHasAllergies(newPatient))
-				{
-					printf("%3d.) %s, %s\n", j, lname, fname);
-					j++;
-				}
+				printf("\033[2J\033[;H");
+				printf("---[ ALLERGIES ]---\n\n");
+			}
+			else if(value == 2)
+			{
+				printf("\033[2J\033[;H");
+				printf("---[ PRIOR SURGERIES ]---\n\n");			
+			}
+			else if(value == 3)
+			{
+				printf("\033[2J\033[;H");
+				printf("---[ SMOKERS ]---\n\n");			
+			}
+			else if(value == 4)
+			{
+				printf("\033[2J\033[;H");
+				printf("---[ MENTAL ILLNESS ]---\n\n");			
+			}
+			else if(value == 5)
+			{
+				printf("\033[2J\033[;H");
+				printf("---[ PRESCRIPTIONS ]---\n\n");			
+			}
+			else
+			{
+				printf("\nInvalid search parameter!\n");
+				pressEnterKey();
+				return;
 			}
 			
-			if(value == 2)
+			for(i = 0; i < count; ++i)
 			{
-				if(patientHadSurgeries(newPatient))
+				char *temp = malloc(sizeof(char*) * MAX_CHAR);
+				
+				if(NULL == temp)
 				{
-					printf("%3d.) %s, %s\n", j, lname, fname);
-					j++;
+					free(temp);
+					temp = NULL;
 				}
+				char buffer[MAX_CHAR];
+			
+				strncpy(buffer, decrypt(getLine(fp, i)), MAX_CHAR);
+				
+				/* tokenize the line */
+				temp = strtok(buffer, ",");
+				
+				const char *lname = strtok(NULL, ",");
+				const char *fname = strtok(NULL, ",");
+				strtok(NULL, ",");
+				strtok(NULL, ",");
+				strtok(NULL, ",");
+				const int a = (int)strtol((strtok(NULL,",")), NULL, 10); //allergies bool
+				const int su = (int)strtol((strtok(NULL,",")), NULL, 10); //surgeries bool
+				const int sm = (int)strtol((strtok(NULL,",")), NULL, 10); //smoker bool
+				const int m = (int)strtol((strtok(NULL,",")), NULL, 10); //mental bool
+				const int dr = (int)strtol((strtok(NULL,",")), NULL, 10); //prescriptions bool
+
+				if(value == 1)
+				{
+					if(a)
+					{
+						printf("%3d.) %s, %s\n", j, lname, fname);
+						j++;
+					}
+				}
+				
+				if(value == 2)
+				{
+					if(su)
+					{
+						printf("%3d.) %s, %s\n", j, lname, fname);
+						j++;
+					}
+				}
+				
+				if(value == 3)
+				{
+					if(sm)
+					{
+						printf("%3d.) %s, %s\n", j, lname, fname);
+						j++;
+					}
+				}
+				
+				if(value == 4)
+				{
+					if(m)
+					{
+						printf("%3d.) %s, %s\n", j, lname, fname);
+						j++;
+					}
+				}
+				
+				if(value == 5)
+				{
+					if(dr)
+					{
+						printf("%3d.) %s, %s\n", j, lname, fname);
+						j++;
+					}
+				}
+				
+				free(temp);
+				temp = NULL;
 			}
 			
-			if(value == 3)
-			{
-				if(patientIsSmoker(newPatient))
-				{
-					printf("%3d.) %s, %s\n", j, lname, fname);
-					j++;
-				}
-			}
+			j--;
 			
-			if(value == 4)
+			if(j == 0)
 			{
-				if(patientMentalIllness(newPatient))
-				{
-					printf("%3d.) %s, %s\n", j, lname, fname);
-					j++;
-				}
+				printf("No patients match the search parameter.\n");
 			}
-			
-			if(value == 5)
-			{
-				if(patientOnPrescriptions(newPatient))
-				{
-					printf("%3d.) %s, %s\n", j, lname, fname);
-					j++;
-				}
-			}
+			fclose(fp);
 		}
-		
-		j--;
-		
-		if(j == 0)
-		{
-			printf("No patients match the search parameter.\n");
-		}
-		fclose(fp);
+
 	}
-	
 	pressEnterKey();
 }
 
