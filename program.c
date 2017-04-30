@@ -2121,7 +2121,7 @@ void getPrescriptionInfo(int ssnhash)
 	{
 		const int count = getUserCount(fp); //number of patients in file
 		int i;
-		int found = 0;
+		const int found = 0;
 
 		for(i = 0; i < count; ++i)
 		{
@@ -2808,7 +2808,7 @@ void readLogs()
 			if(fgets(buff, 255, (FILE*)fp) == 0)
 			{
 				if(feof(fp)) break;
-				strcpy(buff, decrypt(buff));
+				strcpy_s(buff, decrypt(buff));
 				strcat(buff, "\n");
 				printf("%s", buff);
 			}
@@ -3124,6 +3124,7 @@ void drawAppointment()
 
 void drawAppointmentList(FILE *fp)
 {
+	const int count = getUserCount(fp);
 	printf("\033[2J\033[;H");
 	printf("\n------------[ APPOINTMENT LIST ]------------\n");
 	printf("\n");
