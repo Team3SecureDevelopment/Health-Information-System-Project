@@ -1030,7 +1030,7 @@ char *sread(int size)
 	int i = 0;
 	signed int ch = 0;
 	
-	char *temp = malloc(sizeof(char*) * size+1);
+	signed int *temp = malloc(sizeof(char*) * size+1);
 	char *string = malloc(sizeof(char*) * size+1);
 	
 	if(NULL == temp)
@@ -1060,11 +1060,11 @@ char *sread(int size)
 
 	if(i <= size)
 	{
-		strncpy(string, temp, i);
+		strncpy(string, (char*)temp, i);
 	}
 	else
 	{
-		strncpy(string, temp, size);
+		strncpy(string, (char*)temp, size);
 	}
 	
 	if(temp != NULL)
@@ -1231,9 +1231,9 @@ void changepass(User currentUser)
 										strcpy(string, encrypt(string));
 										strcat(string, "\n");
 								
-										strcpy(pass, wspace(strlen(pass)));
-										strcpy(pass2, wspace(strlen(pass2)));
-										strcpy(buffer, wspace(strlen(buffer)));
+										strncpy(pass, wspace(strlen(pass)), 16);
+										strncpy(pass2, wspace(strlen(pass2)), 16);
+										strncpy(buffer, wspace(strlen(buffer)), 16);
 									
 										fprintf(nfp, "%s", string);
 									
@@ -1586,6 +1586,12 @@ char *createPassword()
 	 */
 	 
 	char *password = malloc(sizeof(char*) * 16);
+	if(NULL == password)
+	{
+		free(password);
+		password = NULL;
+	}
+	
 	strcpy(password, sread(16));
 	
 	if(strlen(password) >= 8 && strlen(password) <= 16)
@@ -1619,11 +1625,25 @@ char *createPassword()
 		{
 			return password;
 		}
-		else return 0;
+		else
+		{
+			if(password != NULL)
+			{
+				free(password);
+				password = NULL;
+			}
+			
+			return 0;
+		}
 	}
 	else
 	{
 		printf("Password is not between 8 and 16 characters!\n");
+		if(password != NULL)
+		{
+			free(password);
+			password = NULL;
+		}
 		return 0;
 	}
 }
@@ -1654,13 +1674,54 @@ void addNewPatient()
 		int drugs;
 		
 		char *c = malloc(sizeof(char*) * 3);
+		if(NULL == c)
+		{
+			free(c);
+			c = NULL;
+		}
 		
 		char *social = malloc(sizeof(char*) * 10);
+		if(NULL == social)
+		{
+			free(social);
+			social = NULL;
+		}
+		
 		char *dob = malloc(sizeof(char*) * 11);
+		if(NULL == dob)
+		{
+			free(dob);
+			dob = NULL;
+		}
+		
 		char *fname = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == fname)
+		{
+			free(fname);
+			fname = NULL;
+		}
+		
 		char *lname = malloc(sizeof(char*) * MAX_CHAR);
+		if(NULL == lname)
+		{
+			free(lname);
+			lname = NULL;
+		}
+		
 		char *buffer = malloc(sizeof(char*) * (MAX_CHAR));
+		if(NULL == buffer)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+		
 		char *string = malloc(sizeof(char*) * (MAX_CHAR*2 + 10) + sizeof(int) * 6);
+		if(NULL == string)
+		{
+			free(string);
+			string = NULL;
+		}
+		
 		string[0] = '\0';
 	  
 		// read data
@@ -1848,6 +1909,48 @@ void addNewPatient()
 		
 		printf("New patient successfully created!\n");
 		pressEnterKey();
+
+		if(c != NULL)
+		{
+			free(c);
+			c = NULL;
+		}
+
+		if(social != NULL)
+		{
+			free(social);
+			social = NULL;
+		}
+		
+		if(dob != NULL)
+		{
+			free(dob);
+			dob = NULL;
+		}
+
+		if(fname != NULL)
+		{
+			free(fname);
+			fname = NULL;
+		}
+		
+		if(lname != NULL)
+		{
+			free(lname);
+			lname = NULL;
+		}
+
+		if(buffer != NULL)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+
+		if(string != NULL)
+		{
+			free(string);
+			string = NULL;
+		}
    }
 }
 
