@@ -61,7 +61,6 @@ int userGetType(User);
 Session  authenticate();
 int hash(char *);
 int getUserCount(FILE *fp);
-char *getLine(FILE *fp, int);
 User createNewUser(char *, int);
 void addUser();
 void viewUsers();
@@ -443,7 +442,6 @@ Session authenticate()
 	
 	printf("Username: ");
 	strcpy(username, sread(MAX_CHAR));
-	printf("username = [%s]\n", username);
 	
 	if(strlen(username) > 256)
 	{
@@ -453,7 +451,6 @@ Session authenticate()
 	
 	printf("Password: ");
 	strcpy(password, sread(MAX_CHAR));
-	printf("password = [%s]\n", password);
 	
 	if(password != NULL)
 	{
@@ -554,7 +551,6 @@ User getUser(char *username, int password)
 							const User newUser = createNewUser(username, type);
 							
 							fclose(fp);
-
 							return newUser;
 						}
 						else
@@ -752,79 +748,6 @@ int getUserCount(FILE *fp)
 		return i;
 	}
 	else return 0;
-}
-
-/* returns the full line as a string */
-char *getLine(FILE *fp, int line)
-{
-	if(MAX_CHAR > SIZE_MAX/sizeof(char))
-	{
-		printf("Not enough memory!\n");
-		exit(1);
-	}
-	char *buffer = (char*)calloc(MAX_CHAR, sizeof(char));
-	
-	if(MAX_CHAR > SIZE_MAX/sizeof(char))
-	{
-		printf("Not enough memory!\n");
-		exit(1);
-	}
-	char *string = (char*)calloc(MAX_CHAR, sizeof(char));
-	
-	if(NULL == buffer)
-	{
-		free(buffer);
-		buffer = NULL;
-		printf("Memory allocation error\n");
-		exit(1);
-	}
-	
-	if(NULL == string)
-	{
-		free(string);
-		string = NULL;
-		printf("Memory allocation error\n");
-		exit(1);
-	}
-	
-	int i = 0;
-
-	if(fseek(fp, 0, SEEK_SET) == 0);
-	{
-		while(i <= line)
-		{
-			/* get the line */
-			if(fgets(buffer, MAX_CHAR, fp) != NULL)
-			{
-				if(i == line)
-				{
-					/* double check not the end */
-					if(*buffer == EOF)
-					{
-						break;
-					}
-
-					buffer[strnlen(buffer, MAX_CHAR)] = '\0';
-					strncpy(string, buffer, strnlen(buffer, MAX_CHAR));
-					
-					if(buffer != NULL)
-					{
-						strncpy(buffer, wspace(MAX_CHAR), strlen(buffer));
-						buffer = NULL;
-					}
-					
-					if(string != NULL)
-					{
-						return (char*)string;
-					}
-				}
-
-				i++;
-			}
-		}
-	}
-	
-	return NULL;
 }
 
 /* returns an int hash value of a passed in string */
@@ -1470,12 +1393,12 @@ int verify(User currentUser)
 	}
 	else
 	{
-		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		if(MAX_CHAR > SIZE_MAX/sizeof(char*))
 		{
 			printf("Not enough memory!\n");
 			exit(1);
 		}
-		char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
+		char *temp = (char*)calloc(MAX_CHAR, sizeof(char*));
 		if(NULL == temp)
 		{
 			free(temp);
@@ -1484,12 +1407,12 @@ int verify(User currentUser)
 			exit(1);
 		}
 		
-		if(MAX_CHAR > SIZE_MAX/sizeof(char))
+		if(MAX_CHAR > SIZE_MAX/sizeof(char*))
 		{
 			printf("Not enough memory!\n");
 			exit(1);
 		}
-		char *username = (char*)calloc(MAX_CHAR, sizeof(char));
+		char *username = (char*)calloc(MAX_CHAR, sizeof(char*));
 		if(NULL == username)
 		{
 			free(username);
@@ -1498,12 +1421,12 @@ int verify(User currentUser)
 			exit(1);
 		}
 		
-		if(16 > SIZE_MAX/sizeof(char))
+		if(16 > SIZE_MAX/sizeof(char*))
 		{
 			printf("Not enough memory!\n");
 			exit(1);
 		}
-		char *password = (char*)calloc(16, sizeof(char));
+		char *password = (char*)calloc(16, sizeof(char*));
 		if(NULL == password)
 		{
 			free(password);
@@ -1519,7 +1442,7 @@ int verify(User currentUser)
 		int i;
 		
 		/* get the username */
-		strcpy(username, userGetName(currentUser));
+		strncpy(username, userGetName(currentUser), MAX_CHAR);
 		
 		if(fseek(fp, 0, SEEK_SET) == 0);
 		
@@ -1527,7 +1450,7 @@ int verify(User currentUser)
 		{
 			if(fgets(buffer, 255, fp) != NULL)
 			{
-				strcpy(buffer, decrypt(buffer));
+				strncpy(buffer, decrypt(buffer), MAX_CHAR);
 				strcpy(temp, buffer);
 				
 				/* tokenize the line */
@@ -1545,14 +1468,13 @@ int verify(User currentUser)
 					hashpass = hash(password);
 					strcpy(password, wspace(MAX_CHAR));
 					
-					free(password);
-					free(username);
-					free(temp);
 					/* password match? */
 					if(hashpass == (int)strtol(token, NULL, 10))
 					{
 						fclose(fp);
-						
+						free(username);
+						free(password);
+						free(temp);
 						return 1;
 					}
 					else
@@ -1852,7 +1774,7 @@ char *createPassword()
 		else
 		{
 			printf("Password does not contain a capital, number, or special character!\n");
-			
+			pressEnterKey();
 			if(password != NULL)
 			{
 				password = NULL;
@@ -1864,6 +1786,7 @@ char *createPassword()
 	else
 	{
 		printf("Password is not between 8 and 16 characters!\n");
+		pressEnterKey();
 		if(password != NULL)
 		{
 			password = NULL;
@@ -2274,7 +2197,7 @@ void setAllergyInfo(int ssnhash)
 		}
 	}
 	
-	//fclose(fpa);
+	fclose(fpa);
 }
 
 void getAllergyInfo(int ssnhash)
@@ -2366,7 +2289,7 @@ void getAllergyInfo(int ssnhash)
 			pressEnterKey();
 		}
 		
-		//fclose(fpa);
+		fclose(fpa);
 		
 		if(temp != NULL)
 		{
@@ -2438,7 +2361,7 @@ void setPrescriptionInfo(int ssnhash)
 		}
 	}
 	
-	//fclose(fpp);
+	fclose(fpp);
 }
 
 void getPrescriptionInfo(int ssnhash)
