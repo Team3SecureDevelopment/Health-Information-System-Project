@@ -1,17 +1,13 @@
-Script started on Sun 30 Apr 2017 07:33:12 PM EDT
-]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers program.c
-"/home/rose/SSD/Health-Information-System-Project/program.c", line 2723: warning: 
-          variable "token" was set but never used
-  			char *token;
-  			      ^
-
-program.c:1083: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:1319: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2343: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2498: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2806: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
-program.c:2917: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+Script started on Sun 30 Apr 2017 09:06:43 PM EDT
+]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ rosecheckers.txt[K[K[K[K program.c
+program.c:996: warning: DCL00-C: Const-qualify immutable objects: length
+program.c:1084: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:1421: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2368: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2514: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:2839: warning: STR06-C: Do not assume that strtok() leaves the parse string unchanged
+program.c:3220: warning: DCL00-C: Const-qualify immutable objects: length
 ]0;rose@rosebud: ~/SSD/Health-Information-System-Projectrose@rosebud:~/SSD/Health-Information-System-Project$ exit
 exit
 
-Script done on Sun 30 Apr 2017 07:33:38 PM EDT
+Script done on Sun 30 Apr 2017 09:07:13 PM EDT
