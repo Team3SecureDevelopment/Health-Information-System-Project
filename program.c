@@ -1519,7 +1519,7 @@ int verify(User currentUser)
 		int i;
 		
 		/* get the username */
-		strncpy(username, userGetName(currentUser), MAX_CHAR);
+		strcpy(username, userGetName(currentUser));
 		
 		if(fseek(fp, 0, SEEK_SET) == 0);
 		
@@ -1527,7 +1527,7 @@ int verify(User currentUser)
 		{
 			if(fgets(buffer, 255, fp) != NULL)
 			{
-				strncpy(buffer, decrypt(buffer), MAX_CHAR);
+				strcpy(buffer, decrypt(buffer));
 				strcpy(temp, buffer);
 				
 				/* tokenize the line */
@@ -1544,8 +1544,10 @@ int verify(User currentUser)
 				
 					hashpass = hash(password);
 					strcpy(password, wspace(MAX_CHAR));
+					
 					free(password);
 					free(username);
+					free(temp);
 					/* password match? */
 					if(hashpass == (int)strtol(token, NULL, 10))
 					{
