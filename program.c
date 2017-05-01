@@ -993,7 +993,7 @@ void viewUsers()
 	}
 	else
 	{
-		int length = getUserCount(fp);
+		const int length = getUserCount(fp);
 		if(fseek(fp, 0, SEEK_SET) == 0);
 		
 		if(MAX_CHAR > SIZE_MAX/sizeof(char))
@@ -2748,100 +2748,101 @@ void filteredSearch()
 			
 			char *token;
 			
-			if(fseek(fp, 0, SEEK_SET) == 0)
+			if(fseek(fp, 0, SEEK_SET) == 0);
+			
+			for(i = 0; i < count; ++i)
 			{
-				for(i = 0; i < count; ++i)
+				if(MAX_CHAR > SIZE_MAX/sizeof(char))
 				{
-					if(MAX_CHAR > SIZE_MAX/sizeof(char))
-					{
-						printf("Not enough memory!\n");
-						exit(1);
-					}
-					char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
-					if(NULL == temp)
-					{
-						free(temp);
-						temp = NULL;
-					}
-					char buffer[MAX_CHAR];
-				
-					if(fgets(buffer, MAX_CHAR, fp) == 0)
-					{
-						strncpy(buffer, decrypt(buffer), MAX_CHAR);
-						strcpy(temp, buffer);
-						
-						/* tokenize the line */
-						token = strtok(temp, ",");
-						
-						token = strtok(NULL, ",");
-						const char *lname = token;
-						token = strtok(NULL, ",");
-						const char *fname = token;
-						if((token = strtok(NULL, ",")));
-						if((token = strtok(NULL, ",")));
-						if((token = strtok(NULL, ",")));
-						token = strtok(NULL, ",");
-						const int a = (int)strtol(token, NULL, 10); //allergies bool
-						token = strtok(NULL, ",");
-						const int su = (int)strtol(token, NULL, 10); //surgeries bool
-						token = strtok(NULL, ",");
-						const int sm = (int)strtol(token, NULL, 10); //smoker bool
-						token = strtok(NULL, ",");
-						const int m = (int)strtol(token, NULL, 10); //mental bool
-						token = strtok(NULL, ",");
-						const int dr = (int)strtol(token, NULL, 10); //prescriptions bool
-
-						if(value == 1)
-						{
-							if(a)
-							{
-								printf("%3d.) %s, %s\n", j, lname, fname);
-								j++;
-							}
-						}
-						
-						if(value == 2)
-						{
-							if(su)
-							{
-								printf("%3d.) %s, %s\n", j, lname, fname);
-								j++;
-							}
-						}
-						
-						if(value == 3)
-						{
-							if(sm)
-							{
-								printf("%3d.) %s, %s\n", j, lname, fname);
-								j++;
-							}
-						}
-						
-						if(value == 4)
-						{
-							if(m)
-							{
-								printf("%3d.) %s, %s\n", j, lname, fname);
-								j++;
-							}
-						}
-						
-						if(value == 5)
-						{
-							if(dr)
-							{
-								printf("%3d.) %s, %s\n", j, lname, fname);
-								j++;
-							}
-						}
-						
-						if(temp != NULL)
-						{
-							temp = NULL;
-						}
-					}
+					printf("Not enough memory!\n");
+					exit(1);
 				}
+				char *temp = (char*)calloc(MAX_CHAR, sizeof(char));
+				if(NULL == temp)
+				{
+					free(temp);
+					temp = NULL;
+				}
+				char buffer[MAX_CHAR];
+			
+				if(fgets(buffer, MAX_CHAR, fp) != NULL)
+				{
+					strncpy(buffer, decrypt(buffer), MAX_CHAR);
+					strcpy(temp, buffer);
+					
+					/* tokenize the line */
+					token = strtok(temp, ",");
+					
+					token = strtok(NULL, ",");
+					const char *lname = token;
+					token = strtok(NULL, ",");
+					const char *fname = token;
+					if((token = strtok(NULL, ",")));
+					if((token = strtok(NULL, ",")));
+					if((token = strtok(NULL, ",")));
+					token = strtok(NULL, ",");
+					const int a = (int)strtol(token, NULL, 10); //allergies bool
+					token = strtok(NULL, ",");
+					const int su = (int)strtol(token, NULL, 10); //surgeries bool
+					token = strtok(NULL, ",");
+					const int sm = (int)strtol(token, NULL, 10); //smoker bool
+					token = strtok(NULL, ",");
+					const int m = (int)strtol(token, NULL, 10); //mental bool
+					token = strtok(NULL, ",");
+					const int dr = (int)strtol(token, NULL, 10); //prescriptions bool
+					
+					if(value == 1)
+					{
+						if(a)
+						{
+							printf("%3d.) %s, %s\n", j, lname, fname);
+							j++;
+						}
+					}
+					
+					if(value == 2)
+					{
+						if(su)
+						{
+							printf("%3d.) %s, %s\n", j, lname, fname);
+							j++;
+						}
+					}
+					
+					if(value == 3)
+					{
+						if(sm)
+						{
+							printf("%3d.) %s, %s\n", j, lname, fname);
+							j++;
+						}
+					}
+					
+					if(value == 4)
+					{
+						if(m)
+						{
+							printf("%3d.) %s, %s\n", j, lname, fname);
+							j++;
+						}
+					}
+					
+					if(value == 5)
+					{
+						if(dr)
+						{
+							printf("%3d.) %s, %s\n", j, lname, fname);
+							j++;
+						}
+					}
+					
+					free(temp);
+					/* if(temp != NULL)
+					{
+						temp = NULL;
+					} */
+				}
+				else break;
 			}
 			
 			j--;
@@ -3217,7 +3218,7 @@ void readLogs()
 		char buff[255];
 		printf("\033[2J\033[;H");
 		drawLogs();
-		int length = getUserCount(fp);
+		const int length = getUserCount(fp);
 		int i;
 		if(fseek(fp, 0, SEEK_SET) == 0);
 		
