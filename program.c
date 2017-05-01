@@ -1472,9 +1472,6 @@ int verify(User currentUser)
 					if(hashpass == (int)strtol(token, NULL, 10))
 					{
 						fclose(fp);
-						free(username);
-						free(password);
-						free(temp);
 						return 1;
 					}
 					else
