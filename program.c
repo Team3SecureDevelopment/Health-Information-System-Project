@@ -1544,11 +1544,13 @@ int verify(User currentUser)
 				
 					hashpass = hash(password);
 					strcpy(password, wspace(MAX_CHAR));
-					
+					free(password);
+					free(username);
 					/* password match? */
 					if(hashpass == (int)strtol(token, NULL, 10))
 					{
 						fclose(fp);
+						
 						return 1;
 					}
 					else
@@ -1568,8 +1570,6 @@ int verify(User currentUser)
 		fclose(fp);
 		return 0;
 	}
-	
-	return 0;
 }
 
 void deleteUser(User currentAdmin)
@@ -2530,7 +2530,6 @@ void getPrescriptionInfo(int ssnhash)
 		
 		if(temp != NULL)
 		{
-			temp = NULL;
 			free(temp);
 		}
 		
