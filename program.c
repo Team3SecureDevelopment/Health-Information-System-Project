@@ -2452,7 +2452,7 @@ void getPrescriptionInfo(int ssnhash)
 		
 		if(temp != NULL)
 		{
-			free(temp);
+			temp = NULL;
 		}
 		
 		fclose(fpp);
